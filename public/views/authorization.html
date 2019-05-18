@@ -1,0 +1,25 @@
+<div class="authorizationlr pfixed topp" ng-controller="stornetController as stornet">
+    <nav ng-controller="topbarController as topbar" class="tab-bar">
+        <section class="left-small">
+            <a ng-click="topbar.goNews()">
+                <span translate>Cancel</span>
+            </a>
+        </section>
+    </nav>
+    <div class="authorization">
+        <div class="authinfolr">
+            <div class="authinfo">
+                <img src="./img/authorization.png"/>
+            </div>
+            <div class="title" translate>We need to get your SNC wallet authorization to continue</div>
+        </div>
+        <button class="m30t" type="button" ng-click="$root.go('storselect')" translate>inWallet authorized login</button>
+        <!--<button class="m30t" type="button" ng-click="stornet.register()" translate>inWallet authorized login</button>-->
+       <!-- <div class="authselect">
+            <a ng-click="$root.go('login')" translate>Account password login</a>
+            <a ng-click="$root.go('register')" translate>Register</a>
+        </div>-->
+    </div>
+
+</div>
+

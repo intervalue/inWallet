@@ -1,0 +1,149 @@
+<div ng-controller="txallController as ta" class="txall pfixed topp">
+    <nav class="tab-bar">
+        <section class="left-small">
+            <a ng-click="ta.goSend()">
+                <img src="./img/back.png" />
+            </a>
+        </section>
+        <section class="middle tab-bar-section">
+            <h1 class="title ellipsis" translate>
+                Transaction Record
+            </h1>
+        </section>
+    </nav>
+    <div class="titlelabel clearfix">
+        <div class="item" id="txdate" ng-click="ta.txdatef()">
+            <span translate>Date</span>
+            <span class="cointri"></span>
+            <!--<ul ng-show="ta.txalldate">
+                <li ng-repeat="item in ta.YYMM track by $index " ng-click="ta.orderbyTX(item ,'date')">{{item}}</li>
+            </ul>-->
+            <!--时间日期组件-->
+        </div>
+        <div class="item" id="txstatus" ng-click="ta.tabswitch('txstatus')">
+            <span translate>Status</span>
+            <span class="cointri"></span>
+            <ul ng-show="ta.txallstatus" class="animated downScaleIn">
+                <li  ng-click="ta.orderbyTX('tranfer', 'status')" translate>Transfer</li>
+                <li  ng-click="ta.orderbyTX('move', 'status')" translate>Exchange</li>
+                <li  ng-click="ta.orderbyTX('exchange', 'status')" translate>Trade</li>
+            </ul>
+        </div>
+        <div class="item" id="txvcur" ng-click="ta.tabswitch('txvcur')">
+            <span translate>Currency</span>
+            <span class="cointri"></span>
+            <ul ng-show="ta.txallcurrency" class="animated downScaleIn">
+                <li  ng-click="ta.orderbyTX('inve', 'currency')">INVE</li>
+                <li  ng-click="ta.orderbyTX('btc', 'currency')">BTC</li>
+                <li  ng-click="ta.orderbyTX('eth', 'currency')">ETH</li>
+            </ul>
+        </div>
+    </div>
+    <div class="txallin">
+        <div class="item" ng-repeat="btx in ta.txHistory | filter : ta.seach | orderBy : '-creation_date' as txdata" ng-click="ta.openTxModal(btx)">
+            <img ng-src="{{btx.asset == 'inve' ?'./img/inveltimg.png':(btx.asset == 'btc' ? './img/btcltimg.png' : './img/ethltimg.png') }}">
+            <div class="txstatusinfo">
+                <div class="size-16" ng-show="btx.action == 'received'" translate>Transfer in</div>
+                <div class="size-16" ng-show="btx.action == 'sent'" translate>Transfer out</div>
+                <div class="size-12 nsfcolor">{{btx.walletName}}</div>
+            </div>
+            <div class="txallinfo">
+                <div class="size-16 greencolor" translate ng-show="btx.action == 'received'">+{{btx.amountTl}}</div>
+                <div class="size-16 redcolor" translate ng-show="btx.action == 'sent'">-{{btx.amountTl}}</div>
+                <div class="size-12 nzcolor">{{ btx.creation_date | amDateFormat:'MM-DD'}}&nbsp;&nbsp;&nbsp;{{ btx.creation_date | amDateFormat:'HH:mm'}}</div>
+            </div>
+        </div>
+        <div  ng-show="txdata.length == 0">
+            <div class="notxallinfo">
+                <img src="./img/nonews.png">
+                <h5 translate>No transactions yet</h5>
+            </div>
+        </div>
+    </div>
+    <div class="definedata animated upScaleIn" ng-show="ta.txalldate">
+        <nav class="tab-bar">
+            <section class="left-small">
+                <a ng-click="ta.hideall2(true);">
+                    <img src="./img/back.png" />
+                </a>
+            </section>
+            <section class="right-small">
+                <a translate ng-click="ta.orderbyTX(item ,'date')">
+                    Done
+                </a>
+            </section>
+        </nav>
+        <div class="definedatain">
+            <div class="txacur">
+                <div class="txacurin">
+                    <span id="txacuryear">{{ta.txacuryearval}}</span>
+                    <span id="txacurmth">{{ta.txacurmthval}}</span>
+                </div>
+            </div>
+            <div class="txascroll">
+                <div class="txallyear txallswiper1">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <span>2019</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <span>2018</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <span>2017</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <span>2016</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <span>2015</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="txallmth txallswiper2">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <span>01</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <span>02</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <span>03</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <span>04</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <span>05</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <span>06</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <span>07</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <span>08</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <span>09</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <span>10</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <span>11</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <span>12</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="txallmask" ng-show="ta.txallmaskShow" ng-click="ta.hideall()"></div>
+    <div class="txallmask2" ng-show="ta.txallmaskShow2" ng-click="ta.hideall2(true)"></div>
+</div>
+

@@ -1,0 +1,26 @@
+<div class="addversion pfixed">
+  <div class="newvcn">
+      <div class="newbmanu" ng-show="!newversionpro">
+          <h1><img src="./img/versionn.png"/><span translate>A new version has been detected, update now?</span></h1>
+          <div class="newvcnin">
+              <h2>{{version}} - <span translate>new version online!</span></h2>
+              <div class="newvlist">
+                  <div ng-repeat="x in updateRemark track by $index">--{{x.value}}</div>
+              </div>
+              <div class="newvbtn">
+                  <button class="awbtn" ng-click="later()" translate>Maybe later</button>
+                  <button ng-click="openDownloadLink()" translate>Update now</button>
+              </div>
+          </div>
+      </div>
+      <div class="newversionpro" ng-show="newversionpro">
+          <h2><span translate>Updating</span><img src="./img/close.png" ng-click="later()"/></h2>
+          <div class="newvrange">
+              <div class="newvrangein">
+                  <div class="newvrangegreen" ng-style="{'width': rangevalue +'%'}"></div>
+              </div>
+              <span>{{rangevalue}}%</span>
+          </div>
+      </div>
+  </div>
+</div>

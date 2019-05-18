@@ -1,0 +1,182 @@
+<div ng-controller="addwalletController as addw" ng-init="addw.step = 'addwallet';addw.page = 'addwallet'">
+        <!--创建钱包-创建钱包信息  start-->
+        <div class="{{index.type | lowercase}}addw cwpage pfixed topp" ng-if="addw.step == 'addwallet'">
+            <!--返回到首页-->
+            <div ng-if="index.backhome">
+                <nav ng-controller="topbarController as topbar" class="tab-bar">
+                    <section class="left-small">
+                        <a ng-click="topbar.goHome();index.backhome = false;">
+                            <img src="./img/back.png" />
+                        </a>
+                    </section>
+                    <section class="middle tab-bar-section">
+                        <h1 class="title ellipsis" translate>
+                            Create {{index.type | uppercase}} wallet
+                        </h1>
+                    </section>
+                </nav>
+            </div>
+            <!--浏览器默认的返回-->
+            <div ng-if="index.backdefault">
+                <nav ng-controller="topbarController as topbar" class="tab-bar">
+                    <section class="left-small">
+                        <a  ng-click="index.gobackDeft();index.backdefault=false;">
+                            <img src="./img/back.png" />
+                        </a>
+                    </section>
+                    <section class="middle tab-bar-section">
+                        <h1 class="title ellipsis" translate>
+                            Create {{index.type | uppercase}} wallet
+                        </h1>
+                    </section>
+                </nav>
+            </div>
+            <div class="f9fafch"></div>
+            <div class="cwpagefirst">
+
+                <form name="creatwform" novalidate>
+                    <div class="adinputitem" mdinputvalidc>
+                        <div class="adinputic">
+                            <div class="adinputimg aiwname"></div>
+                            <!--<input type="text" ng-model="addw.aiwname" ng-blur="addw.validateName($event)" ng-attr-placeholder="{{'Wallet name'|translate}}" autocomplete="off"
+                            ng-minlength="1" ng-maxlength="20" minlength="1" maxlength="20" />-->
+                            <input type="text" ng-model="addw.aiwname" mdinputname ng-attr-placeholder="{{'Wallet name'|translate}}" autocomplete="off"
+                            ng-minlength="1" ng-maxlength="20" minlength="1" maxlength="20" />
+                        </div>
+                        <p class="adinputp" translate></p>
+                    </div>
+                    <div class="adinputitem" mdinputvalidc>
+                        <div class="adinputic">
+                            <div class="adinputimg aiwpass"></div>
+                            <input type="password" autocomplete="new-password" name="aiwpass" ng-model="addw.aiwpass" mdinputpass  ng-attr-placeholder="{{'Password'|translate}}"
+                            autocomplete="off" ng-minlength="1" ng-maxlength="18" minlength="1" maxlength="18" />
+                        </div>
+                        <p class="adinputp" translate></p>
+                    </div>
+                    <div class="adinputitem" ng-class="{'setErrorexp':creatwform.aiwpass.$valid && addw.aiwpass !== addw.aiwrpass && addw.aiwrpass !== ''}">
+                        <div class="adinputic">
+                            <div class="adinputimg aiwrpass" ng-class=""></div>
+                            <input type="password" autocomplete="new-password" name="aiwrpass" ng-model="addw.aiwrpass"
+                            placeholder="{{'Repeat password'|translate}}" autocomplete="off" ng-minlength="1" ng-maxlength="18"
+                            minlength="1" maxlength="18"
+                            />
+                        </div>
+                        <p class="adinputpass" translate ng-show="creatwform.aiwpass.$valid && addw.aiwpass !== addw.aiwrpass && addw.aiwrpass !== ''">*Inconsistent password</p>
+                      <!--  <p class="adinputp" translate></p>-->
+                    </div>
+                    <div class="fleximgtext">
+                        <div translate class="eabcolor size-12 fontmedium">The mnemonic is used to protect the private key and transaction authorization, and the strength is very important!</div>
+                    </div>
+                    <div class="fleximgtext">
+                        <div translate class="eabcolor size-12">inWallet does not store passwords and cannot be retrieved for you. Please keep in mind!</div>
+                    </div>
+                    <button class="m30t m20b" ng-click="addw.step = 'showcode';" ng-disabled="!addw.aiwname || !addw.aiwpass || !addw.aiwrpass || creatwform.$invalid || addw.aiwpass !== addw.aiwrpass" translate>Creat wallet</button>
+                    <!--<button class="m30t m20b" ng-click="addw.step = 'showcode';" ng-disabled="!addw.formvalidatename || !addw.formvalidatepass || !addw.formvalidaterpass" translate>Creat wallet</button>-->
+                    <!--<button class="awbtn m15b" ng-show="index.backhome == true;" ng-click="$root.go('import');index.signatureAddr = '';index.backdefault = false;" translate>Import wallet</button>-->
+                </form>
+
+            </div>
+        </div>
+        <!--创建钱包-创建钱包信息  end-->
+        <!--创建钱包-显示钱包口令  start-->
+        <div class="{{index.type | lowercase}}addw cwpage pfixed topp" ng-if="addw.step == 'showcode'" ng-init="addw.funReg()">
+            <nav class="tab-bar">
+                <section class="left-small">
+                    <a ng-click="addw.step = 'addwallet'">
+                        <img src="./img/back.png" />
+                    </a>
+                </section>
+                <section class="middle tab-bar-section">
+                    <h1 class="title ellipsis" translate>
+                        Backup mnemonic
+                    </h1>
+                </section>
+            </nav>
+            <div class="f9fafch"></div>
+            <div class="cwpagein">
+                <div class="fleximgtextc m28b">
+                    <img class="warnbigimg" src="./img/warnbig.png" />
+                    <div translate class="redcolor size-14">Please do not take a screenshot and copy your wallet mnemonic.</div>
+                </div>
+                <p class="center size-12" translate>The mnemonic is used to restore the wallet, write it accurately on paper, and save it where only you know it.</p>
+                <div class="aiwscbox m28b">
+                    <span ng-repeat="item in addw.showcodes track by $index">{{item.str}}</span>
+                </div>
+                <button ng-click="addw.step = 'selectcode'" translate>Next</button>
+            </div>
+        </div>
+        <!--创建钱包-显示钱包口令  end-->
+        <!--创建钱包-选择钱包口令  start-->
+        <div class="{{index.type | lowercase}}addw cwpage pfixed topp" ng-if="addw.step == 'selectcode'">
+            <nav class="tab-bar">
+                <section class="left-small">
+                    <a ng-click="addw.step = 'showcode'">
+                        <img src="./img/back.png" />
+                    </a>
+                </section>
+                <section class="middle tab-bar-section">
+                    <h1 class="title ellipsis" translate>
+                        Backup mnemonic
+                    </h1>
+                </section>
+            </nav>
+            <div class="f9fafch"></div>
+            <div class="cwpagein">
+                <div class="fleximgtextc m28b">
+                    <img class="warnbigimg" src="./img/warnbig.png" />
+                    <div translate class="redcolor size-14">Confirm your mnemonic</div>
+                </div>
+                <p class="center size-12" translate>Please click your mnemonic in order to confirm that your backup mnemonic is correct.</p>
+                <div style="display: block;min-height:220px;">
+                    <div class="aiwslcbox" ng-click="addw.minuswordf($event)">
+                        <span ng-repeat="item in addw.chosenWords track by $index" id="{{item.id}}" >{{item.str}}</span>
+                    </div>
+                    <p ng-show="addw.showcodeerr" class="redcolor size-12" translate>Incorrect mnemonic</p>
+                    <div class="wordsbox" ng-click="addw.addwordf($event)">
+                        <button ng-repeat="item in addw.showrandamcodes track by $index" id="{{item.id}}" ng-disabled="item.chosen">{{item.str}}</button>
+                    </div>
+                </div>
+                <button ng-click="addw.step = 'showcode'" translate>Last step</button>
+            </div>
+        </div>
+        <!--创建钱包-选择钱包口令  end-->
+        <!--创建钱包-删除口令  start-->
+        <div class="{{index.type | lowercase}}addw cwpage pfixed topp" ng-if="addw.step == 'deletecode'">
+            <nav class="tab-bar">
+                <section class="middle tab-bar-section">
+                    <h1 class="title ellipsis" translate>
+                        Backup mnemonic
+                    </h1>
+                </section>
+            </nav>
+            <div class="f9fafch"></div>
+            <div class="cwpagein">
+                <div class="fleximgtextc m28b">
+                    <img class="warnbigimg" src="./img/warnbig.png" />
+                    <div translate class="redcolor size-14">Confirm your mnemonic</div>
+                </div>
+                <div class="backslcbox m15b">
+                    <span ng-repeat="item in addw.showcodes track by $index" id="{{item.id}}" >{{item.str}}</span>
+                </div>
+                <p class="center eabcolor m35b size-12" translate>Your mnemonic is correct. To ensure the security of your wallet, we recommend that you delete your mnemonic.</p>
+                <button class="m20b" ng-click="addw.showconfirm = true;" translate>Delete mnemonic</button>
+                <button class="awbtn" ng-click="addw.addWallet(addw.aiwname, addw.aiwpass, addw.aiwrpass, addw.mnemonic);" translate>Skip</button>
+                <div ng-if="addw.showconfirm" class="popconfirm">
+                    <div class="popmask" ng-click="addw.showconfirm = false;"></div>
+                    <div class="popcontent">
+                        <div class="fleximgtextc m20b p25h">
+                            <img src="./img/qdeletecode.png">
+                            <div translate class="size-16 redcolor">Are you sure you want to delete the mnemonic?</div>
+                        </div>
+                        <p class="poptips p25h" translate>This will completely remove the mnemonics from the app and it will not be recoverable. Please reconfirm that you have backed up your mnemonics to a safe place.</p>
+                        <div class="p25h popbutton">
+                            <button ng-click="addw.addWallet(addw.aiwname, addw.aiwpass, addw.aiwrpass, addw.mnemonic,true);" translate>Confirm</button>
+                            <button class="awbtn" ng-click="addw.showconfirm = false;" translate>Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--创建钱包-删除口令  end-->
+    </div>
+    

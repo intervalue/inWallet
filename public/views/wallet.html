@@ -1,0 +1,123 @@
+<!--
+
+        Wallet
+
+        -->
+<div ng-controller="walletController as wt" id="wallet" class="wallet pfixed topp">
+    <nav ng-controller="topbarController as topbar" class="tab-bar">
+        <section class="right-small">
+            <a ng-click="$root.go('preferencesGlobal')">
+                <img src="./img/setting.png" />
+            </a>
+        </section>
+
+        <section class="middle tab-bar-section">
+            <h1 class="title ellipsis" translate>Wallet</h1>
+        </section>
+    </nav>
+    <div class="tabclicktitle">
+        <div class="tab-container" ng-click="wt.showWallettab = 'INVE';" ng-class="{'selected': wt.showWallettab == 'INVE'}">
+            <a  translate>INVE</a>
+        </div>
+        <div class="tab-container" ng-click="wt.showWallettab = 'BTC';" ng-class="{'selected': wt.showWallettab == 'BTC'}">
+            <a  translate>BTC</a>
+        </div>
+        <div class="tab-container" ng-click="wt.showWallettab = 'ETH';" ng-class="{'selected': wt.showWallettab == 'ETH'}" >
+            <a translate>ETH</a>
+        </div>
+    </div>
+    <div class="adwwto" ng-show="wt.showWallettab == 'INVE'">
+        <div class="adwwtoin">
+            <div class="adwwt" ng-repeat="item in index.walletType.INVE track by $index">
+                <div class="adwwtflex" ng-click="index.backwallet = true;wt.towalletname('INVE', item.wallet, item.address,  item.walletName, item.image, item.stables, item.mnemonic, item.mnemonicEncrypted)">
+                    <div class="adwwtlogo"><img ng-src="{{item.image}}"></div>
+                    <div class="adwwt100">
+                        <div class="adwwtname">
+                            <div ng-show="item.walletName.length > 7">{{item.walletName | limitTo:7}}...</div>
+                            <div ng-show="item.walletName.length <= 7">{{item.walletName}}</div>
+                            <div class="whpback" ng-show="item.mnemonic || item.mnemonicEncrypted" ng-click="wt.goBack($event, 'INVE', item.wallet);index.backwallet=true" translate>Please backup</div>
+                        </div>
+                        <div class="adwwtaddr">{{item.address | tenEllips}}<span class="copyspan" ng-click="wt.copyAddress(item.address,$event)"><img src="./img/copy.png"></span></div>
+                    </div>
+                    <img class="moreimg" src="./img/more.png"/>
+                </div>
+                <!--<div class="adwwtnum fontbold size-20">
+                    {{item.stables}}<span class="greencolor fontbold size-14">INVE</span>
+                </div>-->
+            </div>
+            <div  ng-show="index.walletType.INVE.length == 0">
+                <div class="nowalletinfo">
+                    <img src="./img/nonews.png">
+                    <h5 translate>No wallet</h5>
+                </div>
+            </div>
+        </div>
+        <div class="adwwtobtn p15h m40b">
+            <button class="m10b" ng-click="$root.go('import'); index.type='INVE';index.backdefault = true;" translate>Import INVE wallet</button>
+            <button class="awbtn" ng-click="$root.go('addwallet'); index.type='INVE';index.backdefault = true;" translate>Create INVE wallet</button>
+        </div>
+    </div>
+    <div class="adwwto" ng-show="wt.showWallettab == 'BTC'">
+        <div class="adwwtoin">
+            <div class="adwwt" ng-repeat="item in index.walletType.BTC track by $index">
+                <div class="adwwtflex" ng-click="index.backwallet = true;wt.towalletname('BTC', item.wallet, item.address, item.walletName, item.image, item.stables, item.mnemonic, item.mnemonicEncrypted)">
+                    <div class="adwwtlogo"><img ng-src="{{item.image}}"></div>
+                    <div class="adwwt100">
+                        <div class="adwwtname">
+                            <div ng-show="item.walletName.length > 7">{{item.walletName | limitTo:7}}...</div>
+                            <div ng-show="item.walletName.length <= 7">{{item.walletName}}</div>
+                            <div class="whpback" ng-show="item.mnemonic || item.mnemonicEncrypted" ng-click="wt.goBack($event, 'BTC', item.wallet);index.backwallet=true" translate>Please backup</div>
+                        </div>
+                        <div class="adwwtaddr">{{item.address | tenEllips}}<span class="copyspan" ng-click="wt.copyAddress(item.address,$event)"><img src="./img/copy.png"></span></div>
+                    </div>
+                    <img class="moreimg" src="./img/more.png"/>
+                </div>
+                <!--<div class="adwwtnum fontbold size-20">
+                    {{item.stables}}<span class="greencolor fontbold size-14">INVE</span>
+                </div>-->
+            </div>
+            <div  ng-show="index.walletType.BTC.length == 0">
+                <div class="nowalletinfo">
+                    <img src="./img/nonews.png">
+                    <h5 translate>No wallet</h5>
+                </div>
+            </div>
+        </div>
+        <div class="adwwtobtn p15h m40b">
+            <button class="m10b" ng-click="$root.go('importbtc');index.backdefault = true;" translate>Import BTC wallet</button>
+            <button class="awbtn" ng-click="$root.go('addwallet'); index.type='BTC';index.backdefault = true;" translate>Create BTC wallet</button>
+        </div>
+    </div>
+    <div class="adwwto" ng-show="wt.showWallettab == 'ETH'">
+        <div class="adwwtoin">
+            <div class="adwwt" ng-repeat="item in index.walletType.ETH track by $index">
+                <div class="adwwtflex" ng-click="index.backwallet = true;wt.towalletname('ETH', item.wallet, item.address,  item.walletName, item.image, item.stables, item.mnemonic, item.mnemonicEncrypted)">
+                    <div class="adwwtlogo"><img ng-src="{{item.image}}"></div>
+                    <div class="adwwt100">
+                        <div class="adwwtname">
+                            <div ng-show="item.walletName.length > 7">{{item.walletName | limitTo:7}}...</div>
+                            <div ng-show="item.walletName.length <= 7">{{item.walletName}}</div>
+                            <div class="whpback" ng-show="item.mnemonic || item.mnemonicEncrypted" ng-click="wt.goBack($event, 'ETH', item.wallet);index.backwallet=true" translate>Please backup</div>
+                        </div>
+                        <div class="adwwtaddr">{{item.address | tenEllips}}<span class="copyspan" ng-click="wt.copyAddress(item.address,$event)"><img src="./img/copy.png"></span></div>
+                    </div>
+                    <img class="moreimg" src="./img/more.png"/>
+                </div>
+                <!--<div class="adwwtnum fontbold size-20">
+                    {{item.stables}}<span class="greencolor fontbold size-14">INVE</span>
+                </div>-->
+            </div>
+            <div  ng-show="index.walletType.ETH.length == 0">
+                <div class="nowalletinfo">
+                    <img src="./img/nonews.png">
+                    <h5 translate>No wallet</h5>
+                </div>
+            </div>
+        </div>
+        <div class="adwwtobtn p15h m40b">
+            <button class="m10b" ng-click="$root.go('importeth');index.backdefault = true;" translate>Import ETH wallet</button>
+            <button class="awbtn" ng-click="$root.go('addwallet'); index.type='ETH';index.backdefault = true;" translate>Create ETH wallet</button>
+        </div>
+    </div>
+</div> <!-- END wallet -->
+<div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>

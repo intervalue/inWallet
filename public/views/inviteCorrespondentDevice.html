@@ -1,0 +1,40 @@
+<div ng-controller="correspondentDevicesController" class="invitelr pfixed topp">
+    <nav ng-controller="topbarController as topbar" class="tab-bar" >
+        <!-- 左区 -->
+        <section class="left-small">
+            <a ng-click="$root.go('^', true); goBackToState = null">
+                <img src="./img/back.png">
+            </a>
+
+        </section>
+
+        <!-- 中间区 -->
+        <section class="middle tab-bar-section">
+            <h1 class="title ellipsis chatmysettingtitle" translate>
+                Add device
+            </h1>
+        </section>
+    </nav>
+    <div class="f9fafch"></div>
+    <div class="center">
+            <div class="checkcode">
+                <div class="myaddress" translate>My pairing code</div>
+                <div ng-click="copyCode()" class="chatcopycode">
+                    <qrcode size="185" version="{{qr_version}}" data="{{protocol}}:{{codee}}"></qrcode>
+                </div>
+                <div class="chatdevicecode" id="chatdevicecode">{{codee}}</div>
+            </div>
+            <div class="aboutQR">
+                <div class="chatdevicecopybtn" ng-click="copyCode()">
+                    <img src="./img/share.png" /><a translate>Copy pairing code</a>
+                </div>
+                <div class="chatdevicecodetext" ng-if="index.isCordova">
+                    <span translate>Scan the above QR code using the other device, or send this pairing code to the other device.</span>
+                </div>
+                <div class="chatdevicecodetext2" ng-if="!index.isCordova">
+                    <span translate>Scan the above QR code using the other device, or send this pairing code to the other device.</span>
+                </div>
+            </div>
+        </div>
+</div>
+<!--<div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>-->

@@ -1,0 +1,89 @@
+<div ng-controller="rentController as rt" class="rentlrout pfixed topp">
+    <div class="rentheader">
+        <nav ng-controller="topbarController as topbar" class="tab-bar">
+            <section class="left-small">
+                <a ng-click="topbar.goNews()">
+                    <img src="./img/backw.png">
+                </a>
+            </section>
+        </nav>
+        <img src="./img/stornetw.png" class="rhimg">
+    </div>
+
+    <div class="rentlr">
+        <form name="rentform" class="rentform" ng-submit="rt.submitRent()">
+            <div class="item">
+                <div class="itemimg">
+                    <img src="./img/renttime.png" />
+                </div>
+                <select  name="period" ng-model="rt.periods" ng-options="x.time for x in rt.period">
+                    <option translate value="" disabled>Lease period</option>
+                </select>
+            </div>
+            <div class="item">
+                <div class="itemimg">
+                    <img src="./img/rentspace.png" />
+                </div>
+                <select  name="period" ng-model="rt.spaces" ng-options="x.spacetext for x in rt.space">
+                    <option translate value="" disabled>Leased space</option>
+                </select>
+            </div>
+            <div class="rentammount"><span translate>Rent:</span>
+                <span ng-if="rt.periods.timeint && rt.spaces.spaceint">{{rt.periods.timeint * rt.spaces.spaceint}}</span>
+                <span ng-if="!rt.periods.timeint || !rt.spaces.spaceint">0</span>SNC</div>
+            <button type="submit" translate ng-disabled="!rt.periods.timeint || !rt.spaces.spaceint">
+                OK
+            </button>
+        </form>
+        <div ng-show="rt.paysureshow" class="popconfirm">
+            <div class="popmask" ng-click="rt.paysureshow = false;"></div>
+            <div class="popcontent center">
+                <div class="fleximgtextc m20b">
+                    <div class="closediv" ng-click="rt.paysureshow = false;"></div>
+                    <div translate class="size-16">Pay</div>
+                </div>
+                <div class="popcontentin">
+                    <div class="rentcammount">{{rt.periods.timeint * rt.spaces.spaceint}}&nbsp;SNC</div>
+                    <div ng-repeat="item in rt.selettw" ng-show="item.name == rt.selettws.name" class="rentnumall">
+                        <span ng-if="item.name !== 'SNC'">&asymp;</span><span ng-if="item.name == 'SNC'">=</span>&nbsp;{{rt.periods.timeint * rt.spaces.spaceint/rt.selettws.rate}}&nbsp;{{item.name}}
+                    </div>
+                    <div ng-repeat="item in rt.selettw" ng-show="item.name == rt.selettws.name" class="rentrate">
+                        <span translate>Exchange rate</span>&nbsp;&nbsp;1&nbsp;{{item.name}}&nbsp;&nbsp;<span ng-if="item.name !== 'SNC'">&asymp;</span><span ng-if="item.name == 'SNC'">=</span>&nbsp;&nbsp;{{rt.selettws.rate}}&nbsp;SNC
+                    </div>
+                    <select ng-model="rt.selettws" ng-options="x.name for x in rt.selettw">
+                    </select>
+                    <button type="button" translate class="m24t" ng-click="rt.pay();">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div ng-show="rt.payinfoshow" class="popconfirm">
+            <div class="popmask"></div>
+            <div class="popcontent center">
+                <div class="fleximgtextc m20b">
+                    <img src="./img/payok.png"/>
+                    <div translate class="size-16">Payment successful</div>
+                </div>
+                <div class="popcontentin">
+                    <div><span translate>Hire space for HashStore</span> {{rt.spaces.spacetext}}, <span translate>Time is</span> {{rt.periods.time}}</div>
+                    <form name="storform" class="storform">
+                        <input type="text" name="username" ng-model="rt.username"/>
+                        <input type="text" name="password" ng-model="rt.password"/>
+                        <button type="button" translate class="m24t" ng-click="rt.payok();">OK</button>
+                    </form>
+                    <!--<form name="form" method="post" action="http://47.106.165.38/stornet/index.php/apps/loginviapost/login" >
+                        <input type="text" name="username" value="chenhan01" style="display:none"/>
+                        <input type="text" name="password" value="chenhan888888" style="display:none"/>
+                        <button type="button" translate class="m24t" ng-click="document.form.submit();rt.payok();">
+                            OK
+                        </button>
+                    </form>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+

@@ -1,0 +1,28 @@
+<div class="preferences pfixed topp" ng-controller="preferencesAbout as about">
+    <div
+            class="topbar-container"
+            ng-include="'views/includes/topbar.html'"
+            ng-init="titleSection='About inWallet'; goBackToState = true">
+    </div>
+    <div class="f9fafch"></div>
+    <div  ng-controller="versionController as v">
+      <ul class="no-bullet m0">
+        <li>
+          <div class="ld">
+            <span translate>Version</span>
+          </div>
+          <div class="rd">
+              v{{v.version}} 
+          </div>
+        </li>
+        <li ng-click="$root.go('preferencesGlobal.preferencesAbout.term')">
+            <div class="ld">
+              <span translate>Terms of Use</span>
+            </div>
+            <div class="rd">
+              <img src="./img/more.png" class="morerimg"/>
+            </div>
+          </li>
+      </ul>
+    </div>
+</div>

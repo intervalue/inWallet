@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="referrer" content="no-referrer">
+  <link rel="stylesheet" type="text/css" href="css/foundation.css">
+  <link rel="stylesheet" type="text/css" href="css/inWallet.css">
+  <title translate>inWallet</title>
+  <link rel="shortcut icon" href="img/icons/favicon-circle.ico">
+</head>
+<body ng-cloak class="ng-cloak" ondragover="return false;" ondrop="return false">
+
+  <div class="page"
+    ng-controller="indexController as index">
+
+    <div class="off-canvas-wrap" id="off-canvas-wrap">
+      <div class="inner-wrap">
+        <div ng-include="'views/includes/sidebar.html'" ng-if="index.hasProfile"></div>
+
+        <div notifications="right"></div>
+        <div ng-include="'views/includes/password.html'" ng-if="index.askPassword" class="indexpasslayer"></div>
+        <div ng-include="'views/includes/alert.html'" ng-if="index.showAlert"></div>
+        <div ng-include="'views/includes/layer.html'" ng-hide="!index.layershow"></div>
+        <div ng-include="'views/includes/progress.html'" ng-if="index.progressing"></div>
+        <div ng-include="'views/includes/shadowDevice.html'" ng-if="index.showshadow"></div>
+        <div ng-include="'views/includes/remind-backup.html'" ng-if="index.remindbackup"></div>
+
+        <div id="sectionContainer">
+          <div id="mainSection">
+            <section ui-view="main"
+              ng-class="{
+                'main': index.hasProfile
+              }">
+            </section>
+          </div>
+        </div>
+        <a class="close-menu" ng-click="index.closeMenu()"></a>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- DO NOT DELETE THIS COMMET  -->
+  <!-- PLACEHOLDER: PARTIAL CLIENT HTML -->
+  
+  <script>console.log("starting scripts...");</script>
+  <script src="angular.js"></script>
+
+  <!-- DO NOT DELETE THIS COMMET  -->
+  <!-- PLACEHOLDER: CORDOVA SRIPT -->
+
+  <script src="inWallet.js"></script>
+  <script>console.log("done scripts");</script>
+  <!--<script>new Foundation().init();</script>-->
+</body>
+</html>

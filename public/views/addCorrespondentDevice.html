@@ -1,0 +1,51 @@
+<div class="addpartner pfixed topp">
+	<div
+			class="topbar-container"
+			ng-include="'views/includes/topbar.html'"
+			ng-init="titleSection='Add device'; goBackToState = true; noColor = true;">
+	</div>
+	<div class="f9fafch"></div>
+	<ul class="no-bullet m0">
+		<li ng-click="$root.go('correspondentDevices.addCorrespondentDevice.inviteCorrespondentDevice')">
+			<div class="liin">
+				<div class="ld">
+					<div class="limg">
+						<img src="./img/addewm.png" />
+					</div>
+					<span translate>Provide my pairing code</span>
+				</div>
+				<div class="rd">
+					<img src="./img/more.png" class="morerimg" />
+				</div>
+			</div>
+		</li>
+		<li ng-click="$root.go('correspondentDevices.addCorrespondentDevice.acceptCorrespondentInvitation')" class="preflitwo">
+			<div class="liin">
+				<div class="ld">
+					<div class="limg">
+						<img src="./img/addscan.png" />
+					</div>
+					<span translate>Enter the partner's pairing code</span>
+				</div>
+				<div class="rd">
+					<img src="./img/more.png" class="morerimg"/>
+				</div>
+			</div>
+		</li>
+		<!--<li>-->
+		<!--<a ng-click="$root.go('correspondentDevices.addCorrespondentDevice.inviteCorrespondentDevice')">-->
+		<!--<i class="fi-die-four circle plus-fixed"></i>	-->
+		<!--<i class="icon-arrow-right3 size-18 right m20t"></i>  -->
+		<!--<span translate>Invite the other device</span>-->
+		<!--</a>-->
+		<!--</li>-->
+		<!--<li>-->
+		<!--<a ng-click="$root.go('correspondentDevices.addCorrespondentDevice.acceptCorrespondentInvitation')">-->
+		<!--<i class="icon-scan circle"></i>	  -->
+		<!--<i class="icon-arrow-right3 size-18 right m20t"></i>  -->
+		<!--<span translate style="max-width: 60%">Accept invitation from the other device</span>-->
+		<!--</a>-->
+		<!--</li>-->
+
+	</ul>
+</div>

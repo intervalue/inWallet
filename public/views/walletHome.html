@@ -1,0 +1,384 @@
+
+<div ng-controller="walletHomeController as home">
+    <div class="m20tp" ng-show="index.noFocusedWallet">
+        <div class="center text-warning m20b">
+            <i class="fi-alert"></i> <span translate>You do not have a wallet</span>
+        </div>
+        <button class="button black round expand" ng-click="$root.go('add')" translate>Create</button>
+
+        <div class="center text-gray p20v" ng-click="$root.go('preferences')">
+            <button class=" outline round dark-gray tiny" translate> Preferences </button>
+        </div>
+    </div>
+
+   <!-- <div class="onGoingProcess" ng-show="index.isOffline">
+        <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+            <div class="spinner">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+            </div>
+            <span translate>Reconnecting to Wallet Service...</span>
+        </div>
+    </div>-->
+    <div class="progresslayer" ng-show="index.isOffline">
+        <div class="spinner1">
+            <div class="cube1"></div>
+            <div class="cube2"></div>
+        </div>
+        <div class="progresslayerin">
+            <span translate>Reconnecting to Wallet Service...</span>
+        </div>
+    </div>
+
+    <!--<div class="onGoingProcess" ng-show="home.onGoingProcess && !index.anyOnGoingProces && !index.isOffline">
+        <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+            <div class="spinner">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+            </div>
+            {{home.onGoingProcess|translate}}...
+        </div>
+    </div>-->
+    <div class="progresslayer" ng-show="home.onGoingProcess && !index.anyOnGoingProces && !index.isOffline">
+        <div class="spinner1">
+            <div class="cube1"></div>
+            <div class="cube2"></div>
+        </div>
+        <div class="progresslayerin">
+            <span translate>{{home.onGoingProcess|translate}}...</span>
+        </div>
+    </div>
+    <div ng-show="!index.noFocusedWallet">
+
+        <!--
+
+        WalletHome
+
+        -->
+
+        <div id="walletHome" class="walletHome">
+            <div ng-if="home.isTestnet">{{home.testnetName}}</div>
+            <div class="amount oh">
+                <!--<div class="prighttop" ng-show="index.isCordova">
+                    <qr-scanner on-scan="topbar.onQrCodeScanned(data)" before-scan="topbar.onBeforeScan()"></qr-scanner>
+                </div>-->
+                <!--<div translate class="prighttop" ng-click="home.goSend()">Flash</div>-->
+                <div>
+                    <div class="whwname">
+                        <img src="./img/homeinve.png"/>
+                        <span>inWallet</span>
+                        <div class="showqian" ng-click="index.toggleAllQian();">
+                            <img ng-if="index.defaultShowQian" src="./img/eye.png"/>
+                            <img ng-if="!index.defaultShowQian" src="./img/noeye.png"/>
+                        </div>
+                    </div>
+                    <div class="whamount">
+                        <div class="whallasset" translate>Total assets</div>
+                        <div>
+                            <span ng-if="index.defaultShowQian && index.defaultCurrencyIsoCode == 'en'" class="flexcc">
+                                <span class="ellipquote" ng-show="index.ammount.ammount_INVE.ammount * index.invedollar +index.ammount.ammount_BTC.ammount * index.coinBtcPrice +index.ammount.ammount_ETH.ammount * index.coinEthPrice | number :0 !== 0">&asymp;</span>
+                                <span>
+                                    {{index.ammount.ammount_INVE.ammount * index.invedollar +index.ammount.ammount_BTC.ammount * index.coinBtcPrice +index.ammount.ammount_ETH.ammount * index.coinEthPrice | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:false:true}}
+                                </span>
+                                <sup ng-show="index.defaultCurrencyIsoCode == 'en'">$</sup>
+                                <sup ng-show="index.defaultCurrencyIsoCode == 'zh_CN'">￥</sup>
+                            </span>
+                            <span ng-if="index.defaultShowQian && index.defaultCurrencyIsoCode == 'zh_CN'" class="flexcc">
+                                <span class="ellipquote" ng-show="index.ammount.ammount_INVE.ammount * index.invermb +index.ammount.ammount_BTC.ammount * index.coinBtcPricecy +index.ammount.ammount_ETH.ammount * index.coinEthPricecy | number :0 !== 0">&asymp;</span>
+                                <span>
+                                    {{index.ammount.ammount_INVE.ammount * index.invermb +index.ammount.ammount_BTC.ammount * index.coinBtcPricecy +index.ammount.ammount_ETH.ammount * index.coinEthPricecy | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:false:true}}
+                                </span>
+                                <sup ng-show="index.defaultCurrencyIsoCode == 'en'">$</sup>
+                                <sup ng-show="index.defaultCurrencyIsoCode == 'zh_CN'">￥</sup>
+                            </span>
+                            <span ng-if="!index.defaultShowQian">＊＊＊＊＊</span>
+                        </div>
+                    </div>
+                    <!-- <div class="whcnyd">
+                         <div ng-show="index.defaultCurrencyIsoCode == 'en';">&asymp; $ {{index.ammountTatolNmuber * index.invedollar/1000000 | number :4}}</div>
+                         <div ng-show="index.defaultCurrencyIsoCode == 'zh_CN';">&asymp; &yen; {{index.ammountTatolNmuber * index.invermb/1000000 | number :4}}</div>
+                     </div>-->
+                </div>
+            </div>
+            <!-- wallet list start-->
+            <div ng-init="index.updateTxHistory(3)" class="homeheight" id="homeheight">
+                <ul>
+                    <li ng-repeat="item in home.homeconlist" ng-show="item.show == 1" class="homenote" ng-click="home.submitTrans(item)">
+                        <div class="homenotein">
+                            <div translate>You have a transfer to be confirmed</div>
+                        </div>
+                        <div class="closediv" ng-click="item.show = 0;">
+                        </div>
+                    </li>
+                </ul>
+                <ul class="wallelist">
+                    <li>
+                        <div wallelist class="wlisttitle" id="INVE-homelist">
+                            <div class="ld">
+                                <img src="./img/inveltimg.png"/>
+                                <div class="info">
+                                    <div class="infof" translate ng-class="{'infofrfont':index.ammount.ammount_INVE.ammountFro == 0}">INVE</div>
+                                </div>
+                            </div>
+                            <div class="rd">
+                                <div class="info">
+                                    <div class="infof" ng-class="{'infofrfont':index.ammount.ammount_INVE.ammountFro == 0}">{{index.ammount.ammount_INVE.ammountFro | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:false:false}}</div>
+                                    <div class="infos" ng-show="index.defaultCurrencyIsoCode == 'en'">
+                                        <div ng-class="{'infofrfont':index.ammount.ammount_INVE.ammount * index.invedollar == 0}">
+                                            {{index.ammount.ammount_INVE.ammount * index.invedollar | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:true:false}}
+                                        </div>
+                                    </div>
+                                    <div class="infos" ng-show="index.defaultCurrencyIsoCode == 'zh_CN'">
+                                        <div ng-class="{'infofrfont':index.ammount.ammount_INVE.ammount * index.invermb == 0}">
+                                            {{index.ammount.ammount_INVE.ammount * index.invermb | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:true:false}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <img class="walletmore animated" src="./img/walletmore.png" />
+                            </div>
+                        </div>
+                        <ul class="lrd wallelistin ng-hide animated">
+                            <li ng-repeat="wallet in index.walletType.INVE" id="{{'INVE-'+wallet.wallet}}" ng-click="home.goWalletInfo('INVE', wallet.wallet, wallet.address, wallet.walletName, wallet.image, wallet.stables, wallet.mnemonic, wallet.mnemonicEncrypted)">
+                                <div class="lrdin">
+                                    <div class="ld">
+                                        <img ng-src="{{wallet.image}}"/>
+                                        <div class="info">
+                                            <div class="infof">
+                                                <div ng-show="wallet.walletName.length > 14">{{wallet.walletName | limitTo:14}}...</div>
+                                                <div ng-show="wallet.walletName.length <= 14">{{wallet.walletName}}</div>
+                                                <span ng-show="wallet.mnemonicEncrypted || wallet.mnemonic" translate ng-click="home.homeGoBack($event, 'INVE', wallet.wallet);index.backhome=true;">Please backup</span>
+                                                <span class="copyspan" ng-click="home.copyAddress(wallet.address,$event)"><img src="./img/copy.png" /></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="rd">
+                                        <div class="info">
+                                            <div class="infof" ng-class="{'infofrfont':index.ammount.ammount_INVE.ammountFro == 0}">{{wallet.stables | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:false:false}}</div>
+                                            <div class="infos" ng-show="index.defaultCurrencyIsoCode == 'en'">
+                                                <div ng-class="{'infofrfont':wallet.stabless * index.invedollar == 0}">
+                                                    {{wallet.stabless * index.invedollar | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:true:false}}
+                                                </div>
+                                            </div>
+                                            <div class="infos" ng-show="index.defaultCurrencyIsoCode == 'zh_CN'">
+                                                <div ng-class="{'infofrfont':wallet.stabless * index.invermb == 0}">
+                                                    {{wallet.stabless * index.invermb | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:true:false}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <button class="awbtn" ng-click="$root.go('import'); index.type='INVE';index.backhome = true;" translate>Import INVE wallet</button>
+                                <button ng-click="$root.go('addwallet'); index.type='INVE';index.backhome = true;" translate>Create INVE wallet</button>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div wallelist class="wlisttitle" id="BTC-homelist">
+                            <div class="ld">
+                                <img src="./img/btcltimg.png"/>
+                                <div class="info">
+                                    <div class="infof" ng-class="{'infofrfont':index.ammount.ammount_BTC.ammountFro == 0}" translate>BTC</div>
+                                </div>
+                            </div>
+                            <div class="rd">
+                                <div class="info">
+                                    <div class="infof" ng-class="{'infofrfont':index.ammount.ammount_BTC.ammountFro == 0}">{{index.ammount.ammount_BTC.ammountFro | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:false:false}}</div>
+                                    <div class="infos" ng-show="index.defaultCurrencyIsoCode == 'en'">
+                                        <div ng-class="{'infofrfont':index.ammount.ammount_BTC.ammount * index.coinBtcPrice == 0}">
+                                            {{index.ammount.ammount_BTC.ammount * index.coinBtcPrice | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:true:false}}
+                                        </div>
+                                    </div>
+                                    <div class="infos" ng-show="index.defaultCurrencyIsoCode == 'zh_CN'">
+                                        <div ng-class="{'infofrfont':index.ammount.ammount_BTC.ammount * index.coinBtcPricecy == 0}">
+                                            {{index.ammount.ammount_BTC.ammount * index.coinBtcPricecy | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:true:false}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <img class="walletmore animated" src="./img/walletmore.png" />
+                            </div>
+                        </div>
+                        <ul class="lrd wallelistin ng-hide animated">
+                            <li ng-repeat="wallet in index.walletType.BTC" id="{{'BTC-'+wallet.wallet}}" ng-click="home.goWalletInfo('BTC', wallet.wallet, wallet.address, wallet.walletName, wallet.image, wallet.stables, wallet.mnemonic, wallet.mnemonicEncrypted)">
+                                <div class="lrdin">
+                                    <div class="ld">
+                                        <img ng-src="{{wallet.image}}"/>
+                                        <div class="info">
+                                            <div class="infof">
+                                                <div ng-show="wallet.walletName.length > 14">{{wallet.walletName | limitTo:14}}...</div>
+                                                <div ng-show="wallet.walletName.length <= 14">{{wallet.walletName}}</div>
+                                                <span ng-show="wallet.mnemonicEncrypted" translate ng-click="home.homeGoBack($event, 'BTC', wallet.wallet);index.backhome=true;">Please backup</span>
+                                                <span class="copyspan" ng-click="home.copyAddress(wallet.address,$event)"><img src="./img/copy.png" /></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="rd">
+                                        <div class="info">
+                                            <div class="infof" ng-class="{'infofrfont':index.ammount.ammount_BTC.ammountFro == 0}">{{wallet.stables | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:false:false}}</div>
+                                            <div class="infos" ng-show="index.defaultCurrencyIsoCode == 'en'">
+                                                <div ng-class="{'infofrfont':wallet.stabless * index.coinBtcPrice == 0}">
+                                                    {{wallet.stabless * index.coinBtcPrice | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:true:false}}
+                                                </div>
+                                            </div>
+                                            <div class="infos" ng-show="index.defaultCurrencyIsoCode == 'zh_CN'">
+                                                <div ng-class="{'infofrfont':wallet.stabless * index.coinBtcPricecy == 0}">
+                                                    {{wallet.stabless * index.coinBtcPricecy | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:true:false}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <button class="awbtn" ng-click="$root.go('importbtc');index.backhome = true;" translate>Import BTC wallet</button>
+                                <button ng-click="$root.go('addwallet'); index.type='BTC';index.backhome = true;" translate>Create BTC wallet</button>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div wallelist class="wlisttitle"id="ETH-homelist">
+                            <div class="ld">
+                                <img src="./img/ethltimg.png"/>
+                                <div class="info">
+                                    <div class="infof" ng-class="{'infofrfont':index.ammount.ammount_ETH.ammountFro == 0}" translate>ETH</div>
+                                </div>
+                            </div>
+                            <div class="rd">
+                                <div class="info">
+                                    <div class="infof" ng-class="{'infofrfont':index.ammount.ammount_ETH.ammountFro == 0}">{{index.ammount.ammount_ETH.ammountFro | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:false:false}}</div>
+                                    <div class="infos" ng-show="index.defaultCurrencyIsoCode == 'en'">
+                                        <div ng-class="{'infofrfont':index.ammount.ammount_ETH.ammount * index.coinEthPrice == 0}">
+                                            {{index.ammount.ammount_ETH.ammount * index.coinEthPrice | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:true:false}}
+                                        </div>
+                                    </div>
+                                    <div class="infos" ng-show="index.defaultCurrencyIsoCode == 'zh_CN'">
+                                        <div ng-class="{'infofrfont':index.ammount.ammount_ETH.ammount * index.coinEthPricecy == 0}">
+                                            {{index.ammount.ammount_ETH.ammount * index.coinEthPricecy | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:true:false}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <img class="walletmore animated" src="./img/walletmore.png" />
+                            </div>
+                        </div>
+                        <ul class="lrd wallelistin ng-hide animated">
+                            <li ng-repeat="wallet in index.walletType.ETH" id="{{'ETH-'+wallet.wallet}}" ng-click="home.goWalletInfo('ETH', wallet.wallet, wallet.address, wallet.walletName, wallet.image, wallet.stables, wallet.mnemonic, wallet.mnemonicEncrypted)">
+                                <div class="lrdin">
+                                    <div class="ld">
+                                        <img ng-src="{{wallet.image}}"/>
+                                        <div class="info">
+                                            <div class="infof">
+                                                <div ng-show="wallet.walletName.length > 14">{{wallet.walletName | limitTo:14}}...</div>
+                                                <div ng-show="wallet.walletName.length <= 14">{{wallet.walletName}}</div>
+                                                <span ng-show="wallet.mnemonicEncrypted" translate ng-click="home.homeGoBack($event, 'ETH', wallet.wallet);index.backhome=true;">Please backup</span>
+                                                <span class="copyspan" ng-click="home.copyAddress(wallet.address,$event)"><img src="./img/copy.png" /></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="rd">
+                                        <div class="info">
+                                            <div class="infof" ng-class="{'infofrfont':index.ammount.ammount_ETH.ammountFro == 0}">{{wallet.stables | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:false:false}}</div>
+                                            <div class="infos" ng-show="index.defaultCurrencyIsoCode == 'en'">
+                                                <div ng-class="{'infofrfont':wallet.stabless * index.coinEthPricecy == 0}">
+                                                    {{wallet.stabless * index.coinEthPricecy | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:true:false}}
+                                                </div>
+                                            </div>
+                                            <div class="infos" ng-show="index.defaultCurrencyIsoCode == 'zh_CN'">
+                                                <div ng-class="{'infofrfont':wallet.stabless * index.coinEthPricecy == 0}">
+                                                    {{wallet.stabless * index.coinEthPricecy | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:true:false}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <button class="awbtn" ng-click="$root.go('importeth');index.backhome = true;" translate>Import ETH wallet</button>
+                                <button ng-click="$root.go('addwallet'); index.type='ETH';index.backhome = true;" translate>Create ETH wallet</button>
+                            </li>
+                        </ul>
+                    </li>
+
+                  <!-- <li>
+                        <div wallelist class="wlisttitle">
+                            <div class="ld">
+                                <img src="./img/sncltimg.png"/>
+                                <div class="info">
+                                    <div class="infof" translate>SNC</div>
+                                </div>
+                            </div>
+                            <div class="rd">
+                                <div class="info">
+                                    <div class="infof" ng-class="{'infofrfont':index.ammount.ammount_SNC.ammountFro == 0}">{{index.ammount.ammount_SNC.ammountFro | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:false:false}}</div>
+                                    <div class="infos" ng-show="index.defaultCurrencyIsoCode == 'en'">
+                                        <div ng-class="{'infofrfont':index.ammount.ammount_SNC.ammount == 0}">
+                                            {{index.ammount.ammount_SNC.ammount | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:true:false}}
+                                        </div>
+                                    </div>
+                                    <div class="infos" ng-show="index.defaultCurrencyIsoCode == 'zh_CN'">
+                                        <div ng-class="{'infofrfont':index.ammount.ammount_SNC.ammount == 0}">
+                                            {{index.ammount.ammount_SNC.ammount | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:true:false}}
+                                        </div>
+                                    </div>
+                                    <div class="infos" ng-show="index.defaultCurrencyIsoCode == 'en'">&asymp; {{index.ammount.ammount_SNC.ammount * 0 | number :6}} $</div>
+                                    <div class="infos" ng-show="index.defaultCurrencyIsoCode == 'zh_CN'">&asymp; {{index.ammount.ammount_SNC.ammount * 0 | number :6}} ￥</div>
+                                </div>
+                                <img class="walletmore" src="./img/walletmore.png" />
+                            </div>
+                        </div>
+                        <ul class="lrd wallelistin ng-hide">
+                            <li ng-repeat="wallet in index.walletType.SNC" ng-click="home.goWalletInfo('SNC', wallet.wallet, wallet.address, wallet.walletName, wallet.image, wallet.stables, wallet.mnemonic, wallet.mnemonicEncrypted)">
+                                <div class="lrdin">
+                                    <div class="ld">
+                                        <img src="./img/sncltimg.png"/>
+                                        <div class="info">
+                                            <div class="infof">
+                                                <div ng-show="wallet.walletName.length > 14">{{wallet.walletName | limitTo:14}}...</div>
+                                                <div ng-show="wallet.walletName.length <= 14">{{wallet.walletName}}</div>
+                                                <span ng-show="wallet.mnemonicEncrypted" translate ng-click="home.homeGoBack($event, 'ETH', wallet.wallet);index.backhome=true;">Please backup</span>
+                                                <span class="copyspan" ng-click="home.copyAddress(wallet.address,$event)"><img src="./img/copy.png" /></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="rd">
+                                        <div class="info">
+                                            <div class="infof" ng-class="{'infofrfont':wallet.stables == 0}">{{wallet.stables | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:false:false}}</div>
+                                            <div class="infos" ng-show="index.defaultCurrencyIsoCode == 'en'">
+                                                <div ng-class="{'infofrfont':wallet.stablesNmuber == 0}">
+                                                    {{wallet.stablesNmuber | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:true:false}}
+                                                </div>
+                                            </div>
+                                            <div class="infos" ng-show="index.defaultCurrencyIsoCode == 'zh_CN'">
+                                                <div ng-class="{'infofrfont':wallet.stablesNmuber == 0}">
+                                                    {{wallet.stablesNmuber | isEyeShowOrNOt:index.defaultShowQian:index.defaultCurrencyIsoCode:true:false}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            &lt;!&ndash;<li>
+                                <button class="awbtn" ng-click="$root.go('importsnc'); index.type='SNC';index.backhome = true;" translate>Import SNC wallet</button>
+                                <button ng-click="$root.go('addwallet'); index.type='SNC';index.backhome = true;" translate>Create SNC wallet</button>
+                            </li>&ndash;&gt;
+                        </ul>
+                    </li>-->
+                </ul>
+            </div>
+
+            <!-- wallet list end-->
+
+        </div> <!-- END WalletHome -->
+
+        <div id="{{view.id}}" class="{{view.class}} tab-view tab-out" ng-repeat="view in index.addonViews" ng-include="view.template">
+        </div>
+    </div>
+</div>
+<div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>
+

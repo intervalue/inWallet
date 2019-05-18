@@ -1,0 +1,263 @@
+<div ng-controller="createwalletController as create" ng-init="create.step = 'addorimport';">
+    <!--选择导入钱包还是创建钱包  start-->
+    <div class="welcomepage" ng-if="create.step == 'addorimport'">
+        <!-- 图标 -->
+        <div class="welcometext">
+            <img src="./img/welcomeinve.png" >
+            <div class="welcometextin">inWallet</div>
+            <div>
+              <p class="m0 text-white" translate>Your wallet will be created on this device,</p>
+              <p class="m0 text-white" translate>make sure the device is secure enough and back up your wallet mnemonic in time.</p>
+            </div>
+        </div>
+        <div class="cwlang" ng-controller="preferencesLanguageController as prefLang">
+            <a class="cwlangin" ng-repeat="lang in prefLang.availableLanguages" ng-click="prefLang.save(lang.isoCode)" ng-class="{'cur': index.defaultLanguageIsoCode == lang.isoCode}">
+                {{lang.name}}
+            </a>
+        </div>
+        <div class="twowayin">
+            <!-- 创建 -->
+            <button ng-click="create.step = 'addwallet';index.tabChange('addorimport')" translate>
+                Create INVE wallet
+            </button>
+            <!-- 恢复 -->
+            <button ng-click="create.step = 'importwallet';index.signatureAddr = '';index.tabChange('addorimport')" class="awbtn m15t" translate>
+                Import INVE wallet
+            </button>
+        </div> 
+    </div>
+    <!--选择导入钱包还是创建钱包  end-->
+    <!--创建钱包-创建钱包信息  start-->
+    <div class="inveaddw cwpage pfixed topp" ng-if="create.step == 'addwallet'">
+      <nav class="tab-bar">
+        <section class="left-small">
+          <a ng-click="create.step = 'addorimport'">
+            <img src="./img/back.png" />
+          </a>
+        </section>
+        <section class="middle tab-bar-section">
+          <h1 class="title ellipsis" translate>
+              Creat wallet
+          </h1>
+        </section>
+      </nav>
+      <div class="f9fafch"></div>
+      <div class="cwpagefirst">
+        <form name="creatwform" novalidate>
+          <div class="adinputitem" mdinputvalidc>
+              <div class="adinputic">
+                  <div class="adinputimg aiwname"></div>
+                  <input type="text" ng-model="create.createwname" mdinputname ng-attr-placeholder="{{'Wallet name'|translate}}" autocomplete="off"
+                  ng-minlength="1" ng-maxlength="20" minlength="1" maxlength="20" />
+              </div>
+              <p class="adinputp" translate></p>
+          </div>
+          <div class="adinputitem" mdinputvalidc>
+              <div class="adinputic">
+                  <div class="adinputimg aiwpass"></div>
+                  <input type="password" autocomplete="new-password" name="aiwpass" ng-model="create.createwpass" mdinputpass ng-attr-placeholder="{{'Password'|translate}}"
+                  autocomplete="off" ng-minlength="1" ng-maxlength="18" minlength="1" maxlength="18" />
+              </div>
+              <p class="adinputp" translate></p>
+          </div>
+          <div class="adinputitem" ng-class="{'setErrorexp':creatwform.aiwpass.$valid && create.createwpass !== create.createwrpass && create.createwrpass !== ''}">
+              <div class="adinputic">
+                  <div class="adinputimg aiwrpass"></div>
+                  <input type="password" autocomplete="new-password" name="aiwrpass" ng-model="create.createwrpass" placeholder="{{'Repeat password'|translate}}" autocomplete="off"
+                   ng-minlength="1" ng-maxlength="18" minlength="1" maxlength="18"
+                  />
+              </div>
+              <p class="adinputpass" translate ng-show="creatwform.aiwpass.$valid && create.createwpass !== create.createwrpass && create.createwrpass !== ''">*Inconsistent password</p>
+          </div>
+            <div class="fleximgtext">
+                <div translate class="eabcolor size-12 fontmedium">The mnemonic is used to protect the private key and transaction authorization, and the strength is very important!</div>
+            </div>
+            <div class="fleximgtext">
+                <div translate class="eabcolor size-12">inWallet does not store passwords and cannot be retrieved for you. Please keep in mind!</div>
+            </div>
+          <button class="m30t m20b" ng-click="create.step = 'showcode'" ng-disabled="!create.createwname || !create.createwrpass || !create.createwrpass || creatwform.$invalid || create.createwrpass !== create.createwrpass" translate>Creat wallet</button>
+        </form>
+      </div>
+    </div>
+    <!--创建钱包-创建钱包信息  end-->
+    <!--创建钱包-显示钱包口令  start-->
+    <div class="inveaddw cwpage pfixed topp" ng-if="create.step == 'showcode'" ng-init="create.funReg()">
+      <nav class="tab-bar">
+        <section class="left-small">
+          <a ng-click="create.step = 'addwallet'">
+            <img src="./img/back.png" />
+          </a>
+        </section>
+        <section class="middle tab-bar-section">
+          <h1 class="title ellipsis" translate>
+            Backup mnemonic
+          </h1>
+        </section>
+      </nav>
+      <div class="f9fafch"></div>
+      <div class="cwpagein">
+          <div class="fleximgtextc m28b">
+              <img class="warnbigimg" src="./img/warnbig.png" />
+              <div translate class="redcolor size-14">Please do not take a screenshot and copy your wallet mnemonic.</div>
+          </div>
+        <p class="center size-12" translate>The mnemonic is used to restore the wallet, write it accurately on paper, and save it where only you know it.</p>
+        <div class="aiwscbox m28b">
+          <span ng-repeat="item in create.showcodes track by $index">{{item.str}}</span>
+        </div>
+        <button ng-click="create.step = 'selectcode'" translate>Next</button>
+      </div>
+    </div>
+    <!--创建钱包-显示钱包口令  end-->
+    <!--创建钱包-选择钱包口令  start-->
+    <div class="inveaddw cwpage pfixed topp" ng-if="create.step == 'selectcode'">
+      <nav class="tab-bar">
+        <section class="left-small">
+          <a ng-click="create.step = 'showcode'">
+            <img src="./img/back.png" />
+          </a>
+        </section>
+        <section class="middle tab-bar-section">
+          <h1 class="title ellipsis" translate>
+            Backup mnemonic
+          </h1>
+        </section>
+      </nav>
+      <div class="f9fafch"></div>
+      <div class="cwpagein">
+          <div class="fleximgtextc m28b">
+              <img class="warnbigimg" src="./img/warnbig.png" />
+              <div translate class="redcolor size-14">Confirm your mnemonic</div>
+          </div>
+          <p class="center size-12" translate>Please click your mnemonic in order to confirm that your backup mnemonic is correct.</p>
+        <div style="display: block;min-height:220px;">
+          <div class="aiwslcbox" ng-click="create.minuswordf($event)">
+            <span ng-repeat="item in create.chosenWords track by $index" id="{{item.id}}" >{{item.str}}</span>
+          </div>
+            <p ng-show="create.showcodeerr" class="redcolor size-12" translate>Incorrect mnemonic</p>
+          <div class="wordsbox" ng-click="create.createwordf($event)">
+            <button ng-repeat="item in create.showrandamcodes track by $index" id="{{item.id}}" ng-disabled="item.chosen">{{item.str}}</button>
+          </div>
+        </div>
+        <button ng-click="create.step = 'showcode'" translate>Last step</button>
+      </div>
+    </div>
+    <!--创建钱包-选择钱包口令  end-->
+    <!--创建钱包-删除口令  start-->
+    <div class="inveaddw cwpage pfixed topp" ng-if="create.step == 'deletecode'">
+      <nav class="tab-bar">
+        <section class="middle tab-bar-section">
+          <h1 class="title ellipsis" translate>
+            Backup mnemonic
+          </h1>
+        </section>
+      </nav>
+      <div class="f9fafch"></div>
+      <div class="cwpagein">
+          <div class="fleximgtextc m28b">
+              <img class="warnbigimg" src="./img/warnbig.png" />
+              <div translate class="redcolor size-14">Confirm your mnemonic</div>
+          </div>
+        <div class="backslcbox m15b">
+          <span ng-repeat="item in create.showcodes track by $index" id="{{item.id}}" >{{item.str}}</span>
+        </div>
+        <p class="center eabcolor m35b size-12" translate>Your mnemonic is correct. To ensure the security of your wallet, we recommend that you delete your mnemonic.</p>
+        <button class="m20b" ng-click="create.showconfirm = true;" translate>Delete mnemonic</button>
+        <button class="awbtn" ng-click="create.createWallet(create.createwname, create.createwpass, create.createwrpass, create.mnemonic);" translate>Skip</button>
+        <div ng-if="create.showconfirm" class="popconfirm">
+          <div class="popmask" ng-click="create.showconfirm = false;"></div>
+          <div class="popcontent">
+            <div class="fleximgtextc m20b p25h">
+              <img src="./img/qdeletecode.png">
+              <div translate class="size-16 redcolor">Are you sure you want to delete the mnemonic?</div>
+            </div>
+            <p class="poptips p25h" translate>This will completely remove the mnemonics from the app and it will not be recoverable. Please reconfirm that you have backed up your mnemonics to a safe place.</p>
+            <div class="p25h popbutton">
+              <button ng-click="create.createWallet(create.createwname, create.createwpass, create.createwrpass, create.mnemonic,true);" translate>Confirm</button>
+              <button class="awbtn" ng-click="create.showconfirm = false;" translate>Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--创建钱包-删除口令  end-->
+    <!--导入钱包-导入钱包  start-->
+    <div class="inveaddw cwpage iwpage pfixed topp" ng-if="create.step == 'importwallet'" >
+      <nav class="tab-bar" ng-controller="topbarController as topbar">
+        <section class="left-small">
+          <a ng-click="create.step = 'addorimport'">
+            <img src="./img/back.png" />
+          </a>
+        </section>
+        <section class="right-small" ng-show="index.isCordova">
+          <qr-scanner  on-scan="topbar.onQrCodeScannedAddr(data)" before-scan="topbar.onBeforeScan()"></qr-scanner>
+        </section>
+        <section class="middle tab-bar-section">
+          <h1 class="title ellipsis" translate>
+            Import wallet
+          </h1>
+        </section>
+      </nav>
+      <div class="tabclicktitle">
+        <div class="tab-container" ng-class="{'selected': create.showtab == 'tabcold'}">
+          <a ng-click="create.showtab = 'tabcold'" translate>Plain Wallet</a>
+        </div>
+        <div class="tab-container" ng-class="{'selected': create.showtab == 'tabhot'}">
+          <a ng-click="create.showtab = 'tabhot';index.signatureAddr = ''" translate>Hot Wallet</a>
+        </div>
+      </div>
+      <div class="cwpagein">
+        <div ng-if="create.showtab == 'tabcold'">
+          <div translate>Wallet Seed :</div>
+          <textarea placeholder="{{'Enter your mnemonic, separated by spaces'|translate}}" ng-model="create.importcode"></textarea>
+          <form name="creatwiform" novalidate>
+            <div class="adinputitem" mdinputvalidc>
+                <div class="adinputic">
+                    <div class="adinputimg aiwname"></div>
+                    <input type="text" ng-model="create.createwiname" mdinputname ng-attr-placeholder="{{'Wallet name'|translate}}" autocomplete="off"
+                    ng-minlength="1" ng-maxlength="20" minlength="1" maxlength="20"/>
+                </div>
+                <p class="adinputp" translate></p>
+            </div>
+            <div class="adinputitem" mdinputvalidc>
+                <div class="adinputic">
+                    <div class="adinputimg aiwpass"></div>
+                    <input type="password" autocomplete="new-password" name="aiwpass" ng-model="create.createwipass" mdinputpass ng-attr-placeholder="{{'Password'|translate}}"
+                    autocomplete="off" ng-minlength="1" ng-maxlength="18" minlength="1" maxlength="18" />
+                </div>
+                <p class="adinputp" translate></p>
+            </div>
+            <div class="adinputitem" ng-class="{'setErrorexp':creatwiform.aiwpass.$valid && create.createwipass !== create.createwirpass && create.createwirpass !== ''}">
+                <div class="adinputic">
+                    <div class="adinputimg aiwrpass"></div>
+                    <input type="password" autocomplete="new-password" name="aiwrpass" ng-model="create.createwirpass"
+                    placeholder="{{'Repeat password'|translate}}" autocomplete="off"
+                    ng-minlength="1" ng-maxlength="18" minlength="1" maxlength="18"
+                    />
+                </div>
+                <p class="adinputpass" translate ng-show="creatwiform.aiwpass.$valid && create.createwipass !== create.createwirpass && create.createwirpass !== ''">*Inconsistent password</p>
+            </div>
+            <button class="m30t m15b" ng-click="create.importw()" ng-disabled="!create.importcode || !create.createwiname || !create.createwipass || !create.createwirpass || creatwform.$invalid || create.createwipass !== create.createwirpass" translate>Start importing</button>
+            <!--<button class="m30t m15b" ng-click="create.importw()"  translate>Start importing</button>-->
+            <div class="size-12 nsfcolor" translate>Note: Please be patient while the wallet is recovering. Do not quit the software.</div>
+          </form>
+        </div>
+        <div ng-if="create.showtab == 'tabhot'" ng-controller="importwalletController as import">
+          <form name="addressForm" ng-submit="import.generateAddressQRCode()">
+          <div translate class="m20b">Hot wallet (also known as watch wallet) is just the way to observe your account: check balance and transactions logs, receive notifications.No private key no leaks.</div>
+          <div class="adinputitem">
+            <div class="adinputic">
+              <div class="adinputimg">
+                  <img src="./img/wallet.png" style="width: 18px;">
+              </div>
+              <input type="text" name="address" style="padding-left: 13px;" ng-model=index.signatureAddr ng-attr-placeholder="{{'Scan or enter your wallet address'|translate}}" >
+            </div>
+          </div>
+            <button type="submit" class="m24b m20t" ng-disabled="!index.signatureAddr" translate>Start importing</button>
+          <div class="size-12 nsfcolor" translate>Note: Hot wallet needs pairing with Cold Wallet to offline sign  transaction. Make a retired mobile phone as the Cold Wallet is a good choice.</div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!--导入钱包-导入钱包  end-->
+  </div>
+  

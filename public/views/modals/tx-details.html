@@ -1,0 +1,156 @@
+<div class="txcontent pfixed topp">
+      <nav class="tab-bar">
+          <section class="left-small">
+              <a ng-click="cancel()">
+                  <img src="./img/back.png" />
+              </a>
+          </section>
+          <section class="middle tab-bar-section">
+              <h1 class="title ellipsis" translate>
+                  Transaction Details
+              </h1>
+          </section>
+      </nav>
+      <div class="f9fafch"></div>
+      <div class="center enable_text_select">
+         <!-- <div class="size-45" ng-show="btx.action != 'invalid'">
+              <div class="txheader txreceive" ng-if="btx.action == 'received'">
+                  <div class="ellisamout"><span>+</span>{{btx.amountTl}}</div>
+                  <div class="txunit">{{btx.asset == 'base' ? 'INVE':btx.asset}}</div>
+              </div>
+              <div class="txheader txsent" ng-if="btx.action == 'sent'">
+                  <div class="ellisamout"><span>-</span>{{btx.amountTl}}</div>
+                  <div class="txunit">{{btx.asset == 'base' ? 'INVE':btx.asset}}</div>
+              </div>
+              <div class="size-14" ng-if="btx.asset === 'base' && exchangeRates.GBYTE_USD">
+                ≈ {{ btx.action == 'sent' ? '-' : '+'}} ${{ (btx.amount * exchangeRates.GBYTE_USD / 1e9).toLocaleString([], {maximumFractionDigits: 2}) }}
+              </div>
+          </div>-->
+          <div class="size-45" ng-show="btx.action != 'invalid'">
+              <div class="txcfwait" ng-if="btx.result == 'pending'">
+                <img src="./img/txwait.png" />
+                <div ng-show="btx.result == 'pending'" class="fontbold size-16" translate>Confirming</div>
+                <div class="fontregular size-12 txtoptime" ng-show="btx.defaultLanguageIsoCode == 'zh_CN'">{{ btx.creation_date | amDateFormat:'YYYY'}}年{{ btx.creation_date | amDateFormat:'MM月DD日'}}&nbsp;{{ btx.creation_date| amDateFormat:'HH:mm'}}&nbsp;+0800</div>
+                <!--<div ng-show="btx.defaultLanguageIsoCode == 'en'" class="fontregular size-12 txtoptime">{{ (btx.creation_date - 28800000) | amDateFormat:'YYYY'}}-{{ (btx.creation_date - 28800000) | amDateFormat:'MM-DD'}}&nbsp;{{ (btx.creation_date - 28800000) | amDateFormat:'HH:mm'}}&nbsp;+0000</div>-->
+                <div ng-show="btx.defaultLanguageIsoCode == 'en'" class="fontregular size-12 txtoptime">{{ (btx.creation_date) | amDateFormat:'YYYY'}}-{{ (btx.creation_date) | amDateFormat:'MM-DD'}}&nbsp;{{ (btx.creation_date) | amDateFormat:'HH:mm'}}&nbsp;+0800</div>
+            </div>
+            <div class="txcfok" ng-if="btx.result == 'good'">
+                <img src="./img/txok.png"/>
+                <div ng-show="btx.result == 'good'" class="fontbold size-16" translate>Confirmed</div>
+                <div class="fontregular size-12 txtoptime" ng-show="btx.defaultLanguageIsoCode == 'zh_CN'">{{ btx.creation_date | amDateFormat:'YYYY'}}年{{ btx.creation_date | amDateFormat:'MM月DD日'}}&nbsp;{{ btx.creation_date| amDateFormat:'HH:mm'}}&nbsp;+0800</div>
+                <div ng-show="btx.defaultLanguageIsoCode == 'en'" class="fontregular size-12 txtoptime">{{ (btx.creation_date) | amDateFormat:'YYYY'}}-{{ (btx.creation_date) | amDateFormat:'MM-DD'}}&nbsp;{{ (btx.creation_date) | amDateFormat:'HH:mm'}}&nbsp;+0800</div>
+            </div>
+            <div class="txcffail" ng-if="btx.result == 'final-bad'">
+                <img src="./img/txfail.png"/>
+                <div ng-show="btx.result == 'final-bad'" class="fontbold size-16" translate>Fail</div>
+                <div class="fontregular size-12 txtoptime" ng-show="btx.defaultLanguageIsoCode == 'zh_CN'">{{ btx.creation_date | amDateFormat:'YYYY'}}年{{ btx.creation_date | amDateFormat:'MM月DD日'}}&nbsp;{{ btx.creation_date| amDateFormat:'HH:mm'}}&nbsp;+0800</div>
+                <div ng-show="btx.defaultLanguageIsoCode == 'en'" class="fontregular size-12 txtoptime">{{ (btx.creation_date) | amDateFormat:'YYYY'}}-{{ (btx.creation_date) | amDateFormat:'MM-DD'}}&nbsp;{{ (btx.creation_date) | amDateFormat:'HH:mm'}}&nbsp;+0800</div>
+            </div>
+            <div class="size-14" ng-if="btx.asset === 'base' && exchangeRates.GBYTE_USD">
+                ≈ {{ btx.action == 'sent' ? '-' : '+'}} ${{ (btx.amount * exchangeRates.GBYTE_USD / 1e9).toLocaleString([], {maximumFractionDigits: 2}) }}
+            </div>
+          </div>
+          <div class="size-45" ng-show="btx.action == 'invalid'">
+             -
+          </div>
+      </div>
+      <div class="f9fafch"></div>
+     <!--<div class="txstep">
+      <div class="txstepin" ng-show="btx.type == 1">
+          <div class="item">
+              <div class="title passtxs">{{btx.fromName}}</div>
+              <div class="time">
+                  {{ btx.time * 1000 | amDateFormat:'MM-DD'}}&nbsp;&nbsp;&nbsp;{{ btx.time * 1000 | amDateFormat:'HH:mm'}}
+              </div>
+          </div>
+          <div class="item">
+              <div class="title passtxs" ng-show="btx.confirmations != 'pending'" translate>Confirmed</div>
+              <div class="title"
+                   ng-class="{'curtxs':!btx.confirmations || btx.confirmations == 0 || btx.confirmations == 'pending','passtxs':btx.confirmations != 'pending'}" ng-show="!btx.confirmations || btx.confirmations == 0 || btx.confirmations == 'pending'"
+                   translate>Unconfirmed</div>
+          </div>
+          <div class="item">
+              <div class="title" ng-class="{'curtxs':btx.confirmations != 'pending'}">{{btx.toName}}</div>
+          </div>
+      </div>
+      <div class="txstepin" ng-show="btx.type == 2">
+          <div class="item">
+              <div class="title passtxs">{{btx.fromName}}</div>
+              <div class="time">
+                  {{ btx.time * 1000 | amDateFormat:'MM-DD'}}&nbsp;&nbsp;&nbsp;{{ btx.time * 1000 | amDateFormat:'HH:mm'}}
+              </div>
+          </div>
+          <div class="item">
+              <div class="title passtxs" ng-show="btx.confirmations != 'pending'" translate>Confirmed</div>
+              <div class="title"
+                   ng-class="{'curtxs':!btx.confirmations || btx.confirmations == 0 || btx.confirmations == 'pending','passtxs':btx.confirmations != 'pending'}" ng-show="!btx.confirmations || btx.confirmations == 0 || btx.confirmations == 'pending'"
+                   translate>Unconfirmed</div>
+          </div>
+          <div class="item">
+              <div class="title" ng-class="{'curtxs':btx.confirmations != 'pending'}">{{btx.toName}}</div>
+          </div>
+      </div>
+    </div>-->
+
+      <ul class="no-bullet size-12 txul enable_text_select">
+          <li class="txli txlitype">
+              <span class="txultitle" translate>Transaction Type:</span>
+              <div class="txultype" translate>{{btx.type == 'move' ? 'Exchange': (btx.type == 'exchange' ? 'Trade' : 'Transfer')|translate}}</div>
+          </li>
+          <li class="txlibold">
+              <ul class="no-bullet">
+                  <li class="txli">
+                      <span class="txultitle"><span translate>Transfer out</span>&nbsp;{{(btx.sType == 1 || btx.sType == 0)?'INVE': btx.sType == 2? 'BTC': 'ETH'}}</span>
+                      <div class="txulinfo" ng-show="btx.action == 'sent'">-{{btx.amountTl}}&nbsp;<span>{{(btx.sType == 1 || btx.sType == 0)?'INVE': btx.sType == 2? 'BTC': 'ETH'}}</span></div>
+                  </li>
+                  <li class="txli">
+                      <span class="txultitle" translate>Wallet address:</span>
+                      <div class="txulinfo" ng-show="btx.type == 'tranfer'" ng-click="copyAddress(btx.addressFrom, $event)">{{btx.addressFrom}}</div>
+                      <div class="txulinfo" ng-show="btx.type == 'move'" ng-click="copyAddress(btx.sInfo, $event)">{{btx.sInfo}}</div>
+                      <div class="txulinfo" ng-show="btx.type == 'exchange'" ng-click="copyAddress(btx.sInfo.split('|')[0], $event)">{{btx.sInfo.split('|')[0]}}</div>
+                  </li>
+                  <li class="txli" ng-show="btx.type == 'exchange'">
+                      <span class="txultitle" translate></span>
+                      <div class="txulinfo" >{{btx.sInfo.split('|')[1]}}</div>
+                  </li>
+              </ul>
+          </li>
+          <li class="txlibold">
+              <ul class="no-bullet">
+                  <li class="txli">
+                      <span class="txultitle"><span translate>Transfer in</span>&nbsp;{{(btx.eType == 1 || btx.eType == 0)?'INVE': btx.eType == 2? 'BTC': 'ETH'}}</span>
+                      <div class="txulinfo"ng-show="btx.action == 'received'">+{{btx.amountTl}}&nbsp;<span>{{(btx.eType == 1 || btx.eType == 0)?'INVE': btx.eType == 2? 'BTC': 'ETH'}}</span></div>
+                  </li>
+                  <li class="txli">
+                      <span class="txultitle" translate>Wallet address:</span>
+                      <div class="txulinfo" ng-show="btx.type == 'tranfer'" ng-click="copyAddress(btx.addressTo, $event)">{{btx.addressTo}}</div>
+                      <div class="txulinfo" ng-show="btx.type == 'move'" ng-click="copyAddress(btx.eInfo, $event)">{{btx.eInfo}}</div>
+                      <div class="txulinfo" ng-show="btx.type == 'exchange'" ng-click="copyAddress(btx.eInfo.split('|')[0], $event)">{{btx.eInfo.split('|')[0]}}</div>
+                  </li>
+                  <li class="txli" ng-show="btx.type == 'exchange'">
+                      <span class="txultitle" translate></span>
+                      <div class="txulinfo" >{{btx.eInfo.split('|')[1]}}</div>
+                  </li>
+              </ul>
+          </li>
+
+          <li class="txli">
+              <span class="txultitle" translate>Hash:</span>
+              <span class="txulinfo" ng-click="copyAddress(btx.id, $event)">{{btx.id}}</span>
+          </li>
+          <li ng-show="btx.multiHash" class="txli">
+              <span class="txultitle" translate>Order ID:</span>
+              <span class="txulinfo">{{btx.multiHash}}</span>
+          </li>
+          <li ng-show="btx.remark" class="txli">
+              <span class="txultitle" translate>Note:</span>
+              <span class="txulinfo">{{btx.remark}}</span>
+          </li>
+          <li ng-show="btx.feeStr" class="txli">
+              <span class="txultitle" translate>Fee:</span>
+              <span class="txulinfo">{{btx.feeStr}}</span>
+          </li>
+      </ul>
+  </div>
+  
+  

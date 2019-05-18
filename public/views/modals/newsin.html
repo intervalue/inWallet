@@ -1,0 +1,36 @@
+<div class="pfixed newsincinfo topp" ng-init="newsInfoData()">
+    <nav class="tab-bar">
+        <!-- 左区 -->
+        <section class="left-small">
+            <a ng-click="cancel()">
+                <img src="./img/back.png">
+            </a>
+        </section>
+        <!-- 中区 -->
+        <section class="middle tab-bar-section">
+            <h1 class="title ellipsis" translate>
+                News
+            </h1>
+        </section>
+    </nav>
+    <div class="pbfixed">
+        <div class="newslistheight" ng-if ="newscontent == '' && online">
+            <div class="newupload"><img src="./img/loading.png" /><span translate>Loading</span></div>
+        </div>
+        <div ng-if="!online  && !loading" ng-click="newsInfoData();" class="nowire">
+            <div class="nowirein">
+                <img src="./img/nowire.png" />
+                <div class="nowireintext" translate>The network is not strong. Please click the screen to reload.</div>
+            </div>
+        </div>
+        <div class="newslistheight" ng-if ="!online && loading">
+            <div class="newupload"><img src="./img/loading.png" /><span translate>Loading</span></div>
+        </div>
+        <div class="newsinc">
+            <div class="title">
+                {{newstitle}}
+            </div>
+            <p ng-bind-html="newscontent"></p>
+        </div>
+    </div>
+</div>

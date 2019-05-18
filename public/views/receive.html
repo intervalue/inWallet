@@ -1,0 +1,90 @@
+<!-- 顶部导航栏视图 -->
+    <div ng-controller="receiveController as rc" class="receivelr pfixed topp">
+        <nav ng-controller="topbarController as topbar" class="tab-bar">
+            <section class="left-small">
+                <a ng-click="rc.goWalletInfo(rc.walletType, rc.walletId, rc.address, rc.name, rc.amount, rc.ammount, rc.mnemonic, rc.mnemonicEncrypted)">
+                    <img src="./img/back.png">
+                </a>
+            </section>
+            <section class="right-small" ng-show="index.isCordova && rc.isPayShow == 'false'">
+                <qr-scanner ng-show="index.isComplete" on-scan="topbar.onQrCodeScanned(data)" before-scan="topbar.onBeforeScan()"></qr-scanner>
+            </section>
+            <section class="middle tab-bar-section">
+                <h1 class="ellipsis" translate ng-show="!rc.isPayShow">Receive address</h1>
+                <h1 class="ellipsis" translate ng-show="rc.isPayShow">Receive</h1>
+            </section>
+        </nav>
+        <div class="receivelrin">
+            <div class="addreceive">
+                <!-- 我的钱包地址 -->
+                <div class="size-14 addreceiveimgpr">
+                    <div class="addreceiveimg"><img ng-src="{{rc.walletImage}}" /></div>
+                </div>
+                <div class="amounttranqrtitler" translate>{{rc.walletType}}-Wallet</div>
+                <!-- 地址二维码 -->
+                <div class="code size-12">
+                    <!--<div class="box-notification" ng-show="rc.addrError">-->
+                    <!--<span class="text-warning">{{rc.addrError|translate}}</span>-->
+                    <!--</div>-->
+                    <div class="center" ng-click="rc.copyAddress(rc.address)" ng-show="rc.address">
+                        <qrcode size="185"
+                                data="{{rc.protocol}}-{{rc.walletType}}:{{rc.address}}{{ (amountInSmallestUnits + asset_param) === undefined ? '':'?amount=' + amountInSmallestUnits + asset_param}}"></qrcode>
+                    </div>
+                </div>
+
+                <div class="center">
+                    <h4  class="addcodeh4 enable_text_select" >
+                        {{rc.address}}
+                    </h4>
+                </div>
+
+
+            </div>
+            <div class="center p18v">
+
+                <button class="m20t" ng-show="!rc.isPayShow" ng-click="rc.copyAddress(rc.address)" ng-disabled="loading">
+                    <span translate>Copy address</span>
+                </button>
+                <div class="m30t" ng-show="rc.isPayShow == 'true';">
+                    <div class="payshowtitle" ng-show="amountInSmallestUnits">
+                        <span  translate>Transfer in</span><span> {{amountInSmallestUnits}} {{rc.walletTypeShort}}</span>
+                    </div>
+                    <button class="m20t" ng-click="rc.setAmountShow = true;" translate>
+                        Specific amount
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="receiveModalMask" ng-show="rc.setAmountShow" ng-click="rc.setAmountShow = false;">
+        </div>
+
+        <div class="receiveModal" ng-show="rc.setAmountShow" ng-class="{'animated  bounceInDown':rc.setAmountShow}">
+            <form name="amountform" ng-submit="rc.setAmountForm()">
+                <div class="addrcl">
+                    <div class="closediv" ng-click="rc.setAmountShow = false;">
+                    </div>
+                    <label class="size-16 center" >
+                        <span translate>Specific amount</span>
+                    </label>
+                </div>
+                <div class="addrci">
+                    <div class="adinputitem" mdinputvalidc>
+                        <div class="adinputic">
+                            <div class="adinputimg aiwamount"></div>
+                            <input type="text" autocomplete="off" name="amount" ng-model="rc.amount" mdinputamount ng-attr-placeholder="{{'Amount'|translate}}"
+                                   autocomplete="off" oninput="if(value.length>18)value=value.slice(0,18)" />
+                            <div class="">{{rc.walletTypeShort}}</div>
+                        </div>
+                        <p class="adinputp" translate></p>
+                    </div>
+                    <button type="submit" ng-disabled="!rc.amount || amountform.$invalid">
+                        <span translate>OK</span>
+                    </button>
+                </div>
+
+
+            </form>
+        </div>
+
+    </div>

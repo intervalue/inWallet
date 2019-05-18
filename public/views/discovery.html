@@ -1,0 +1,516 @@
+<!--
+       discovery
+       -->
+<div ng-controller="discoveryController as dc" id="news" class="news pfixed topp" style="overflow: hidden;" ng-init="dc.newsDatals();dc.quickData('up');dc.currencyData('up');dc.dappslider();">
+    <div class="tabclicknav tab-bar">
+        <div class="tab-container" ng-click="dc.shownewsnav = 'news';" ng-class="{'selectedf': dc.shownewsnav == 'news'}">
+            <a  translate>News</a>
+        </div>
+        <div class="tab-container" ng-click="dc.shownewsnav = 'dapp';" ng-class="{'selectedf': dc.shownewsnav == 'dapp'}">
+            <a  translate>DAPP</a>
+        </div>
+    </div>
+    <div ng-show="dc.shownewsnav == 'news'" class="vh100singlge">
+        <div class="tabclicktitle">
+            <div class="tab-container" ng-click="dc.shownewstab = 'new1';" ng-class="{'selected': dc.shownewstab == 'new1'}">
+                <a  translate>Newest</a>
+            </div>
+            <div class="tab-container" ng-click="dc.shownewstab = 'new2';" ng-class="{'selected': dc.shownewstab == 'new2'}">
+                <a  translate>Newsletter</a>
+            </div>
+            <div class="tab-container" ng-click="dc.shownewstab = 'new3';" ng-class="{'selected': dc.shownewstab == 'new3'}" >
+                <a translate>Quotes</a>
+            </div>
+        </div>
+        <div class="posa tabnewsout dcin" ng-class="{'tabnewsin': dc.shownewstab == 'new2'}" id="new2tab">
+            <div ng-if="!dc.online && !dc.quickloading" ng-click="dc.quickData('up');" class="nowire">
+                <div class="nowirein">
+                    <img src="./img/nowire.png" />
+                    <div class="nowireintext" translate>The network is not strong. Please click the screen to reload.</div>
+                </div>
+            </div>
+            <div class="newslistheight" ng-if ="(!dc.online && dc.quickloading) || (dc.quicklistshow == '' && dc.online && dc.quickloading)">
+                <div class="newupload">
+                    <div class="loadinglr">
+                        <div class="loadinglr-container loadinglr1">
+                            <div class="circle1"></div>
+                            <div class="circle2"></div>
+                            <div class="circle3"></div>
+                            <div class="circle4"></div>
+                        </div>
+                        <div class="loadinglr-container loadinglr2">
+                            <div class="circle1"></div>
+                            <div class="circle2"></div>
+                            <div class="circle3"></div>
+                            <div class="circle4"></div>
+                        </div>
+                        <div class="loadinglr-container loadinglr3">
+                            <div class="circle1"></div>
+                            <div class="circle2"></div>
+                            <div class="circle3"></div>
+                            <div class="circle4"></div>
+                        </div>
+                    </div>
+                    <span translate>Loading</span></div>
+            </div>
+            <div ng-if="dc.quicklistshow == '' && dc.online && !dc.quickloading" class="nonews" ng-click="dc.quickData('up');" >
+                <div class="nonewsin">
+                    <img src="./img/nonews.png" />
+                    <div class="nonewsintext" translate>No fresh content. Please click the screen to reload.</div>
+                </div>
+            </div>
+            <div class="letterlist" ng-if="dc.quicklistshow !== '' && dc.online" id="new2tablist" >
+                <div class="newsupheight" id="quickupheight">
+                    <div class="newuprelease"><img src="./img/pulldown.png" /><span translate>Pull down to refresh</span></div>
+                    <div class="newupload">
+                        <div class="loadinglr">
+                            <div class="loadinglr-container loadinglr1">
+                                <div class="circle1"></div>
+                                <div class="circle2"></div>
+                                <div class="circle3"></div>
+                                <div class="circle4"></div>
+                            </div>
+                            <div class="loadinglr-container loadinglr2">
+                                <div class="circle1"></div>
+                                <div class="circle2"></div>
+                                <div class="circle3"></div>
+                                <div class="circle4"></div>
+                            </div>
+                            <div class="loadinglr-container loadinglr3">
+                                <div class="circle1"></div>
+                                <div class="circle2"></div>
+                                <div class="circle3"></div>
+                                <div class="circle4"></div>
+                            </div>
+                        </div>
+                        <span translate>Loading</span>
+                    </div>
+                </div>
+                <div class="datenow" id="datenow" ng-bind="dc.quickdatanow"></div>
+                <div class="removescroll" id="removescroll2" quickscrolltop="dc.quickequaltop()" homequiscrolled="dc.loadmore('new2tab', 'new2tablist')"
+                     home-qpull-down="dc.quickData('up')"  draggable="true">
+                    <div class="itemin" ng-repeat="(key,item) in dc.quicklist track by $index">
+                        <div class="date">{{key}}</div>
+                        <div class="itemlr" ng-repeat="itemin in item">
+                            <div class="item">
+                                <div class="time">{{itemin.greenhms}}</div>
+                                <div class="info">
+                                    <div class="title">{{itemin.title}}</div>
+                                    <div class="desc">
+                                        {{itemin.content}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="dc.shownoquick" class="nomorenews"><img src="./img/nomore.png" /><span translate>No more content</span></div>
+                    <div ng-show="dc.showquicksloading" class="shownewsloading">
+                        <div class="loadinglr">
+                            <div class="loadinglr-container loadinglr1">
+                                <div class="circle1"></div>
+                                <div class="circle2"></div>
+                                <div class="circle3"></div>
+                                <div class="circle4"></div>
+                            </div>
+                            <div class="loadinglr-container loadinglr2">
+                                <div class="circle1"></div>
+                                <div class="circle2"></div>
+                                <div class="circle3"></div>
+                                <div class="circle4"></div>
+                            </div>
+                            <div class="loadinglr-container loadinglr3">
+                                <div class="circle1"></div>
+                                <div class="circle2"></div>
+                                <div class="circle3"></div>
+                                <div class="circle4"></div>
+                            </div>
+                        </div>
+                        <span translate>Loading</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="posa tabnewsout dcin" ng-class="{'tabnewsin': dc.shownewstab == 'new1'}" id="new1tab">
+            <div ng-if="!dc.online  && !dc.newsloading" ng-click="dc.newsData('up');" class="nowire">
+                <div class="nowirein">
+                    <img src="./img/nowire.png" />
+                    <div class="nowireintext" translate>The network is not strong. Please click the screen to reload.</div>
+                </div>
+            </div>
+            <div class="newslistheight" ng-if ="(!dc.online && dc.newsloading) || (dc.newslist == '' && dc.online && dc.newsloading)">
+                <div class="newupload">
+                    <div class="loadinglr">
+                        <div class="loadinglr-container loadinglr1">
+                            <div class="circle1"></div>
+                            <div class="circle2"></div>
+                            <div class="circle3"></div>
+                            <div class="circle4"></div>
+                        </div>
+                        <div class="loadinglr-container loadinglr2">
+                            <div class="circle1"></div>
+                            <div class="circle2"></div>
+                            <div class="circle3"></div>
+                            <div class="circle4"></div>
+                        </div>
+                        <div class="loadinglr-container loadinglr3">
+                            <div class="circle1"></div>
+                            <div class="circle2"></div>
+                            <div class="circle3"></div>
+                            <div class="circle4"></div>
+                        </div>
+                    </div>
+                    <span translate>Loading</span>
+                </div>
+            </div>
+            <div ng-if="dc.newslist == '' && dc.online && !dc.newsloading" class="nonews" ng-click="dc.newsData('up');">
+                <div class="nonewsin">
+                    <img src="./img/nonews.png" />
+                    <div class="nonewsintext" translate>No fresh content. Please click the screen to reload.</div>
+                </div>
+            </div>
+            <div class="newslist" ng-if="dc.newslist !== ''  && dc.online  " id="new1tablist" >
+                <div class="newsupheight" id="newupheight">
+                    <div class="newuprelease"><img src="./img/pulldown.png" /><span translate>Pull down to refresh</span></div>
+                    <div class="newupload">
+                        <div class="loadinglr">
+                            <div class="loadinglr-container loadinglr1">
+                                <div class="circle1"></div>
+                                <div class="circle2"></div>
+                                <div class="circle3"></div>
+                                <div class="circle4"></div>
+                            </div>
+                            <div class="loadinglr-container loadinglr2">
+                                <div class="circle1"></div>
+                                <div class="circle2"></div>
+                                <div class="circle3"></div>
+                                <div class="circle4"></div>
+                            </div>
+                            <div class="loadinglr-container loadinglr3">
+                                <div class="circle1"></div>
+                                <div class="circle2"></div>
+                                <div class="circle3"></div>
+                                <div class="circle4"></div>
+                            </div>
+                        </div>
+                        <span translate>Loading</span>
+                    </div>
+                </div>
+                <div class="removescroll" homescrolled="dc.loadmore('new1tab', 'new1tablist')" home-pull-down="dc.newsData('up')" draggable="true">
+                    <div class="itemin">
+                        <div class="item" ng-repeat="item in dc.newslist track by $index">
+                            <img ng-src="{{item.coverPath}}" ng-click="dc.openNewsinModal(item.id)" />
+                            <div class="info">
+                                <div class="title" ng-click="dc.openNewsinModal(item.id)" >{{item.title}}</div>
+                                <div class="litinfo">
+                                    <div class="time">{{item.type}} <span>{{item.greentime}}</span></div>
+                                    <div class="browse">{{item.pageviews}} <span translate>views</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="dc.shownonews" class="nomorenews"><img src="./img/nomore.png" /><span translate>No more content</span></div>
+                    <div class="shownewsloading">
+                        <div class="loadinglr">
+                            <div class="loadinglr-container loadinglr1">
+                                <div class="circle1"></div>
+                                <div class="circle2"></div>
+                                <div class="circle3"></div>
+                                <div class="circle4"></div>
+                            </div>
+                            <div class="loadinglr-container loadinglr2">
+                                <div class="circle1"></div>
+                                <div class="circle2"></div>
+                                <div class="circle3"></div>
+                                <div class="circle4"></div>
+                            </div>
+                            <div class="loadinglr-container loadinglr3">
+                                <div class="circle1"></div>
+                                <div class="circle2"></div>
+                                <div class="circle3"></div>
+                                <div class="circle4"></div>
+                            </div>
+                        </div>
+                        <span translate>Loading</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="posa tabnewsout dcin" ng-class="{'tabnewsin': dc.shownewstab == 'new3'}" id="new3tab">
+            <div ng-if="!dc.online && !dc.currencyloading" ng-click="dc.currencyData('up');" class="nowire">
+                <div class="nowirein">
+                    <img src="./img/nowire.png" />
+                    <div class="nowireintext" translate>The network is not strong. Please click the screen to reload.</div>
+                </div>
+            </div>
+            <div class="newslistheight" ng-if ="(!dc.online && dc.currencyloading) || (dc.coinlist == '' && dc.online && dc.currencyloading)">
+                <div class="newupload">
+                    <div class="loadinglr">
+                        <div class="loadinglr-container loadinglr1">
+                            <div class="circle1"></div>
+                            <div class="circle2"></div>
+                            <div class="circle3"></div>
+                            <div class="circle4"></div>
+                        </div>
+                        <div class="loadinglr-container loadinglr2">
+                            <div class="circle1"></div>
+                            <div class="circle2"></div>
+                            <div class="circle3"></div>
+                            <div class="circle4"></div>
+                        </div>
+                        <div class="loadinglr-container loadinglr3">
+                            <div class="circle1"></div>
+                            <div class="circle2"></div>
+                            <div class="circle3"></div>
+                            <div class="circle4"></div>
+                        </div>
+                    </div>
+                    <span translate>Loading</span>
+                </div>
+            </div>
+            <div ng-if="dc.coinlist == '' && dc.online && !dc.currencyloading" class="nonews" ng-click="dc.currencyData('up');">
+                <div class="nonewsin">
+                    <img src="./img/nonews.png" />
+                    <div class="nonewsintext" translate>No fresh content. Please click the screen to reload.</div>
+                </div>
+            </div>
+            <div class="quotelist" ng-if="dc.coinlist !== '' && dc.online"  id="new3tablist">
+                <div class="newsupheight" id="coinupheight">
+                    <div class="newuprelease"><img src="./img/pulldown.png" /><span translate>Pull down to refresh</span></div>
+                    <div class="newupload">
+                        <div class="loadinglr">
+                            <div class="loadinglr-container loadinglr1">
+                                <div class="circle1"></div>
+                                <div class="circle2"></div>
+                                <div class="circle3"></div>
+                                <div class="circle4"></div>
+                            </div>
+                            <div class="loadinglr-container loadinglr2">
+                                <div class="circle1"></div>
+                                <div class="circle2"></div>
+                                <div class="circle3"></div>
+                                <div class="circle4"></div>
+                            </div>
+                            <div class="loadinglr-container loadinglr3">
+                                <div class="circle1"></div>
+                                <div class="circle2"></div>
+                                <div class="circle3"></div>
+                                <div class="circle4"></div>
+                            </div>
+                        </div>
+                        <span translate>Loading</span>
+                    </div>
+                </div>
+                <div class="titlelabel" id="cointitle">
+                    <div class="numall" ng-click="dc.orderbyShowValue()">
+                        <span translate class="sorttitle">Market value</span>
+                        <span class="cointri" ng-class="{'upcoin':dc.orderByValue == '-values', 'downcoin':dc.orderByValue == 'values'}"></span>
+                    </div>
+                    <div class="price" ng-click="dc.orderbyShowPrice()">
+                        <span translate class="sorttitle">Price</span>
+                        <span class="cointri" ng-class="{'upcoin':dc.orderByPrice == '-price', 'downcoin':dc.orderByPrice == 'price'}"></span>
+                    </div>
+                    <div class="gains" ng-click="dc.orderbyShowGains()">
+                        <span translate class="sorttitle">Latest gains</span>
+                        <span class="cointri" ng-class="{'upcoin':dc.orderByQuoteChange == '-quoteChange', 'downcoin':dc.orderByQuoteChange == 'quoteChange'}"></span>
+                    </div>
+                </div>
+                <div class="removescroll" home-pull-down="dc.currencyData('up')"  draggable="true">
+                    <div class="itemin" ng-repeat="item in dc.coininvelist track by $index">
+                        <div class="item">
+                            <div class="leftcoininfo">
+                                <div class="coinimg">
+                                    <img src="./img/qidongyeicon.png" />
+                                    <span class="nameshort">{{item.name}}</span>
+                                    <span class="fullname">{{item.cname}}</span>
+                                </div>
+                                <div class="numallin" ng-show="index.defaultCurrencyIsoCode == 'en';"><span translate>Market value</span>：$ <span>{{item.value | number:2}}{{item.unit}}</span></div>
+                                <div class="numallin" ng-show="index.defaultCurrencyIsoCode == 'zh_CN';"><span translate>Market value</span>：￥ <span>{{item.cnyValue | number:2}}{{item.cnyUnit}}</span></div>
+                            </div>
+                            <div class="pricein" ng-show="index.defaultCurrencyIsoCode == 'en';" ng-class="{ 'priceblue': (item.quoteChange | number:2) > 0, 'pricered': (item.quoteChange | number:2) < 0}">${{item.price | number:4}}</div>
+                            <div class="pricein" ng-show="index.defaultCurrencyIsoCode == 'zh_CN';" ng-class="{ 'priceblue': (item.quoteChange | number:2) > 0, 'pricered': (item.quoteChange | number:2) < 0}">￥{{item.cnyPrice | number:4}}</div>
+                            <div class="gainsin" ng-if="(item.quoteChange | number:2) == 0"><div class="gainsinfo"><span>{{item.quoteChange | number:2}}%</span></div></div>
+                            <div class="gainsin priceblue" ng-if="(item.quoteChange | number:2)  > 0"><div class="gainsinfo">+<span>{{item.quoteChange | number:2}}%</span></div></div>
+                            <div class="gainsin pricered" ng-if="(item.quoteChange | number:2) < 0"><div class="gainsinfo"><span>{{item.quoteChange | number:2}}%</span></div></div>
+                        </div>
+                    </div>
+                    <div class="itemin" ng-repeat="item in dc.coinlist | orderBy : dc.orderByList ">
+                        <div class="item">
+                            <div class="leftcoininfo">
+                                <div class="coinimg">
+                                    <img ng-src="{{item.coinImgHerf}}" />
+                                    <span class="nameshort">{{item.name}}</span>
+                                    <span class="fullname">{{item.cname}}</span>
+                                </div>
+                                <div class="numallin" ng-show="index.defaultCurrencyIsoCode == 'en';"><span translate>Market value</span>：$ <span>{{item.value | number:2}}{{item.unit}}</span></div>
+                                <div class="numallin" ng-show="index.defaultCurrencyIsoCode == 'zh_CN';"><span translate>Market value</span>：￥ <span>{{item.cnyValue | number:2}}{{item.cnyUnit}}</span></div>
+                            </div>
+                            <div class="pricein" ng-show="index.defaultCurrencyIsoCode == 'en';" ng-class="{ 'priceblue': (item.quoteChange | number:2) > 0, 'pricered': (item.quoteChange | number:2) < 0}">${{item.price | number:4}}</div>
+                            <div class="pricein" ng-show="index.defaultCurrencyIsoCode == 'zh_CN';" ng-class="{ 'priceblue': (item.quoteChange | number:2) > 0, 'pricered': (item.quoteChange | number:2)< 0}">￥{{item.cnyPrice | number:4}}</div>
+                            <div class="gainsin" ng-if="(item.quoteChange | number:2) == 0"><div class="gainsinfo"><span>{{item.quoteChange | number:2}}%</span></div></div>
+                            <div class="gainsin priceblue" ng-if="(item.quoteChange | number:2) > 0"><div class="gainsinfo">+<span>{{item.quoteChange | number:2}}%</span></div></div>
+                            <div class="gainsin pricered" ng-if="(item.quoteChange | number:2)< 0"><div class="gainsinfo"><span>{{item.quoteChange | number:2}}%</span></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="dc.shownocoin" class="nomorenews"><img src="./img/nomore.png" /><span translate>No more content</span></div>
+            <div ng-show="dc.showcoinloading" class="shownewsloading">
+                <div class="loadinglr">
+                    <div class="loadinglr-container loadinglr1">
+                        <div class="circle1"></div>
+                        <div class="circle2"></div>
+                        <div class="circle3"></div>
+                        <div class="circle4"></div>
+                    </div>
+                    <div class="loadinglr-container loadinglr2">
+                        <div class="circle1"></div>
+                        <div class="circle2"></div>
+                        <div class="circle3"></div>
+                        <div class="circle4"></div>
+                    </div>
+                    <div class="loadinglr-container loadinglr3">
+                        <div class="circle1"></div>
+                        <div class="circle2"></div>
+                        <div class="circle3"></div>
+                        <div class="circle4"></div>
+                    </div>
+                </div>
+                <span translate>Loading</span>
+            </div>
+        </div>
+    </div>
+    <div ng-show="dc.shownewsnav == 'dapp'" class="dapplr vh100">
+        <div class="dapptitle dappprtitle" translate>
+            Popular recommendation
+        </div>
+        <div class="dappswiper">
+            <div class="dappswiperin">
+                <div class="swiper-wrapper">
+                    <!--<div class="swiper-slide dappslider1" data-click="dc.opendapplink('https://pushtx.btc.com/', 'BTC.com')">-->
+                    <div class="swiper-slide dappslider1" data-click="dc.opendapplink('http://www.inve.one', 'inve.one')">
+                        <img src="./img/dappbanner1.png"/>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination">
+            </div>
+        </div>
+        <div class="dapptitle dapptooltitle" translate>
+            Common tools
+        </div>
+        <div class="itemin dapptool">
+            <!--<div class="item" ng-click="$root.go('authorization')">
+                <img src="./img/tool1.png" />
+                <div class="info">
+                    <div class="title">StorNet</div>
+                    <div class="litinfo">
+                        给您所有的数据一个安全的家
+                    </div>
+                </div>
+            </div>-->
+            <div class="item" ng-click="dc.opendapplink('https://cpuemergency.com', 'CPU Emergency')">
+                <img src="./img/tool2.png" />
+                <div class="info">
+                    <div class="title">CPU Emergency</div>
+                    <div class="litinfo" translate>
+                        Get 1.5 EOS CPU license for 8 hours for free.
+                    </div>
+                </div>
+            </div>
+            <div class="item" ng-click="dc.opendapplink('https://ens.domains', 'Ethereum Name Service')">
+                <img src="./img/tool3.png" />
+                <div class="info">
+                    <div class="title">Ethereum Name Service</div>
+                    <div class="litinfo" translate>
+                        ENS can be used to register .eth domain name in Ethereum, which can be used for DApp (decentralized application)...
+                    </div>
+                </div>
+            </div>
+            <div class="item" ng-click="dc.opendapplink('https://apollo.delphy.org.cn/?c=SKLYH6Nl&locale=zh-CN', 'Delphy')">
+                <img src="./img/tool4.png" />
+                <div class="info">
+                    <div class="title">Delphy</div>
+                    <div class="litinfo" translate>
+                        A predictive market platform based on Ethereum, distributed, mobile social.
+                    </div>
+                </div>
+            </div>
+            <div class="item" ng-click="dc.opendapplink('https://digix.global/app/#/marketplace/dgx', 'Digix')">
+                <img src="./img/tool5.png" />
+                <div class="info">
+                    <div class="title">Digix</div>
+                    <div class="litinfo" translate>
+                        Digital assets calibrated with gold.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dapptitle dappgametitle" translate>
+            Blockchain game
+        </div>
+        <div class="itemin dappgame clearfix">
+            <div class="item" ng-click="dc.opendapplink('https://www.etheremon.com', 'Etheremon')">
+                <img src="./img/game1.png" />
+                <div class="info">
+                    <div class="title">Etheremon</div>
+                    <div class="litinfo" translate>
+                        Capture, train, evolve, battle and trade etheric monsters!
+                    </div>
+                </div>
+            </div>
+            <div class="item" ng-click="dc.opendapplink('https://decentraland.org', 'Decentraland')">
+                <img src="./img/game2.png" />
+                <div class="info">
+                    <div class="title">Decentraland</div>
+                    <div class="litinfo" translate>
+                        A virtual world built on the Ethereum blockchain.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dapptitle dapptradtitle" translate>
+            Trading platform
+        </div>
+        <div class="itemin dapptrad">
+            <div class="item" ng-click="dc.opendapplink('https://localethereum.com/cn', 'Localethereum')">
+                <img src="./img/dapptranbig.png" />
+                <div class="info">
+                    <div class="title">Localethereum</div>
+                    <div class="litinfo" translate>
+                        The use of Ethereum smart contracts and peer-to-peer encryption technology enables direct exchange of ether and fiat money between people without the need for a middleman guarantee.
+                    </div>
+                </div>
+            </div>
+            <div class="item" ng-click="dc.opendapplink('https://coinswitch.co/?isDapp=1&utm_source=imtoken&locale=zh-CN', 'CoinSwitch')">
+                <img src="./img/dtran1.png" />
+                <div class="info">
+                    <div class="title">CoinSwitch</div>
+                    <div class="litinfo" translate>
+                        Support for trading in more than 300 digital currencies without the need to create an account on any exchange.
+                    </div>
+                </div>
+            </div>
+            <div class="item" ng-click="dc.opendapplink('https://changelly.com', 'Changelly')">
+                <img src="./img/dtran2.png" />
+                <div class="info">
+                    <div class="title">Changelly</div>
+                    <div class="litinfo" translate>
+                        Exchange cryptocurrencies at the best exchange rate.
+                    </div>
+                </div>
+            </div>
+            <div class="item" ng-click="dc.opendapplink('https://m-app.bloqboard.com', 'Bloqboard')">
+                <img src="./img/dtran3.png" />
+                <div class="info">
+                    <div class="title">Bloqboard</div>
+                    <div class="litinfo" translate>
+                        Decentralized lending platform.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- discovery dis -->
+<div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>

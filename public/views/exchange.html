@@ -1,0 +1,412 @@
+<!--
+        exchange
+        -->
+<div ng-controller="exchangeController as ec" id="send" class="send pfixed topp" ng-init="assetIndexSelectorValue=0;ec.shownForm='payment';">
+    <div class="tabclicknav tab-bar"  ng-controller="topbarController as topbar">
+        <div class="leftsendt" ng-click="$root.go('txall');">
+            <img src="./img/address.png" style="width: 19px;">
+        </div>
+        <div class="tab-container tab-container1" ng-click="ec.showsecnav = 'exchange';" ng-class="{'selectedf': ec.showsecnav == 'exchange'}">
+            <a  translate>Exchange</a>
+        </div>
+        <div class="tab-container tab-container2" ng-click="ec.showsecnav = 'trade';" ng-class="{'selectedf': ec.showsecnav == 'trade'}">
+            <a  translate>Trade</a>
+        </div>
+        <div class="rightsendt" ng-show="index.isCordova && ec.showsecnav == 'exchange'">
+            <qr-scanner ng-show="index.isComplete" on-scan="topbar.onQrCodeScanned(data)" before-scan="topbar.onBeforeScan()"></qr-scanner>
+        </div>
+    </div>
+    <div class="sendtab vh100" ng-show="ec.shownForm=='payment' && ec.showsecnav == 'exchange'">
+        <div class="f9fafch"></div>
+        <form class="sendformaddr" name="sendMoveForm" ng-submit="ec.submitPaymentmove()" novalidate>
+            <div class="box-notification" ng-show="ec.error" ng-click="ec.resetError()">
+                      <span class="text-warning">
+                        {{ec.error|translate}}
+                      </span>
+                <a class="close-notification text-warning">&#215;</a>
+            </div>
+            <div class="traninput">
+                <div class="traninputin">
+                    <div class="item tranwallet">
+                        <div class="tranwalletimg" ng-click="index.showselectlayermove(1)">
+                            <div>
+                                <img class="tranifimg" ng-src="{{'./img/'+index.exExchangeFromImg+'ltimg.png'}}" />
+                                <div class="tranwalletimgin">{{index.exExchangeFromImg | uppercase}}</div>
+                            </div>
+                        </div>
+                        <div class="tranwalletin ellipsis">
+                            <div class="tranname">
+                                <span class="ellipsis">{{index.exExchangeFromName}}</span><label translate>Transfer out</label>
+                            </div>
+                            <input type="text" name="amount" maxlength="18" ng-maxlength="18" ng-model="index.exExchangeToStables" autocomplete="off"
+                                   placeholder="{{'Balance' | translate}} {{index.exExchangeFromStable}} {{index.exExchangeFromImg | uppercase}}"
+                                   valid-amount="{{index.exExchangeFromImg | uppercase}}"  />
+                        </div>
+                    </div>
+                    <div class="swopdiv">
+                        <img ng-src="./img/swoparrow.png" />
+                       <!-- <span translate>swop</span>-->
+                    </div>
+                    <div class="item tranwallet" ng-if="!ec.movenew">
+                        <div class="tranwalletimg" ng-click="index.showselectlayermove(2)">
+                            <div>
+                                <img class="tranifimg" ng-src="{{'./img/'+index.exExchangeToImg+'ltimg.png'}}" />
+                                <div class="tranwalletimgin">{{index.exExchangeToImg | uppercase}}</div>
+                            </div>
+                        </div>
+                        <div class="tranwalletin ellipsis">
+                            <div class="tranname">
+                                <span class="ellipsis">{{index.exExchangeToName}}</span><label translate>Transfer in</label>
+                            </div>
+                            <div class="traninputdiv"><span ng-show="index.exExchangeToStables*index.moveRate">&asymp;</span>{{index.exExchangeToStables*index.moveRate}}</div>
+                            <!--<input type="text" name="amount" maxlength="18" ng-maxlength="18" ng-value="index.exExchangeToStables*index.moveRate" autocomplete="off"
+                                   placeholder="{{'' | translate}}{{index.exExchangeToStable}}{{index.exExchangeToImg | uppercase}}" ng-disabled="true"/>-->
+                        </div>
+                    </div>
+                    <div class="item tranwallet tranmovenew" ng-if="ec.movenew">
+                        <div class="tranwalletimg" ng-click="index.showselectlayermove(2)">
+                            <div>
+                                <img class="tranifimg" src="./img/movenew.png" />
+                                <div class="tranwalletimgin" translate>New</div>
+                            </div>
+                        </div>
+                        <div class="tranwalletin">
+                            <div class="tranname">
+                                <span class="ellipsis" translate>You don't have a second currency wallet yet</span><label translate>Transfer in</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="exrate" ng-show="!ec.movenew">
+                    <div class="exratein"><span translate>Exchange rate</span>&nbsp;&nbsp;1&nbsp;{{index.exExchangeFromImg | uppercase}}&nbsp;&asymp;&nbsp;{{index.moveRate}}&nbsp;{{index.exExchangeToImg | uppercase}}</div>
+                    <div class="exratein"><span translate>Handling fee</span>&nbsp;&nbsp;({{index.exchangeRate * 100}}%)&nbsp;&asymp;&nbsp;{{index.exchangeRate * index.exExchangeToStables * index.moveRate}}&nbsp;{{index.exExchangeToImg | uppercase}}</div>
+                </div>
+            </div>
+            <!--<div class="traninfo">
+                <div class="traninfoin">
+                    <div class="item tranwallet">
+                        <img class="tranifimg" ng-src="{{'./img/'+index.exExchangeFromImg+'ltimg.png'}}" />
+                        <label translate>Transfer out wallet</label>
+                        &lt;!&ndash;<div class="moveinfo">
+                            <div class="size-14">{{index.exExchangeFromStable}} {{index.exExchangeFromImg | uppercase}}</div>
+                            <div class="size-12 nzcolor">{{index.exExchangeFromAddr}}</div>
+                        </div>&ndash;&gt;
+                        <div class="tranwalletin ellipsis">
+                            <input type="number" name="amount" maxlength="18" ng-model="index.exExchangeToStables" autocomplete="off"
+                                   placeholder="{{index.exExchangeFromImg | uppercase}}"/>
+                            <div class="ellipsis">{{index.exExchangeFromName}}</div>
+                        </div>
+                        <span class="transwicth" translate ng-click="index.showselectlayermove(1)" >Switch</span>
+                    </div>
+                    <div class="item tranwallet">
+                        <img class="tranifimg" ng-src="{{'./img/'+index.exExchangeToImg+'ltimg.png'}}" />
+                        <label translate>Transfer in wallet</label>
+                        <div class="tranwalletin ellipsis">
+                            <label ng-show="index.exExchangeToStables">&asymp;&nbsp;{{index.exExchangeToStables*index.moveRate}}&nbsp;{{index.exExchangeToImg | uppercase}}</label>
+                            <label ng-show="!index.exExchangeToStables">&asymp;&nbsp;0&nbsp;{{index.exExchangeToImg | uppercase}}</label>
+                            &lt;!&ndash;<input type="text" type="number" name="amount" maxlength="18" ng-model="index.exExchangeToStables" autocomplete="off"
+                                   placeholder="{{index.exExchangeToImg | uppercase}}"/>&ndash;&gt;
+                            <div class="ellipsis">{{index.exExchangeToName}}</div>
+                        </div>
+                        &lt;!&ndash;<div class="moveinfo">
+                            <div class="hmovenum size-14">{{index.exExchangeToStable}} {{index.exExchangeToImg | uppercase}}</div>
+                            <div class="size-12 nzcolor">{{index.exExchangeToAddr}}</div>
+                        </div>&ndash;&gt;
+                        <span class="transwicth" translate ng-click="index.showselectlayermove(2)" >Switch</span>
+                    </div>
+                    <div class="p15v size-12 nzcolor">
+                        <div><span translate>Exchange rate</span>&nbsp;1&nbsp;{{index.exExchangeFromImg | uppercase}}&nbsp;≈{{index.moveRate}}{{index.exExchangeToImg | uppercase}}&nbsp;</div>
+                        <div><span translate>Handling fee</span>（{{index.exchangeRate}}%）&asymp; {{index.exchangeRate * index.exExchangeToStables * index.moveRate * 0.01}}{{index.exExchangeToImg | uppercase}}</div>
+                    </div>
+                </div>
+            </div>-->
+            <div class="rlnode" ng-click="ec.showexmn = true;ec.getHandling(0)">
+                <img class="tranifimg" src="./img/middlenode.png" />
+                <label translate>Select relay node</label>
+                <span>{{index.middleNodeName}}<!-- <span translate>repeater</span>--></span>
+                <img src="./img/more.png" class="morerimg">
+            </div>
+
+            <div class="p15h m18b m45t">
+                <button type="submit" ng-disabled="sendMoveForm.$invalid || index.exExchangeFromImg == index.exExchangeToImg ||
+                         index.exExchangeToStables == '' || index.exExchangeFromAddr == '' || index.exExchangeToAddr == '' "
+                        translate>
+                    Exchange
+                </button>
+            </div>
+            <div class="exnote m20b" ng-show="index.helpshow">
+                <div class="exnotein">
+                    <span translate>Note:</span>&nbsp;
+                    <div translate>
+                        Exchange is to convert your one kind of currency to another.
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="sendtab vh100" ng-show="ec.shownForm=='payment' && ec.showsecnav == 'trade'">
+        <div class="f9fafch"></div>
+        <form class="sendformaddr" name="sendTransferForm" ng-submit="ec.submitPayment()" novalidate>
+            <div class="box-notification" ng-show="ec.error" ng-click="ec.resetError()">
+                      <span class="text-warning">
+                        {{ec.error|translate}}
+                      </span>
+                <a class="close-notification text-warning">&#215;</a>
+            </div>
+            <div class="traninfo">
+                <div class="title" translate>Trade initiator</div>
+                <div class="traninfoin">
+                    <div class="item tranwallet">
+                        <img class="tranifimg" ng-src="{{'./img/'+index.exTradeOutImg+'ltimg.png'}}" />
+                        <label translate>
+                            <div translate>Out</div>
+                            <div translate>wallet</div>
+                        </label>
+                        <div class="tranwalletin ellipsis">
+                            <input type="text" name="amount" maxlength="18" ng-model="index.exTradeOutStable" autocomplete="off"
+                                   placeholder="{{'Enter the amount' | translate}}"
+                                   valid-amount="{{index.exTradeOutImg | uppercase}}"/>
+                            <div class="ellipsis">{{index.exTradeOutName | translate}}</div>
+                        </div>
+                        <!--<input placeholder="{{'My transfer out wallet' | translate}}" ng-model="index.exTradeOutName"/>-->
+                        <span class="transwicth" translate ng-click="index.showselectlayer(1);" >Switch</span>
+                    </div>
+                    <div class="item tranwallet">
+                        <img class="tranifimg" ng-src="{{'./img/'+index.exTradeInImg+'ltimg.png'}}" />
+                        <label translate>
+                            <div translate>In</div>
+                            <div translate>wallet</div>
+                        </label>
+                        <div class="tranwalletin ellipsis">
+                            <input type="text" name="amount" maxlength="18" ng-model="index.exTradeInStable" autocomplete="off"
+                                   placeholder="{{'Enter the amount' | translate}}"
+                                   valid-amount="{{index.exTradeInImg | uppercase}}"/>
+                            <div class="ellipsis">{{index.exTradeInName | translate}}</div>
+                        </div>
+                        <!--<input placeholder="{{'Please choose the transfer in wallet' | translate}}" ng-model="index.exTradeInName"/>-->
+                        <span class="transwicth" translate ng-click="index.showselectlayer(2);" >Switch</span>
+                    </div>
+                </div>
+                <div class="exrate">
+                    <div class="exratein"><span translate>Exchange rate</span>&nbsp;&nbsp;1&nbsp;{{index.exTradeOutImg | uppercase}}&nbsp;&asymp;&nbsp;{{index.moveRateExchange}}&nbsp;{{index.exTradeToOutImg | uppercase}}</div>
+                    <div class="exratein"><span translate>Handling fee</span>&nbsp;&nbsp;({{index.exchangeRate * 100}}%)&nbsp;&asymp;&nbsp;{{index.exchangeRate * index.exTradeOutStable * index.moveRateExchange}}&nbsp;{{index.exTradeToOutImg | uppercase}}</div>
+                </div>
+            </div>
+            <!--<div class="trannum">
+                <div class="trannumt">
+                    <span translate class="size-14">Amount</span>
+                    <span translate class="size-12">0.34{{tf.unit}}</span>
+                </div>
+                <div class="trannumb p10b">
+                    <span translate>Available Balance</span>
+                    <span translate>1000</span>
+                </div>
+                <div class="exrate">
+                    <div><span translate>Exchange rate</span>&nbsp;1&nbsp;INVE&nbsp;≈&nbsp;0.00234 ETH</div>
+                    <div><span translate>Handling fee</span>（0.05%）&asymp; 0.00004 ETH</div>
+                </div>
+            </div>-->
+            <div class="tranexaddr">
+                <div class="title" translate>Trade recipient</div>
+                <div class="tranexaddrin">
+                    <div class="item">
+                        <img class="tranifimg" ng-src="{{'./img/'+index.exTradeToInImg+'ltimg.png'}}" />
+                        <label translate>
+                            <div translate>In</div>
+                            <div translate>address</div>
+                        </label>
+                        <input type="text" placeholder="{{'Enter the' | translate}} {{index.exPlaceholderToinAddr | translate}} {{'address' | translate}}" name="toinAddress" ng-model="index.toinAddress" id="indextoAddress"  valid-address="{{index.exTradeToInImg}}" />
+                        <div class="tranisimg" ng-click="index.openAddressModal(index.toinAddress,'','','','', 1)"></div>
+                    </div>
+                    <div class="item">
+                        <img class="tranifimg" ng-src="{{'./img/'+index.exTradeToOutImg+'ltimg.png'}}" />
+                        <label translate>
+                            <div translate>Out</div>
+                            <div translate>address</div>
+                        </label>
+                        <input type="text" placeholder="{{'Enter the' | translate}} {{index.exPlaceholderTooutAddr | translate}} {{'address' | translate}}" name="tooutAddress" ng-model="index.tooutAddress" valid-address="{{index.exTradeToOutImg}}"/>
+                        <div class="tranisimg" ng-click="index.openAddressModal(index.tooutAddress,'','','','', 2)"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="rlnode" ng-click="ec.showexmn = true;ec.getHandling(1)">
+                <img class="tranifimg" src="./img/middlenode.png" />
+                <label translate>Select relay node</label>
+                <span>{{index.middleNodeName}}<!-- <span translate>repeater</span>--></span>
+                <img src="./img/more.png" class="morerimg">
+            </div>
+            <div class="p15h m20b">
+                <button type="submit" ng-disabled="sendTransferForm.$invalid || index.toinAddress == '' || index.tooutAddress == '' || index.exTradeInName == 'Choose a wallet' || index.exTradeInName == '请选择钱包' || index.exTradeOutName == 'Choose a wallet' || index.exTradeOutName == '请选择钱包' || index.exTradeOutStable == '' || index.exTradeInStable == '' ||
+                        index.exTradeOutName == '' || index.exTradeInName == '' || !index.exTradeOutName || !index.exTradeInName" translate class="m30t">
+                    Confirm trade
+                </button>
+            </div>
+            <div class="exnote m20b" ng-show="index.helpshow">
+                <div class="exnotein">
+                    <span translate>Note:</span>&nbsp;
+                    <div>
+                        <div translate>Trade is the exchange of your token with the recipient's another kind of token.</div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--转移layer-->
+    <div ng-show="index.showselectwtmove" class="popconfirm walletpop">
+        <div class="popmask" ng-click="index.showselectwtmove = false;"></div>
+        <div class="popcontentwt animated upScaleIn">
+            <div class="sendswitchtab clearfix">
+                <div class="tab-container" ng-click="index.changesendType('INVE');" ng-class="{'selected': index.showpopwallet == 'INVE'}">
+                    <a  translate><img src="./img/inveltimg.png" />INVE</a>
+                </div>
+                <div class="tab-container" ng-click="index.changesendType('BTC');" ng-class="{'selected': index.showpopwallet == 'BTC'}">
+                    <a  translate><img src="./img/btcltimg.png" />BTC</a>
+                </div>
+                <div class="tab-container" ng-click="index.changesendType('ETH');" ng-class="{'selected': index.showpopwallet == 'ETH'}">
+                    <a  translate><img src="./img/ethltimg.png" />ETH</a>
+                </div>
+            </div>
+            <ul class="m0" ng-show="index.chooseWalletInfo">
+                <li ng-repeat="item in index.chooseWalletInfo" ng-click="index.findPaymentAddressmove(item.wallet,item.stables,item.walletName,item.address,item.type);">
+                    <div class="liin">
+                        <div class="ld">
+                            <span class="greendot"></span>
+                            <div class="limg">
+                                <img ng-src="{{item.image}}" />
+                            </div>
+                            <span class="lname" ng-show="item.walletName.length > 7">{{item.walletName | limitTo:7}}...</span>
+                            <span class="lname" ng-show="item.walletName.length <= 7">{{item.walletName}}</span>
+                        </div>
+                        <div class="rd">
+                            <span translate>Available amount:</span>&nbsp;<span class="flex1span">{{item.stables}}</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div ng-show="index.chooseWalletInfo.length == 0  && index.showpopwallet == 'INVE'" class="popbutton">
+                <button class="awbtn" ng-click="$root.go('import'); index.type='INVE';index.backdefault = true;index.showselectwtmove = false;" translate>Import INVE wallet</button>
+                <button ng-click="$root.go('addwallet'); index.type='INVE';index.backdefault = true;index.showselectwtmove = false;" translate>Create INVE wallet</button>
+            </div>
+            <div ng-show="index.chooseWalletInfo.length == 0 && index.showpopwallet == 'BTC'" class="popbutton">
+                <button class="awbtn" ng-click="$root.go('importbtc');index.backdefault = true;index.showselectwtmove = false;" translate>Import BTC wallet</button>
+                <button ng-click="$root.go('addwallet'); index.type='BTC';index.backdefault = true;index.showselectwtmove = false;" translate>Create BTC wallet</button>
+            </div>
+            <div ng-show="index.chooseWalletInfo.length == 0 && index.showpopwallet == 'ETH'" class="popbutton">
+                <button class="awbtn" ng-click="$root.go('importeth');index.backdefault = true;index.showselectwtmove = false;" translate>Import ETH wallet</button>
+                <button ng-click="$root.go('addwallet'); index.type='ETH';index.backdefault = true;index.showselectwtmove = false;" translate>Create ETH wallet</button>
+            </div>
+        </div>
+    </div>
+    <!--交换layer-->
+    <div ng-show="index.showselectwt" class="popconfirm walletpop">
+        <div class="popmask" ng-click="index.showselectwt = false;"></div>
+        <div class="popcontentwt animated upScaleIn">
+            <div class="sendswitchtab clearfix">
+                <div class="tab-container" ng-click="index.changesendType('INVE');" ng-class="{'selected': index.showpopwallet == 'INVE'}">
+                    <a  translate><img src="./img/inveltimg.png" />INVE</a>
+                </div>
+                <div class="tab-container" ng-click="index.changesendType('BTC');" ng-class="{'selected': index.showpopwallet == 'BTC'}">
+                    <a  translate><img src="./img/btcltimg.png" />BTC</a>
+                </div>
+                <div class="tab-container" ng-click="index.changesendType('ETH');" ng-class="{'selected': index.showpopwallet == 'ETH'}">
+                    <a  translate><img src="./img/ethltimg.png" />ETH</a>
+                </div>
+            </div>
+            <ul class="m0" ng-show="index.chooseWalletInfo">
+                <li ng-repeat="item in index.chooseWalletInfo" ng-click="index.findPaymentAddress(item.wallet,item.stables,item.walletName,item.address,item.type);">
+                    <div class="liin">
+                        <div class="ld">
+                            <span class="greendot"></span>
+                            <div class="limg">
+                                <img ng-src="{{item.image}}" />
+                            </div>
+                            <span class="lname" ng-show="item.walletName.length > 7">{{item.walletName | limitTo:7}}...</span>
+                            <span class="lname" ng-show="item.walletName.length <= 7">{{item.walletName}}</span>
+                        </div>
+                        <div class="rd">
+                            <span translate>Available amount:</span>&nbsp;<span class="flex1span">{{item.stables}}</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div ng-show="index.chooseWalletInfo.length == 0  && index.showpopwallet == 'INVE'" class="popbutton">
+                <button class="awbtn" ng-click="$root.go('import'); index.type='INVE';index.backdefault = true;index.showselectwt = false;" translate>Import INVE wallet</button>
+                <button ng-click="$root.go('addwallet'); index.type='INVE';index.backdefault = true;index.showselectwt = false;" translate>Create INVE wallet</button>
+            </div>
+            <div ng-show="index.chooseWalletInfo.length == 0 && index.showpopwallet == 'BTC'" class="popbutton">
+                <button class="awbtn" ng-click="$root.go('importbtc');index.backdefault = true;index.showselectwt = false;" translate>Import BTC wallet</button>
+                <button ng-click="$root.go('addwallet'); index.type='BTC';index.backdefault = true;index.showselectwt = false;" translate>Create BTC wallet</button>
+            </div>
+            <div ng-show="index.chooseWalletInfo.length == 0 && index.showpopwallet == 'ETH'" class="popbutton">
+                <button class="awbtn" ng-click="$root.go('importeth');index.backdefault = true;index.showselectwt = false;" translate>Import ETH wallet</button>
+                <button ng-click="$root.go('addwallet'); index.type='ETH';index.backdefault = true;index.showselectwt = false;" translate>Create ETH wallet</button>
+            </div>
+        </div>
+    </div>
+    <!--确认交换后的弹窗-->
+    <div ng-show="index.showexhash" class="popconfirm exchangepop">
+        <div class="popmask" ng-click="index.showexhash = false;"></div>
+        <div class="popcontentwt">
+            <div class="excontent">
+                <div class="hashaddr">
+                    <span>Hash:</span>
+                    <span>{{ 'gsdfgsdffgsdfgsdgsdfgsdffgsdfgsd' | tenEllips}}</span>
+                    <img src="./img/copy.png"/></div>
+                <div class="hashtip" translate>Please send the hash value to the accepting exchange</div>
+            </div>
+            <div class="exok">
+                <button translate ng-click="index.showexhash = false;index.showexok = true;">I know</button>
+            </div>
+        </div>
+    </div>
+    <!--确认交换后的弹窗-->
+    <div ng-show="index.showexok" class="popconfirm exchangepop">
+        <div class="popmask" ng-click="index.showexok = false;"></div>
+        <div class="popcontentwt">
+            <div class="addpassl">
+                <img src="./img/close.png" ng-click="index.showexok = false;">
+                <label class="size-16 center">
+                    <span translate>Confirm exchange</span>
+                </label>
+            </div>
+            <div class="addpassi">
+                <div class="hashtext">
+                    <input type="text"  ng-attr-placeholder="Hash" ng-minlength="1" ng-maxlength="20" placeholder="Hash" >
+                </div>
+                <div class="size-14 m20t center">
+                    <span>{{index.exTradeOutStable}}&nbsp;{{index.exTradeOutImg | uppercase}}</span>
+                </div>
+                <button ng-disabled="!pass.password" disabled="disabled">
+                    <span translate>OK</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!--中继节点的弹窗-->
+    <div ng-show="ec.showexmn" class="popconfirm">
+        <div class="popmask" ng-click="ec.showexmn = false;"></div>
+        <div class="popcontentwt popmn animated upScaleIn">
+            <table>
+                <thead>
+                    <tr>
+                        <th translate>Relay name</th>
+                        <th translate>Handling rate</th>
+                        <th translate>Exchange rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in index.relayObject" ng-click="index.changeRelay(item.pubkey);ec.showexmn=false">
+                        <td><a>{{item.name}}</a></td>
+                        <td><a>{{item.feeRatio * 100}}%</a></td>
+                        <td><a><span>{{item.rate}}</span><span>&nbsp;{{item.to}}</span></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="popmnnoinfo" ng-show="index.relayObject.length == 0">
+                <img src="./img/nonews.png" />
+                <span translate>No relay node</span>
+            </div>
+        </div>
+    </div>
+    <div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>
+</div> <!-- END exchange -->

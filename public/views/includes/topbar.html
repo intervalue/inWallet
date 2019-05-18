@@ -1,0 +1,62 @@
+<nav ng-controller="topbarController as topbar" class="tab-bar">
+    <section class="left-small">
+        <!--默认按路由返回-->
+        <a ng-show="goBackToState"
+           ng-click="$root.go('^', true); goBackToState = null">
+            <img src="./img/back.png" />
+        </a>
+        <!--返回到首页-->
+        <a ng-show="closeToHome"
+           ng-click="topbar.goHome(); closeToHome = null;index.backhome = false;">
+            <img src="./img/back.png" />
+        </a>
+        <!--返回到子首页-->
+        <a ng-show="goTochome"
+           ng-click="topbar.goChome(); goTochome = null;index.backchome = false;">
+            <img src="./img/back.png" />
+        </a>
+        <!--返回到钱包列表页面-->
+        <a ng-show="goToWallet"
+           ng-click="topbar.goWallet();goToWallet = null;index.backwallet = false;">
+            <img src="./img/back.png" />
+        </a>
+        <!--返回到钱包列表信息页面-->
+        <a ng-show="goToWaname"
+           ng-click="topbar.goToWaname(); goToWaname = null;index.backwaname = false;">
+            <img src="./img/back.png" />
+        </a>
+        <!--返回到钱包列表信息页面-->
+        <a ng-show="goToPass"
+           ng-click="topbar.goToPass(); goToPass = null;index.backpass = false;">
+            <img src="./img/back.png" />
+        </a>
+        <!--返回到发现页面-->
+        <a ng-show="goToNews"
+           ng-click="topbar.goNews();goToNews = null;">
+            <img src="./img/back.png" />
+        </a>
+        <!--浏览器默认的返回-->
+        <a ng-show="goToBackDefault"
+           ng-click="index.gobackDeft();goToBackDefault = null;index.backdefault=false;">
+            <img src="./img/back.png" />
+        </a>
+    </section>
+
+    <section class="right-small" ng-show="index.isCordova">
+        <qr-scanner ng-show="showCamera && index.isComplete" on-scan="topbar.onQrCodeScanned(data)" before-scan="topbar.onBeforeScan()"></qr-scanner>
+        <qr-scanner ng-show="showCamerahot && index.isComplete" on-scan="topbar.onQrCodeScannedAddr(data)" before-scan="topbar.onBeforeScan()"></qr-scanner>
+    </section>
+    <section class="middle tab-bar-section">
+        <h1 class="title ellipsis">
+            <span ng-if="index.arrBalances[index.assetIndex].shared === undefined && !index.shared_address || titleSection">{{(titleSection|translate) || (index.shared_address || index.alias || index.walletName)}}</span>
+            <span ng-if="(index.arrBalances[index.assetIndex].shared !== undefined || index.shared_address) && !titleSection">
+                <a ng-click="index.openSubwalletModal()" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}">
+                    <span class="ellipsis" style="max-width: calc(100% - 14px);float: left;">
+                        {{(index.shared_address || index.alias || index.walletName)}}
+                    </span>
+                    <span class="arrow-down" ng-style="{'float': 'left', 'border-top-color': index.backgroundColor}"></span>
+                </a>
+            </span>
+        </h1>
+    </section>
+</nav>

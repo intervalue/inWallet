@@ -1,0 +1,122 @@
+<!-- 聊天视图 -->
+<div ng-controller="correspondentDeviceController as corresDevice" class="view_chat_box">
+
+    <!-- top bar 板块 -->
+    <nav class="tab-bar chatcurchattop">
+        <!-- 返回 -->
+        <section class="left-small">
+            <a ng-click="goToCorrespondentDevices()">
+                <img src="./img/back.png">
+            </a>
+        </section>
+        <!-- 设备名作为title -->
+        <section class="middle tab-bar-section">
+            <h1 class="title ellipsis" >
+                {{correspondent.name}}
+            </h1>
+        </section>
+        <!-- 编辑 -->
+        <section class="right-small" ng-click="editCorrespondent()">
+            <a>
+                <img src="./img/setting.png">
+            </a>
+        </section>
+    </nav>
+    <style>
+
+
+    </style>
+
+
+    <!--<div class="onGoingProcess" ng-show="onGoingProcess">
+        <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+            <div class="spinner">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+            </div>
+            {{onGoingProcess}}...
+        </div>
+    </div>-->
+    <div class="progresslayer" ng-show="onGoingProcess">
+        <div class="spinner1">
+            <div class="cube1"></div>
+            <div class="cube2"></div>
+        </div>
+        <div class="progresslayerin">
+            <span translate>{{onGoingProcess}}...</span>
+        </div>
+    </div>
+    <!-- 聊天记录信息展示板块 -->
+    <div class="message-log size-12 enable_text_select chatlist" scroll-bottom="messageEvents" when-scrolled="loadMoreHistory"
+         bind-to-height="['bottom','form[name=chatForm]']"
+         ng-mousemove="newMsgCounterEnabled ?'': newMessagesCount[correspondent.device_address] = 0">
+        <div class="chat-message clearfix" ng-repeat="messageEvent in messageEvents" >
+            <div ng-class="messageEvent.bIncoming ? 'from-them' : (messageEvent.type == 'system' ? 'system' : 'from-me')"
+                 class="bubble " ><span class="chatname">{{messageEvent.bIncoming ? (correspondent.name | limitTo:1) : 'me'}} </span>
+                <span dynamic="messageEvent.message"></span></div>
+            <span class=""></span>
+            <div ng-class="(messageEvent.bIncoming ? 'lefttime' : 'righttime')" class="msg-ts "
+                 ng-if="messageEvent.type != 'system'">{{messageEvent.timestamp * 1000 | date:'shortTime'}}
+            </div>
+            <!--/div-->
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+    <!-- 聊天表单板块 -->
+
+    <form name="chatForm" class="send-form mychatcurform  " id="mychatcurform" no-validate
+          ng-mousemove="newMsgCounterEnabled ?'': newMessagesCount[correspondent.device_address] = 0">
+        <!-- 左侧功能选项anniu -->
+
+        <!-- 左侧功能选项 -->
+        <div class="chatsendform">
+            <img src="./img/chatdrop.png" class="left" dropdown-toggle="#drop" id="chatltmessage" data-options="align:top"/>
+            <textarea class="text_content" msd-elastic rows="1"  id="message" enable_text_select name="message" ng-model="message"></textarea>
+            <!-- 发送按钮 -->
+            <input type="submit" class="chatsend"
+                   ng-disabled="!chatForm.$valid"
+                   ng-click="send()" value="" />
+        </div>
+        <ul id="drop" class="f-dropdown drop-top drop-up" data-dropdown-content>
+            <!-- 插入我的地址（小额钱包） -->
+            <li ng-click="showwalletaddr();" >
+                <img src="./img/popadd.png" /><span translate>insert my address</span>
+            </li>
+            <!-- 请求付款（小额钱包） -->
+            <li ng-click="requestPayment();" >
+                <img src="./img/droppay.png" /><span translate>request payment</span>
+            </li>
+        </ul>
+
+    </form>
+    <div ng-show="showselectwt" class="popconfirm">
+        <div class="popmask" ng-click="showselectwt = false;"></div>
+        <div class="popcontentwt animated upScaleIn">
+            <div class="sendswitchtab clearfix">
+                <div class="tab-container">
+                    <a  translate><img src="./img/inveltimg.png" />INVE</a>
+                </div>
+            </div>
+            <ul class="m0">
+                <li ng-repeat="item in index.walletType.INVE" ng-click="insertMyAddress(item.wallet);">
+                    <div class="liin">
+                        <div class="ld">
+                            <span class="greendot"></span>
+                            <div class="limg">
+                                <img ng-src="{{item.image}}" />
+                            </div>
+                            <span class="lname">{{item.walletName}}</span>
+                        </div>
+                        <div class="rd">
+                            <span translate>Available amount:</span>&nbsp;<span class="flex1span">{{item.stables}}</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

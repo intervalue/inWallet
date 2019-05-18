@@ -1,0 +1,52 @@
+<div ng-controller="importwalletController as import">
+    <!--密码转到的导入页面-->
+    <!--导入钱包-导入钱包  start-->
+    <div class="cwpage iwpage pfixed topp">
+        <!--返回密码页面-->
+        <div ng-if="index.backpass">
+            <div
+                    class="topbar-container"
+                    ng-include="'views/includes/topbar.html'"
+                    ng-init="titleSection='Import wallet'; goToPass = true;">
+            </div>
+        </div>
+        <div class="cwpagein">
+            <div>
+                <div translate>Wallet Seed :</div>
+                <textarea placeholder="{{'Enter your mnemonic, separated by spaces'|translate}}" ng-model="import.importcode"></textarea>
+                <form name="creatwform"  novalidate>
+                    <div class="adinputitem" mdinputvalidc>
+                        <div class="adinputic">
+                            <div class="adinputimg aiwname"></div>
+                            <input type="text" ng-model="import.importname" mdinputname ng-attr-placeholder="{{'Wallet name'|translate}}" autocomplete="off"
+                                   ng-minlength="1" ng-maxlength="20" minlength="1" maxlength="20" />
+                        </div>
+                        <p class="adinputp" translate></p>
+                    </div>
+                    <div class="adinputitem" mdinputvalidc>
+                        <div class="adinputic">
+                            <div class="adinputimg aiwpass"></div>
+                            <input type="password" autocomplete="new-password" name="aiwpass" mdinputpass ng-model="import.importpass" ng-attr-placeholder="{{'Password'|translate}}"
+                                   autocomplete="off" ng-minlength="1" ng-maxlength="18" minlength="1" maxlength="18" />
+                        </div>
+                        <p class="adinputp" translate></p>
+                    </div>
+                    <div class="adinputitem" ng-class="{'setErrorexp':creatwform.aiwpass.$valid && import.importpass !== import.importrpass && import.importrpass !== ''}">
+                        <div class="adinputic">
+                            <div class="adinputimg aiwrpass"></div>
+                            <input type="password" autocomplete="new-password" name="aiwrpass" ng-model="import.importrpass"
+                                   placeholder="{{'Repeat password'|translate}}" autocomplete="off"
+                                   ng-minlength="1" ng-maxlength="18" minlength="1" maxlength="18"
+                            />
+                        </div>
+                        <p class="adinputpass" translate ng-show="creatwform.aiwpass.$valid && import.importpass !== import.importrpass && import.importrpass !== ''">*Inconsistent password</p>
+                    </div>
+                    <button class="m40t m15b" ng-click="import.recoveryWallet(import.walletId,import.name)" ng-disabled="!import.importcode || !import.importname || !import.importpass || !import.importrpass || creatwform.$invalid || import.importpass !== import.importrpass" translate>Start importing</button>
+                    <div class="size-12 nsfcolor" translate>Note: Please be patient while the wallet is recovering. Do not quit the software.</div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <!--导入钱包-导入钱包  end-->
+</div>

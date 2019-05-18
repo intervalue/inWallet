@@ -1,0 +1,13 @@
+<div ng-controller="stornetController as ss">
+    <nav ng-controller="topbarController as topbar" class="tab-bar">
+        <section class="left-small">
+            <a ng-click="topbar.goNews()">
+                <img src="./img/back.png">
+            </a>
+        </section>
+    </nav>
+    <div class="stornet">
+        <iframe src="{{storSrc}}"></iframe>
+    </div>
+</div>
+

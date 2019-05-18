@@ -1,0 +1,201 @@
+<div class="preferences pfixed topp" ng-controller="preferencesGlobalController as prefGlobal"
+     ng-init="prefGlobal.init()">
+    <div
+            class="topbar-container"
+            ng-include="'views/includes/topbar.html'"
+            ng-init="titleSection='Settings'; goToWallet = true; noColor = true">
+    </div>
+    <div class="f9fafch"></div>
+    <ul class="no-bullet m0 ">
+        <!--<li>-->
+        <!--<div translate>Small transaction free password</div>-->
+        <!--<switch id="network-name" name="encrypt" ng-model="encrypt" class="green right"></switch>-->
+        <!--</li>-->
+
+
+        <li ng-click="$root.go('preferencesGlobal.preferencesCurrency')" class="preflitwo">
+            <div class="ld">
+                <div class="limg">
+                    <img src="./img/settingco.png"/>
+                </div>
+                <span translate>Valuation currency</span>
+            </div>
+            <div class="rd">
+                <span ng-show="prefGlobal.currentLanguageName == 'English'">{{prefGlobal.currentCurrencyEnName}}</span>
+                <span ng-show="prefGlobal.currentLanguageName == '中文'">{{prefGlobal.currentCurrencyName}}</span>
+                <img src="./img/more.png" class="morerimg"/>
+            </div>
+        </li>
+        <li ng-click="$root.go('preferencesGlobal.preferencesLanguage')">
+            <div class="ld">
+                <div class="limg">
+                    <img src="./img/settinglg.png"/>
+                </div>
+                <span translate>Language</span>
+            </div>
+            <div class="rd">
+                {{prefGlobal.currentLanguageName}}
+                <img src="./img/more.png" class="morerimg"/>
+            </div>
+        </li>
+        <li ng-click="$root.go('preferencesGlobal.preferencesAbout')" class="prefabout">
+            <div class="ld">
+                <div class="limg">
+                    <img src="./img/settingab.png"/>
+                </div>
+                <span translate>About inWallet</span>
+            </div>
+            <div class="rd">
+                <img src="./img/more.png" class="morerimg"/>
+            </div>
+        </li>
+        <li>
+            <div class="ld">
+                <div class="limg">
+                    <img src="./img/settinghelp.png"/>
+                </div>
+                <span translate>Show help and explain</span>
+            </div>
+            <div class="rd">
+                <switch id="help-showc" name="helpshowc" ng-model="helpshowc" class="green right"></switch>
+            </div>
+        </li>
+
+        <li>
+            <div class="ld" style="flex: 1">
+                <!--<button style="width: 100%" translate>重新同步交易数据</button>-->
+                <div style="text-align: center;color: #fff;background: #3B3B3B;line-height: 36px;flex: 1;border-radius: 5px"
+                     ng-click="prefGlobal.showconfirm = true" translate>resynchronize transaction data
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <div ng-if="prefGlobal.showconfirm" class="popconfirm">
+        <div class="popmask" ng-click="prefGlobal.showconfirm = false;"></div>
+        <div class="popcontent">
+            <div class="fleximgtextc m20b p25h">
+                <img src="./img/qwrancode.png">
+            </div>
+            <p class="poptips p25h" translate>Please confirm whether to perform data synchronization. After execution, the local transaction data will be cleared, and the main network will be reconnected to synchronize historical transaction data.</p>
+            <div class="p25h popbutton">
+                <button translate ng-click="prefGlobal.Btnclick()">Confirm</button>
+                <button class="awbtn" ng-click="prefGlobal.showconfirm = false;" translate>Cancel</button>
+            </div>
+        </div>
+    </div>
+    <!--<li  ng-click="$root.go('preferencesGlobal.preferencesDeviceName')">-->
+    <!--<div class="right text-gray">-->
+    <!--{{prefGlobal.deviceName}}-->
+    <!--<i class="icon-arrow-right3 size-24"></i>-->
+    <!--</div>-->
+    <!--<div translate>Device name</div>-->
+    <!--</li>-->
+    <!--<li  ng-click="$root.go('preferencesGlobal.preferencesHub')">-->
+    <!--<div class="right text-gray">-->
+    <!--{{prefGlobal.hub}}-->
+    <!--<i class="icon-arrow-right3 size-24"></i>-->
+    <!--</div>-->
+    <!--<div translate>Hub</div>-->
+    <!--</li>-->
+    <!--<li ng-show="!index.isCordova" ng-click="$root.go('preferencesGlobal.preferencesTor')">-->
+    <!--<div class="right text-gray">-->
+    <!--<span translate>{{prefGlobal.torEnabled?'On':'Off'}}</span>-->
+    <!--<i class="icon-arrow-right3 size-24"></i>-->
+    <!--</div>-->
+    <!--<div translate>TOR</div>-->
+    <!--</li>-->
+    <!--<li ng-click="$root.go('preferencesGlobal.preferencesUnit')">-->
+    <!--<div class="right text-gray">-->
+    <!--{{prefGlobal.unitName}}-->
+    <!--<i class="icon-arrow-right3 size-24"></i>-->
+    <!--</div>-->
+    <!--<div translate>Unit for bytes</div>-->
+    <!--</li>-->
+    <!--<li ng-click="$root.go('preferencesGlobal.preferencesBbUnit')">-->
+    <!--<div class="right text-gray">-->
+    <!--{{prefGlobal.bbUnitName}}-->
+    <!--<i class="icon-arrow-right3 size-24"></i>-->
+    <!--</div>-->
+    <!--</li>-->
+    <!--<div ng-show="index.usePushNotifications">-->
+    <!--<h4></h4>-->
+    <!--<ul class="no-bullet m0">-->
+    <!--<li>-->
+    <!--<switch id="push-notifications" name="pushNotifications" ng-model="pushNotifications" class="green right"></switch>-->
+    <!--<div translate>Enable push notifications</div>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!--</div>-->
+    <!--<h4 translate>Trusted nodes</h4>-->
+    <!--<ul class="no-bullet m0">-->
+    <!--<li ng-click="$root.go('preferencesGlobal.preferencesWitnesses')">-->
+    <!--<i class="icon-arrow-right3 size-24 right text-gray"></i>  -->
+    <!--<div translate>Witnesses</div>-->
+    <!--</li>-->
+    <!--<li ng-click="$root.go('preferencesGlobal.preferencesAttestorAddresses')">-->
+    <!--<i class="icon-arrow-right3 size-24 right text-gray"></i>  -->
+    <!--<div translate>Attestor addresses</div>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!---->
+    <!--<h4 translate>Device address</h4>-->
+    <!--<ul class="no-bullet m0 enable_text_select">-->
+    <!--<li>-->
+    <!--<div>{{prefGlobal.myDeviceAddress}}</div>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!--<h4 translate>Backups</h4>-->
+    <!---->
+    <!--<ul class="no-bullet m0">-->
+    <!--<li ng-click="$root.go('preferencesGlobal.backup')"  ng-hide="index.isPrivKeyExternal">-->
+    <!--<div class="right text-gray">-->
+    <!--<span class="text-warning" ng-show="index.needsBackup">-->
+    <!--<i class="fi-alert"></i><span translate>Still not done</span>-->
+    <!--</span>-->
+    <!--<i class="icon-arrow-right3 size-24 text-gray"></i>-->
+    <!--</div>-->
+    <!--<div translate>Backup wallet seed</div>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!--<ul class="no-bullet m0">-->
+    <!--<li ng-click="$root.go('preferencesGlobal.recoveryFromSeed')"  ng-hide="index.isPrivKeyExternal">-->
+    <!--<div class="right text-gray">-->
+    <!--<i class="icon-arrow-right3 size-24 text-gray"></i>-->
+    <!--</div>-->
+    <!--<div translate>Recovery from seed</div>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!---->
+    <!--<ul class="no-bullet m0">-->
+    <!--<li ng-click="$root.go('preferencesGlobal.export')"  ng-hide="index.isPrivKeyExternal">-->
+    <!--<div class="right text-gray">-->
+    <!--<i class="icon-arrow-right3 size-24 text-gray"></i>-->
+    <!--</div>-->
+    <!--<div translate>Full backup</div>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!---->
+    <!--<ul class="no-bullet m0">-->
+    <!--<li ng-click="$root.go('preferencesGlobal.import')"  ng-hide="index.isPrivKeyExternal">-->
+    <!--<div class="right text-gray">-->
+    <!--<i class="icon-arrow-right3 size-24 text-gray"></i>-->
+    <!--</div>-->
+    <!--<div translate>Restore from full backup</div>-->
+    <!--</li>-->
+    <!--</ul>-->
+</div>
+<!--
+<div class="content preferences" ng-controller="preferencesController as preferences" ng-init="preferences.init()">
+  <div ng-show="!index.noFocusedWallet && index.canSign && preferences.touchidAvailable">
+    <h4 translate  ng-show="index.canSign">
+      Spending Restrictions
+    </h4>
+    <ul class="no-bullet m0">
+      <li  ng-show="preferences.touchidAvailable">
+        <switch id="touchid" name="touchid" ng-model="touchid" class="green right"></switch>
+        <div translate>Scan Fingerprint</div>
+      </li>
+    </ul>
+  </div>
+</div>-->

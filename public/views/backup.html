@@ -1,0 +1,86 @@
+<div class="preferences pfixed topp" ng-controller="wordsController as wordbacksC">
+    <div>
+        <!--返回到首页-->
+        <div ng-if="index.backhome">
+            <div
+                    class="topbar-container"
+                    ng-include="'views/includes/topbar.html'"
+                    ng-init="titleSection='Backup'; closeToHome = true">
+            </div>
+        </div>
+        <!--返回到子首页-->
+        <div ng-if="index.backchome">
+            <div
+                    class="topbar-container"
+                    ng-include="'views/includes/topbar.html'"
+                    ng-init="titleSection='Backup'; goTochome = true;">
+            </div>
+        </div>
+        <!--返回到钱包列表页面-->
+        <div ng-if="index.backwallet">
+            <div
+                    class="topbar-container"
+                    ng-include="'views/includes/topbar.html'"
+                    ng-init="titleSection='Backup'; goToWallet = true">
+            </div>
+        </div>
+        <!--返回到钱包列表信息页面-->
+        <div ng-if="index.backwaname">
+            <div
+                    class="topbar-container"
+                    ng-include="'views/includes/topbar.html'"
+                    ng-init="titleSection='Backup'; goToWaname = true;">
+            </div>
+        </div>
+    </div>
+    <div class="f9fafch"></div>
+    <div ng-show="!wordbacksC.mnemonicWords && wordbacksC.deleted">
+        <div class="adddbackup">
+            <div class="adddbackupimg">
+                <img src="./img/backupdelete.png"/>
+            </div>
+            <div class="adddbackuptext" translate>The wallet password has been deleted</div>
+        </div>
+    </div>
+ 
+    <div ng-show="wordbacksC.mnemonicWords || (wordbacksC.credentialsEncrypted && !wordbacksC.deleted)">
+        <div class="addbsswicth">
+            <div class="addbsswicthd" translate ng-if="!wordbacksC.show">Show wallet seed</div>
+            <div class="addbsswicthd" translate ng-if="wordbacksC.show">Hide wallet seed</div>
+            <a ng-click="wordbacksC.toggle()">
+                <switch translate ng-model="showSwitch" class="green right"></switch>
+            </a>
+        </div>
+
+        <div ng-show="wordbacksC.show" class="backupmain">
+            <div translate>The wallet password:</div>
+            <div translate class="m5t">It is highly recommended that you write your password on paper and have a safe place, do not take screenshots or take photos, and do not use the same password on multiple devices.Once you have written your wallet password, it is recommended to remove the password from the device.</div>
+    
+            <div class="backslcbox nzcolor">
+                <span ng-repeat="word in wordbacksC.mnemonicWords track by $index">{{word}}</span>
+            </div>
+
+            <div class="fleximgtext">
+                <img src="./img/triwarn.png"/>
+                <div translate class="redcolor size-12">Once you have written your wallet password, it is recommended to remove the password from the device.</div>
+            </div>
+            <button class="m30t" ng-click="wordbacksC.delete()" >
+                <span translate>Delete the wallet code</span>
+            </button>
+        </div>
+    </div>
+    <div ng-if="wordbacksC.showconfirm" class="popconfirm">
+        <div class="popmask" ng-click="wordbacksC.showconfirm = false;"></div>
+        <div class="popcontent">
+            <div class="fleximgtextc m20b p25h">
+                <img src="./img/qdeletecode.png">
+                <div translate class="size-16 redcolor">Are you sure you want to delete the mnemonic?</div>
+            </div>
+            <p class="poptips p25h" translate>This will completely remove the mnemonics from the app and it will not be recoverable. Please reconfirm that you have backed up your mnemonics to a safe place.</p>
+            <div class="p25h popbutton">
+                <button ng-click="wordbacksC.deleteyes();" translate>Confirm</button>
+                <button class="awbtn" ng-click="wordbacksC.showconfirm = false;" translate>Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

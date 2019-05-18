@@ -1,0 +1,13 @@
+<div class="passModalMask">
+ </div>
+
+<div class="alertModal">
+  <div>
+    <div class="size-14 center enable_text_select">
+        {{index.showAlert2.msg|translate}}{{index.showAlert.msg|translate}}
+    </div>
+  <div class="center m20t">
+      <button ng-click="index.showAlert2.msg='';(index.showAlert == true || index.showAlert == false)?1:index.showAlert.msg='';index.showAlert = false;" translate>OK</button>
+    </div>
+  </div>
+ </div>

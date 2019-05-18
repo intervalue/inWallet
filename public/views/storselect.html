@@ -1,0 +1,27 @@
+<div ng-controller="storselectController as ss" class="storselectlr pfixed topp">
+    <nav ng-controller="topbarController as topbar" class="tab-bar">
+        <section class="left-small">
+            <a ng-click="topbar.goNews()">
+                <img src="./img/back.png">
+            </a>
+        </section>
+    </nav>
+    <div class="storselect">
+        <div class="item" ng-click="$root.go('rent');">
+            <div class="itemimg"><img src="./img/stornet.png"/></div>
+            <div class="iteminfo">
+                <div class="title">StorNet</div>
+                <div class="desc" translate>You can enjoy this space by purchasing StorNet storage service, the price is definitely cheaper than S3</div>
+            </div>
+        </div>
+        <div class="storor"><span>OR</span></div>
+        <div class="item" ng-click="$root.go('hashset')">
+            <div class="itemimg"><img src="./img/hashstor.png"/></div>
+            <div class="iteminfo">
+                <div class="title">HashStor</div>
+                <div class="desc" translate>Exclusive service for HashStor storage device users, with more privacy</div>
+            </div>
+        </div>
+    </div>
+</div>
+

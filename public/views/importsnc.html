@@ -1,0 +1,64 @@
+<div ng-controller="importsncController as importsnc">
+    <!--导入钱包-导入钱包  start-->
+    <div class="cwpage iwpage pfixed topp" ng-init="importsnc.showtab = 'mnemonic'">
+        <!--返回到首页-->
+        <div ng-if="index.backhome">
+            <div
+                    class="topbar-container"
+                    ng-include="'views/includes/topbar.html'"
+                    ng-init="titleSection='Import SNC wallet'; closeToHome = true;showCamera = true;">
+            </div>
+        </div>
+        <!--浏览器默认的返回-->
+        <div ng-if="index.backdefault">
+            <div
+                    class="topbar-container"
+                    ng-include="'views/includes/topbar.html'"
+                    ng-init="titleSection='Import SNC wallet'; goToBackDefault = true;showCamera = true;">
+            </div>
+        </div>
+        <div class="tabclicktitle">
+            <div class="tab-container">
+                <a translate>Mnemonic</a>
+            </div>
+        </div>
+        <div class="cwpagein">
+            <div>
+                <div class="nsfcolor size-12 m10b">
+                    <span translate>Please use the English input method to enter the passwords in order, ensuring that there is only one English space between the words.</span>
+                </div>
+                <textarea ng-model="importsnc.importcode1"></textarea>
+                <form name="creatwform"  novalidate>
+                    <div class="adinputitem" mdinputvalidc>
+                        <div class="adinputic">
+                            <div class="adinputimg aiwname"></div>
+                            <input type="text" ng-model="importsnc.addwiname1" mdinputname ng-attr-placeholder="{{'Wallet name'|translate}}" autocomplete="off"
+                                   ng-minlength="1" ng-maxlength="20" minlength="1" maxlength="20" />
+                        </div>
+                        <p class="adinputp" translate></p>
+                    </div>
+                    <div class="adinputitem" mdinputvalidc>
+                        <div class="adinputic">
+                            <div class="adinputimg aiwpass"></div>
+                            <input type="password" autocomplete="new-password" name="aiwpass" ng-model="importsnc.addwipass1" mdinputpass ng-attr-placeholder="{{'Password'|translate}}"
+                                   autocomplete="off" ng-minlength="1" ng-maxlength="18" minlength="1" maxlength="18" />
+                        </div>
+                        <p class="adinputp" translate></p>
+                    </div>
+                    <div class="adinputitem" ng-class="{'setErrorexp':creatwform.aiwpass1.$valid && importsnc.addwirpass1 !== importsnc.addwipass1 & importsnc.addwirpass1 !== ''}">
+                        <div class="adinputic">
+                            <div class="adinputimg aiwrpass"></div>
+                            <input type="password" autocomplete="new-password" name="aiwrpass" ng-model="importsnc.addwirpass1"
+                                   placeholder="{{'Repeat password'|translate}}" autocomplete="off"
+                                   ng-minlength="1" ng-maxlength="18" minlength="1" maxlength="18"
+                            />
+                        </div>
+                        <p class="adinputpass" translate ng-show="creatwform.aiwpass1.$valid && importsnc.addwirpass1 !== importsnc.addwipass1 & importsnc.addwirpass1 !== ''">*Inconsistent password</p>
+                    </div>
+                    <button class="m40t m15b" ng-click="importsnc.importSeed_eth()" ng-disabled="!importsnc.importcode1 || !importsnc.addwipass1 || !importsnc.addwirpass1 || creatwform.$invalid || importsnc.addwirpass1 !== importsnc.addwipass1" translate>Start importing</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--导入钱包-导入钱包  end-->
+</div>

@@ -1,0 +1,20 @@
+<div class="preferences pfixed topp" ng-controller="preferencesCurrencyController as prefCoin">
+    <div
+            class="topbar-container"
+            ng-include="'views/includes/topbar.html'"
+            ng-init="titleSection='Settings'; goBackToState = true; noColor = true">
+    </div>
+    <div class="f9fafch"></div>
+    <ul class="no-bullet m0 ">
+        <li ng-repeat="currency in prefCoin.availableCurrenry" ng-click="prefCoin.save(currency.isoCode)">
+            <div class="ld">
+                <span  ng-show="prefCoin.currentLanguageName == '中文'">{{currency.name}}</span>
+                <span  ng-show="prefCoin.currentLanguageName == 'English'" >{{currency.enname}}</span>
+            </div>
+            <div class="rd">
+                <img style="width:13px;" src="./img/right.png" ng-show="index.defaultCurrencyIsoCode == currency.isoCode"/>
+            </div>
+        </li>
+    </ul>
+</div>
+

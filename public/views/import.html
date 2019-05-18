@@ -1,0 +1,98 @@
+<div ng-controller="importController as import">
+	<!--导入钱包-导入钱包  start-->
+	<div class="cwpage iwpage pfixed topp" ng-init="import.showtab = 'tabcold'">
+		<!--返回到首页-->
+		<div ng-if="index.backhome && import.showtab == 'tabcold'">
+			<div
+					class="topbar-container"
+					ng-include="'views/includes/topbar.html'"
+					ng-init="titleSection='Import INVE wallet'; closeToHome = true;">
+			</div>
+		</div>
+		<!--浏览器默认的返回-->
+		<div ng-if="index.backdefault && import.showtab == 'tabcold'">
+			<div
+					class="topbar-container"
+					ng-include="'views/includes/topbar.html'"
+					ng-init="titleSection='Import INVE wallet'; goToBackDefault = true;">
+			</div>
+		</div>
+		<!--返回到首页-->
+		<div ng-if="index.backhome && import.showtab == 'tabhot'">
+			<div
+					class="topbar-container"
+					ng-include="'views/includes/topbar.html'"
+					ng-init="titleSection='Import INVE wallet'; closeToHome = true;showCamerahot = true;">
+			</div>
+		</div>
+		<!--浏览器默认的返回-->
+		<div ng-if="index.backdefault && import.showtab == 'tabhot'">
+			<div
+					class="topbar-container"
+					ng-include="'views/includes/topbar.html'"
+					ng-init="titleSection='Import INVE wallet'; goToBackDefault = true;showCamerahot = true;">
+			</div>
+		</div>
+		<div class="tabclicktitle clearfix">
+			<div class="tab-container" ng-class="{'selected': import.showtab == 'tabcold'}">
+				<a ng-click="import.showtab = 'tabcold'" translate>Plain Wallet</a>
+			</div>
+			<div class="tab-container" ng-class="{'selected': import.showtab == 'tabhot'}">
+				<a ng-click="import.showtab = 'tabhot';index.signatureAddr = ''" translate>Hot Wallet</a>
+			</div>
+		</div>
+		<div class="cwpagein">
+			<div ng-show="import.showtab == 'tabcold'">
+				<div translate>Wallet Seed :</div>
+				<textarea placeholder="{{'Enter your mnemonic, separated by spaces'|translate}}" ng-model="import.importcode"></textarea>
+				<form name="creatwform"  novalidate>
+					<div class="adinputitem" mdinputvalidc>
+						<div class="adinputic">
+							<div class="adinputimg aiwname"></div>
+							<input type="text" ng-model="import.importname" mdinputname ng-attr-placeholder="{{'Wallet name'|translate}}" autocomplete="off"
+							ng-minlength="1" ng-maxlength="20" minlength="1" maxlength="20" />
+						</div>
+						<p class="adinputp"></p>
+					</div>
+					<div class="adinputitem" mdinputvalidc>
+						<div class="adinputic">
+							<div class="adinputimg aiwpass"></div>
+							<input type="password" autocomplete="new-password" name="aiwpass" mdinputpass ng-model="import.importpass" ng-attr-placeholder="{{'Password'|translate}}"
+							autocomplete="off" ng-minlength="1" ng-maxlength="18" minlength="1" maxlength="18" />
+						</div>
+						<p class="adinputp"></p>
+					</div>
+					<div class="adinputitem" ng-class="{'setErrorexp':creatwform.aiwpass.$valid && import.importpass !== import.importrpass && import.importrpass !== ''}">
+						<div class="adinputic">
+							<div class="adinputimg aiwrpass"></div>
+							<input type="password" autocomplete="new-password" name="aiwrpass" ng-model="import.importrpass"
+							placeholder="{{'Repeat password'|translate}}" autocomplete="off"
+							ng-minlength="1" ng-maxlength="18" minlength="1" maxlength="18"
+							/>
+						</div>
+						<p class="adinputpass" translate ng-show="creatwform.aiwpass.$valid && import.importpass !== import.importrpass && import.importrpass !== ''">*Inconsistent password</p>
+					</div>
+					<button class="m40t m15b" ng-click="import.importw()" ng-disabled="!import.importcode || !import.importname || !import.importpass || !import.importrpass || creatwform.$invalid || import.importpass !== import.importrpass" translate>Start importing</button>
+					<div class="size-12 nsfcolor" translate>Note: Please be patient while the wallet is recovering. Do not quit the software.</div>
+				</form>
+			</div>
+			<div ng-show="import.showtab == 'tabhot'">
+				<form name="addressForm" ng-submit="import.generateAddressQRCode()">
+					<div translate class="m20b">Hot wallet (also known as watch wallet) is just the way to observe your account: check balance and transactions logs, receive notifications.No private key no leaks.</div>
+					<div class="adinputitem">
+						<div class="adinputic">
+							<div class="adinputimg">
+								<img src="./img/wallet.png" style="width: 18px;">
+							</div>
+							<input type="text" name="address" style="padding-left: 13px;" ng-model="index.signatureAddr" ng-attr-placeholder="{{'Scan or enter your wallet address'|translate}}" ng-required valid-address-or-account>
+						</div>
+					</div>
+					<button type="submit" class="m24b m20t" ng-disabled="addressForm.$invalid || !index.signatureAddr" translate>Start importing</button>
+					<div class="size-12 nsfcolor" translate>Note: Hot wallet needs pairing with Cold Wallet to offline sign  transaction. Make a retired mobile phone as the Cold Wallet is a good choice.</div>
+				</form>
+			</div>
+
+		</div>
+	</div>
+	<!--导入钱包-导入钱包  end-->
+</div>

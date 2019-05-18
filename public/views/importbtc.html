@@ -1,0 +1,117 @@
+<div ng-controller="importbtcController as importbtc">
+    <!--导入钱包-导入钱包  start-->
+    <div class="cwpage iwpage pfixed topp" ng-init="importbtc.showtab = 'mnemonic'">
+        <!--返回到首页-->
+        <div ng-if="index.backhome">
+            <div
+                    class="topbar-container"
+                    ng-include="'views/includes/topbar.html'"
+                    ng-init="titleSection='Import BTC wallet'; closeToHome = true;">
+            </div>
+        </div>
+        <!--浏览器默认的返回-->
+        <div ng-if="index.backdefault">
+            <div
+                    class="topbar-container"
+                    ng-include="'views/includes/topbar.html'"
+                    ng-init="titleSection='Import BTC wallet'; goToBackDefault = true;">
+            </div>
+        </div>
+        <div class="tabclicktitle">
+            <div class="tab-container" ng-class="{'selected': importbtc.showtab == 'mnemonic'}">
+                <a ng-click="importbtc.showtab = 'mnemonic'" translate>Mnemonic</a>
+            </div>
+            <div class="tab-container" ng-class="{'selected': importbtc.showtab == 'prkey'}">
+                <a ng-click="importbtc.showtab = 'prkey';" translate>Private key</a>
+            </div>
+        </div>
+        <div class="cwpagein">
+            <div ng-show="importbtc.showtab == 'mnemonic'">
+                <div translate class="fontmedium size-15 m10b">Confirm your wallet mnemonic</div>
+                <div class="nsfcolor size-12 m10b">
+                    <span translate>Please use the English input method to enter the passwords in order, ensuring that there is only one English space between the words.</span>
+                </div>
+                <textarea ng-model="importbtc.importcode_seed"></textarea>
+                <form name="creatwform1"  novalidate>
+                    <div class="adinputitem" mdinputvalidc>
+                        <div class="adinputic">
+                            <div class="adinputimg aiwname"></div>
+                            <input type="text" ng-model="importbtc.addwiname_seed" mdinputname ng-attr-placeholder="{{'Wallet name'|translate}}" autocomplete="off"
+                                   ng-minlength="1" ng-maxlength="20" minlength="1" maxlength="20" />
+                        </div>
+                        <p class="adinputp" translate></p>
+                    </div>
+                    <div class="adinputitem" mdinputvalidc>
+                        <div class="adinputic">
+                            <div class="adinputimg aiwpass"></div>
+                            <input type="password" autocomplete="new-password" name="aiwpass" ng-model="importbtc.addwipass_seed" mdinputpass ng-attr-placeholder="{{'Password'|translate}}"
+                                   autocomplete="off" ng-minlength="1" ng-maxlength="18" minlength="1" maxlength="18" />
+                        </div>
+                        <p class="adinputp" translate></p>
+                    </div>
+                    <div class="adinputitem" ng-class="{'setErrorexp':creatwform1.aiwpass.$valid && importbtc.addwirpass_seed !== importbtc.addwipass_seed && importbtc.addwirpass_seed !== ''}">
+                        <div class="adinputic">
+                            <div class="adinputimg aiwrpass"></div>
+                            <input type="password" autocomplete="new-password" name="aiwrpass" ng-model="importbtc.addwirpass_seed"
+                                   placeholder="{{'Repeat password'|translate}}" autocomplete="off"
+                                   ng-minlength="1" ng-maxlength="18" minlength="1" maxlength="18"
+                            />
+                        </div>
+                        <p class="adinputpass" translate ng-show="creatwform1.aiwpass.$valid && importbtc.addwirpass_seed !== importbtc.addwipass_seed && importbtc.addwirpass_seed !== ''">*Inconsistent password</p>
+                    </div>
+                    <div class="adinputitem">
+                        <div class="adinputic adbtctype">
+                            <div class="fontmedium size-15 m10b" translate>Select Address Type</div>
+                            <div class="itemradiolr">
+                                <div class="itemradio" ng-click="importbtc.switchBtcType(1, 'segwit');">
+                                    <input type="radio" name="btctype" /><span value="1" class="radiocheck" translate ng-class="{'radiocheck': importbtc.switchType == 'segwit'}" >SegWit</span>
+                                </div>
+                                <div class="itemradio" ng-click="importbtc.switchBtcType(2, 'general');">
+                                    <input type="radio" name="btctype" /><span value="2" translate ng-class="{'radiocheck': importbtc.switchType == 'general'}">General</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="m40t m15b" ng-click="importbtc.importSeed_btc()" ng-disabled="!importbtc.importcode_seed || !importbtc.addwipass_seed || !importbtc.addwirpass_seed || creatwform1.$invalid || importbtc.addwirpass_seed !== importbtc.addwipass_seed" translate>Start importing</button>
+                </form>
+            </div>
+            <div ng-show="importbtc.showtab == 'prkey'">
+                <div class="nsfcolor size-12 m10b">
+                    <span translate>Enter the contents of the Private Key file into the input box, please pay attention to the character case.</span>
+                </div>
+                <textarea placeholder="{{'Enter the plaintext private key'|translate}}" ng-model="importbtc.importcode_pri"></textarea>
+                <form name="creatwform"  novalidate>
+                    <div class="adinputitem" mdinputvalidc>
+                        <div class="adinputic">
+                            <div class="adinputimg aiwname"></div>
+                            <input type="text" ng-model="importbtc.addwiname_pri" mdinputname ng-attr-placeholder="{{'Wallet name'|translate}}" autocomplete="off"
+                                   ng-minlength="1" ng-maxlength="20" minlength="1" maxlength="20" />
+                        </div>
+                        <p class="adinputp" translate></p>
+                    </div>
+                    <div class="adinputitem" mdinputvalidc>
+                        <div class="adinputic">
+                            <div class="adinputimg aiwpass"></div>
+                            <input type="password" autocomplete="new-password" name="aiwpass" ng-model="importbtc.addwipass_pri" mdinputpass ng-attr-placeholder="{{'Password'|translate}}"
+                                   autocomplete="off" ng-minlength="1" ng-maxlength="18" minlength="1" maxlength="18" />
+                        </div>
+                        <p class="adinputp" translate></p>
+                    </div>
+                    <div class="adinputitem" ng-class="{'setErrorexp':creatwform.aiwpass.$valid && importbtc.addwirpass_pri !== importbtc.addwipass_pri && importbtc.addwirpass_pri !== ''}">
+                        <div class="adinputic">
+                            <div class="adinputimg aiwrpass"></div>
+                            <input type="password" autocomplete="new-password" name="aiwrpass" ng-model="importbtc.addwirpass_pri"
+                                   placeholder="{{'Repeat password'|translate}}" autocomplete="off"
+                                   ng-minlength="1" ng-maxlength="18" minlength="1" maxlength="18"
+                            />
+                        </div>
+                        <p class="adinputpass" translate ng-show="creatwform.aiwpass.$valid && importbtc.addwirpass_pri !== importbtc.addwipass_pri && importbtc.addwirpass_pri !== ''">*Inconsistent password</p>
+                    </div>
+                    <button class="m40t m15b" ng-click="importbtc.importPrivateKey_btc()" ng-disabled="!importbtc.importcode_pri || !importbtc.addwipass_pri || !importbtc.addwirpass_pri || creatwform.$invalid || importbtc.addwirpass !== importbtc.addwipass" translate>Start importing</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <!--导入钱包-导入钱包  end-->
+</div>

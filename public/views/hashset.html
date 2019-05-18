@@ -1,0 +1,53 @@
+<div ng-controller="hashsetController as hs" class="pfixed topp">
+    <nav ng-controller="topbarController as topbar" class="tab-bar">
+        <section class="left-small">
+            <a ng-click="topbar.goNews()">
+                <img src="./img/back.png">
+            </a>
+        </section>
+    </nav>
+    <div class="hsetlr">
+        <form name="hsetform" ng-submit="hs.submitset()">
+            <div class="title" translate>Configuring HashStor</div>
+            <div class="adinputitem" mdinputvalidc>
+                <div class="adinputic">
+                    <div class="adinputimg itemhost"></div>
+                    <label translate>Host</label>
+                    <input name="host" type="text" placeholder="{{'Your hashStor public network IP address'|translate}}"/>
+                </div>
+                <p class="adinputp" translate></p>
+            </div>
+            <div class="adinputitem" mdinputvalidc>
+                <div class="adinputic">
+                    <div class="adinputimg itemuser"></div>
+                    <label translate>Username</label>
+                    <input name="username" type="text" placeholder="{{'Your username in the hashStor configuration platform'|translate}}"/>
+                </div>
+                <p class="adinputp" translate></p>
+            </div>
+            <div class="adinputitem" mdinputvalidc>
+                <div class="adinputic">
+                    <div class="adinputimg itempass"></div>
+                    <label translate>Password</label>
+                    <input name="password" type="text" />
+                </div>
+                <p class="adinputp" translate></p>
+            </div>
+            <button type="submit" translate>
+                Deploy
+            </button>
+        </form>
+        <div ng-if="hs.hashsetshow" class="popconfirm">
+            <div class="popmask" ng-click="hs.hashsetshow = false;"></div>
+            <div class="popcontent">
+                <div class="fleximgtextc">
+                    <img src="./img/payok.png"/>
+                    <div translate class="size-16">Successful configuration</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+

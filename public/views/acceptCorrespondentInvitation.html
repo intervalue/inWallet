@@ -1,0 +1,63 @@
+<div ng-controller="acceptCorrespondentInvitationController" class="pfixed topp">
+  <nav class="tab-bar">
+    <section class="left-small">
+      <a  ng-click="$root.go('^', true); goBackToState = null">
+        <img src="./img/back.png">
+      </a>
+    </section>
+    <section class="middle tab-bar-section">
+      <h1 class="title ellipsis" translate>
+        Add device
+      </h1>
+    </section>
+    <section class="right-small" ng-show="index.isCordova">
+      <qr-scanner on-scan="onQrCodeScanned(data)" before-scan="onBeforeScan()" >
+        <img src="./img/chatscannerd.png" >
+      </qr-scanner>
+    </section>
+  </nav>
+
+
+  <div class="f9fafch"></div>
+
+ <!-- <div class="onGoingProcess" ng-show="onGoingProcess">
+    <div class="onGoingProcess-content" ng-style="{'background-color':backgroundColor}">
+      <div class="spinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+      {{onGoingProcess|translate}}...
+    </div>
+  </div>-->
+  <div class="progresslayer" ng-show="onGoingProcess">
+    <div class="spinner1">
+      <div class="cube1"></div>
+      <div class="cube2"></div>
+    </div>
+    <div class="progresslayerin">
+      <span translate>{{onGoingProcess|translate}}...</span>
+    </div>
+  </div>
+  <div class="p15h" style="padding-top: 26px;">
+    <form name="pairingCodeForm"  no-validate class="pairingCodeForm">
+      <div class="text-warning size-12 m10b" ng-show="error">{{error|translate}}</div>
+      <div class="chatpairinfodiv" translate>
+        Enter the pairing code received from another device, or use the camera (upper right corner icon) to scan the QR code displayed on other the devices.
+      </div>
+
+      <div class="inputcode">
+        <div class="paircode"></div>
+        <input type="text" id="code" name="code" ng-model="code" required placeholder="{{'Pairing code'|translate}}" autocomplete="off">
+      </div>
+
+     <!-- <input type="text"  id="code" name="code" ng-model="code" required placeholder="{{'Pairing code'|translate}}" >-->
+      <button  type="submit"
+               ng-disabled="!pairingCodeForm.$valid"
+               ng-click="pair()" translate class="buttoncode">Pair</button>
+    </form>
+  </div>
+
+</div>

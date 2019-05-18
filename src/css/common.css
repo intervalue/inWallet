@@ -1,0 +1,254 @@
+/*公共样式 start*/
+.awbtn{background-color:#FFFFFF;border:1px solid #323232;color:#323232;}
+.awbtn:hover{border:none;}
+.awbtn50{float:right;font-size:14px;width:49%;height:46px;line-height:46px;padding:0;background-color:#FFFFFF;border:1px solid #323232;color:#323232;border-radius:3px!important;margin:0;}
+.abbtn50{float:left;font-size:14px;width:49%;height:46px;line-height:46px;padding:0;background-color:#323232;color:#fff;border-radius:3px!important;margin:0;}
+.adbg{background:#323232;}
+.graybg{background:#F9FAFC;}
+.graytext{font-size:12px;font-weight:400;color:#90919D;}
+.f9fafch{background:#F9FAFC;height:13px;width:100%;}
+.redcolor{color:#D45757;}
+.nsfcolor{color:#646464}
+.greencolor{color:#45AD8E;}
+.nzcolor{color:#909090;}
+.eabcolor{color:#EAB54C;}
+.fontregular{font-family:PingFangSC-Regular,Arial,"微软雅黑";font-weight:400;}
+.fontmedium{font-family:PingFangSC-Medium,Arial,"微软雅黑";font-weight:500;}
+.fontbold{font-family:PingFangSC-Semibold,Arial,"微软雅黑";font-weight:600;}
+.npcontent{width:100%;position:absolute;top:0;bottom:0;overflow:auto;background:#F9FAFC;}
+.popconfirm{position:fixed;width:100%;height:100%;top:0;left:0;z-index:100;}
+.popconfirm .popmask{position:absolute;width:100%;height:100%;text-align:center;top:0;left:0;background:rgba(0,0,0,0.6);z-index:100;cursor:pointer;}
+.popconfirm .popcontent{position:absolute;width:calc(100% - 26px);top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background:#fff;padding:30px 0;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;z-index:101;}
+.popconfirm .poptips{font-size:12px;color:#646464;padding-top:20px;border-top:1px solid #F5F5F5;margin-bottom:32px;}
+.popconfirm .popbutton{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-moz-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;-webkit-box-align:center;-moz-box-align:center;-ms-flex-align:center;align-items:center;}
+.popconfirm .popbutton button{width:49%;}
+.popbtnflex{display: flex;align-items: center;justify-content: space-between;}
+::-webkit-scrollbar{width:6px;height:6px;}
+.fl{float:left;}
+.fr{float:right;}
+.morerimg{width:10px;}
+
+/* 滚动槽 */
+::-webkit-scrollbar-track{-webkit-box-shadow:inset 0 0 6px #fff;border-radius:10px;}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb{border-radius:10px;background:#c5c5c5;}
+::-webkit-scrollbar-thumb:window-inactive{background:rgba(255,0,0,0.4);}
+.adcpitem{margin-top:30px;height:60px;}
+.adcpmdic{position:relative;width:100%;height:44px;}
+.adcpmdic input[type='text'],
+.adcpmdic input[type='number']{position:absolute;font-size:16px;top:10px;padding:0;font-weight:normal;margin:0;width:100%;}
+.adcpmdic label{position:absolute;font-size:16px;top:10px;padding:0;font-weight:normal;margin:0;white-space:nowrap;cursor:text;z-index:10;}
+.md-input-focused{position:relative;-webkit-transition:all 0.2s ease-in-out;transition:all 0.2s ease-in-out;}
+.md-input-focused label,
+.md-input-has-value label{top:-3px;font-size:14px;-webkit-transition:all 0.2s ease-in-out;transition:all 0.2s ease-in-out;}
+.md-input-focused input[type='text']{background:transparent;position:absolute;top:10px;-webkit-transition:all 0.2s ease-in-out;transition:all 0.2s ease-in-out;}
+.adinputitem{margin-bottom:10px;}
+.adinputic{width:100%;display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-moz-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:start;-moz-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;border-bottom:1px solid #DDDDDD;padding:0 4px;}
+.adinputic .adinputimg{width:24px;height:20px;text-align:center;background-size:contain;}
+.adinputic input[type='text'],
+.adinputic input[type='password'],
+.adinputic input[type='number']{padding:0 10px 0 16px;font-weight:normal;margin:0;width:100%;border:none;}
+.adinputic input[type='text']::-webkit-input-placeholder,
+.adinputic input[type='password']::-webkit-input-placeholder,
+.adinputic input[type='number']::-webkit-input-placeholder{color:#909090;}
+textarea::-webkit-input-placeholder{font-size:12px;font-weight:400;color:#909090;}
+.fleximgtext{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:flex;-webkit-box-pack:start;-moz-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;-webkit-box-align:start;-moz-box-align:start;-ms-flex-align:start;align-items:flex-start;}
+.fleximgtext img{-ms-flex-negative:0;flex-shrink:0;margin-right:10px;height:12px;width:12px;margin-top:3px;}
+.fleximgtextc{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-moz-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:start;-moz-box-align:start;-ms-flex-align:start;align-items:flex-start;}
+.fleximgtextc img{-ms-flex-negative:0;flex-shrink:0;margin-right:22px;height:24px;width:24px;}
+.flexcc{display: flex;align-items: center;justify-content: center;}
+.pfixed{position:fixed!important;width:100%!important;height:100vh!important;overflow:auto;}/*所有的部分*/
+.pbfixed{position: fixed;bottom:0;left:0;width:100%;height:calc(100vh - 46px);}/*去除头部剩余部分*/
+.vh100{position: fixed;top: 46px;left:0;z-index: 2;height: calc(100vh - 100px);width:100%;overflow:auto;}  /*去除头部底部的中间部分*/
+.vh100singlge{height: calc(100vh - 100px);overflow:hidden;}/*单纯的去除头尾的高*/
+.topp{padding-top: 46px;}
+.posa{position: absolute;}
+ul.lrd{list-style-type:none;}
+ul.lrd li:first-child{margin-top:26px;border-top:1px solid #DEDEDE;border-bottom:1px solid #DEDEDE;}
+ul.lrd li{border-bottom:1px solid #DEDEDE;background:#fff;display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-moz-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;-webkit-box-align:center;-moz-box-align:center;-ms-flex-align:center;align-items:center;padding:13px;}
+ul.lrd li.preflitwo{border-top:1px solid #DEDEDE;    /*margin-top: 40px;*/margin-top:18px;}
+ul.lrd li .ld{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:flex;-webkit-box-pack:start;-moz-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;-webkit-box-align:center;-moz-box-align:center;-ms-flex-align:center;align-items:center;}
+ul.lrd li .ld span{color:#323232;}
+ul.lrd li .rd{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:flex;-webkit-box-pack:end;-moz-box-pack:end;-ms-flex-pack:end;justify-content:flex-end;-webkit-box-align:center;-moz-box-align:center;-ms-flex-align:center;align-items:center;color:#909090;}
+ul.lrd li:first-child div{color:#909090;}
+ul.lrd li .limg{width:20px;height:20px;margin-right:10px;}
+ul.lrd li img{vertical-align:sub;}
+ul.lrd li .rd img{margin-left:10px;}
+.closediv{background: url("../img/close.png");background-size:14px 14px;background-position: center;width:30px;height:30px;
+    background-repeat: no-repeat;background-position: left center;}
+.leftdiv{background: url("../img/back.png");background-size:10px 18px;background-position: center;width:30px;height:30px;
+    background-repeat: no-repeat;background-position: right center;}
+/*公共样式 end*/
+
+/*重写foundation  css start*/
+.inner-wrap{position:relative;width:100%;-webkit-transition:-webkit-transform 500ms ease;transition:-webkit-transform 500ms ease;transition:transform 500ms ease;transition:transform 500ms ease,-webkit-transform 500ms ease;}
+.left-off-canvas-menu{right:0;top:0;bottom:0;width:210px;-webkit-backface-visibility:hidden;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;-webkit-overflow-scrolling:touch;-ms-overflow-style:-ms-autohiding-scrollbar;overflow-x:hidden;overflow-y:auto;position:absolute;-webkit-transition:-webkit-transform 500ms ease 0s;transition:-webkit-transform 500ms ease 0s;transition:transform 500ms ease 0s;transition:transform 500ms ease 0s,-webkit-transform 500ms ease 0s;z-index:1001;-webkit-transform:translate3d(100%,0,0);transform:translate3d(100%,0,0);}
+.off-canvas-wrap.move-right{min-height:100%;-webkit-overflow-scrolling:touch;}
+.move-right > .inner-wrap{-webkit-transform:translate3d(-210px,0,0);transform:translate3d(-210px,0,0);-moz-transform:translate3d(-210px,0,0);-ms-transform:translate3d(-210px,0,0);-o-transform:translate3d(-210px,0,0);}
+.f-dropdown.drop-top{display:none;list-style:none;position:absolute;font-size:0.875rem;height:auto;max-height:none;width:100%;z-index:89;max-width:200px;}
+/*重写foundation  css end*/
+
+/*spinner start*/
+.onGoingProcess{left:0;width:100%;bottom:90px;position:absolute;z-index:1020;}
+.onGoingProcess-content{background:#213140;text-align:center;margin:auto;color:#fff;font-size:13px;opacity:0.8;border-radius:3px;position:absolute;padding:6px 10px;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%);}
+#send .spinner{height:46px;}
+#send .spinner > div{background-color:#7A8C9E;}
+.spinner{margin:0 auto;width:35px;height:27px;text-align:center;font-size:10px;vertical-align:middle;}
+.spinner > div{background-color:#fff;height:100%;width:2px;display:inline-block;-webkit-animation:stretchdelay 1.2s infinite ease-in-out;animation:stretchdelay 1.2s infinite ease-in-out;}
+.spinner .rect2{-webkit-animation-delay:-1.1s;animation-delay:-1.1s;}
+.spinner .rect3{-webkit-animation-delay:-1.0s;animation-delay:-1.0s;}
+.spinner .rect4{-webkit-animation-delay:-0.9s;animation-delay:-0.9s;}
+.spinner .rect5{-webkit-animation-delay:-0.8s;animation-delay:-0.8s;}
+/*spinner end*/
+
+/*动画 start*/
+@-webkit-keyframes stretchdelay{
+    0%,
+    40%,
+    100%{-webkit-transform:scaleY(0.4)}
+    20%{-webkit-transform:scaleY(1.0)}
+}
+@keyframes stretchdelay{
+    0%,
+    40%,
+    100%{transform:scaleY(0.4);-webkit-transform:scaleY(0.4);}
+    20%{transform:scaleY(1.0);-webkit-transform:scaleY(1.0);}
+}
+
+@keyframes downScaleIn {
+    from{transform: scale3d(1, 0, 0);opacity: 0;}
+    to{transform: scale3d(1, 1, 1);opacity: 1;}
+}
+@-webkit-keyframes downScaleIn {
+    from{transform: scale3d(1, 0, 0);opacity: 0;}
+    to{transform: scale3d(1, 1, 1);opacity: 1;}
+}
+.downScaleIn {
+    -webkit-animation-name: downScaleIn;
+    animation-name: downScaleIn;
+    animation-timing-function: ease-in-out;
+    transform-origin: top center;
+    -webkit-animation-duration: 0.3s;
+    animation-duration: 0.3s;
+}
+
+@keyframes downScaleOut {
+    from{transform: scale3d(1, 1, 1);opacity: 1;}
+    to{transform: scale3d(1, 0, 0);opacity: 0;}
+}
+@-webkit-keyframes downScaleOut {
+    from{transform: scale3d(1, 1, 1);opacity: 1;}
+    to{transform: scale3d(1, 0, 0);opacity: 0;}
+}
+.downScaleOut {
+    -webkit-animation-name: downScaleOut;
+    animation-name: downScaleOut;
+    animation-timing-function: ease-in-out;
+    transform-origin: top center;
+    -webkit-animation-duration: 0.2s;
+    animation-duration: 0.2s;
+}
+
+@keyframes upScaleIn {
+    from{transform: scale3d(1, 0, 0);opacity: 0;}
+    to{transform: scale3d(1, 1, 1);opacity: 1;}
+}
+@-webkit-keyframes upScaleIn {
+    from{transform: scale3d(1, 0, 0);opacity: 0;}
+    to{transform: scale3d(1, 1, 1);opacity: 1;}
+}
+.upScaleIn {
+    -webkit-animation-name: upScaleIn;
+    animation-name: upScaleIn;
+    animation-timing-function: ease-in-out;
+    transform-origin: bottom center;
+    -webkit-animation-duration: 0.3s;
+    animation-duration: 0.3s;
+}
+
+@keyframes upScaleOut {
+    from{transform: scale3d(1, 1, 1);opacity: 1;}
+    to{transform: scale3d(1, 0, 0);opacity: 0;}
+}
+@-webkit-keyframes upScaleOut {
+    from{transform: scale3d(1, 1, 1);opacity: 1;}
+    to{transform: scale3d(1, 0, 0);opacity: 0;}
+}
+.upScaleOut {
+    -webkit-animation-name: upScaleOut;
+    animation-name: upScaleOut;
+    animation-timing-function: ease-in-out;
+    transform-origin: bottom center;
+    -webkit-animation-duration: 0.2s;
+    animation-duration: 0.2s;
+}
+
+@keyframes rotateHomeArrowIn {
+    from{transform:matrix(-0.000000,-1.000000,1.000000,-0.000000,0,0);}
+    to{-webkit-transform:matrix(0,1,-1,0,-1,0);transform:matrix(0,1,-1,0,-1,0);}
+}
+@-webkit-keyframes rotateHomeArrowIn {
+    from{transform:matrix(-0.000000,-1.000000,1.000000,-0.000000,0,0);}
+    to{-webkit-transform:matrix(0,1,-1,0,-1,0);transform:matrix(0,1,-1,0,-1,0);}
+}
+.rotateHomeArrowIn {
+    -webkit-animation-name: rotateHomeArrowIn;
+    animation-name: rotateHomeArrowIn;
+    animation-timing-function: ease-in-out;
+    transform-origin: center;
+    -webkit-animation-duration: 0.3s;
+    animation-duration: 0.3s;
+}
+
+@keyframes rotateHomeArrowOut {
+    from{-webkit-transform:matrix(0,1,-1,0,-1,0);transform:matrix(0,1,-1,0,-1,0);}
+    to{transform:matrix(-0.000000,-1.000000,1.000000,-0.000000,0,0);}
+}
+@-webkit-keyframes rotateHomeArrowOut {
+    from{-webkit-transform:matrix(0,1,-1,0,-1,0);transform:matrix(0,1,-1,0,-1,0);}
+    to{transform:matrix(-0.000000,-1.000000,1.000000,-0.000000,0,0);}
+}
+.rotateHomeArrowOut {
+    -webkit-animation-name: rotateHomeArrowOut;
+    animation-name: rotateHomeArrowOut;
+    animation-timing-function: ease-in-out;
+    transform-origin: center;
+    -webkit-animation-duration: 0.2s;
+    animation-duration: 0.2s;
+}
+
+@keyframes downHeightIn {
+    from{height:0;opacity: 0;}
+    to{height:auto;opacity: 1;}
+}
+@-webkit-keyframes downHeightIn {
+    from{height:0;opacity: 0;}
+    to{height:auto;opacity: 1;}
+}
+.downHeightIn {
+    -webkit-animation-name: downHeightIn;
+    animation-name: downHeightIn;
+    animation-timing-function: ease-in-out;
+    transform-origin: top center;
+    -webkit-animation-duration: 0.3s;
+    animation-duration: 0.3s;
+}
+
+@keyframes downHeightOut {
+    from{height:auto;opacity: 1;}
+    to{height:0;opacity: 0;}
+}
+@-webkit-keyframes downHeightOut {
+    from{height:auto;opacity: 1;}
+    to{height:0;opacity: 0;}
+}
+.downHeightOut {
+    -webkit-animation-name: downHeightOut;
+    animation-name: downHeightOut;
+    animation-timing-function: ease-in-out;
+    transform-origin: top center;
+    -webkit-animation-duration: 0.2s;
+    animation-duration: 0.2s;
+}
+/*动画 end*/

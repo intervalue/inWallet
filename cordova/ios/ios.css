@@ -1,0 +1,87 @@
+/*tab-bar*/
+.tab-bar, .tab-bar h1, .news .tabclicknav .tab-container{
+    height:52px;
+    line-height: 52px;
+}
+.tab-bar-section, .left-small, .right-small{
+    height:52px;
+}
+.termpage .tab-bar{
+    height:65px;
+}
+.termpage .adullic{height:calc(100vh - 65px);}
+/*聊天*/
+/*nochat*/
+/*.nochat{
+    top:52px;
+}*/
+.nochatin{
+    height:calc(100vh - 119px);
+}
+.chatsendform #message{
+    min-height:34px;
+}
+.view_chat_box .chatlist{
+    padding-top:34px;
+}
+/*新闻*/
+.news .dcin{
+    height: calc(100vh - 144px);
+    top: 90px;
+}
+.news .removescroll{
+    height: calc(100vh - 144px);
+}
+.news .quotelist .removescroll{
+    height:calc(100vh - 178px);
+}
+.news .tab-container a{
+    padding:8px 0;
+}
+.news .letterlist .datenow, .news .quotelist .titlelabel{
+    top:90px;
+}
+
+/*收款地址*/
+.addreceive{
+    margin-top: 46px;
+}
+/*地址薄*/
+.addedit,.addaddbook .addalist2{height: calc(100vh - 100px);}
+.addaddbook .addeditin,.addaddbook .addalist2 ul{height: calc(100vh - 113px);}
+.addaddbook .addalist{ height: calc(100vh - 236px);}
+/*底部菜单*/
+/*.bottombar-item a{*/
+    /*height:54px;*/
+/*}*/
+/*all 交易 列表页面*/
+.txall .titlelabel .item{
+    padding: 8px 0;
+}
+.txall .titlelabel .item ul{
+    top: 37px;
+}
+.txallmask{
+    height: calc(100% - 89px);
+}
+/*交换转移*/
+#send .sendtab{
+    top: 52px;height: calc(100vh - 106px);
+}
+/*dapp电脑外部链接*/
+.linklr .progresslayer{top:52px; height: calc(100vh - 52px);}
+.linklr .linkiframe{
+    height:calc(100vh - 52px);
+}
+/*wallet*/
+.adwwto{
+    height: calc(100vh - 152px);
+}
+.adwwto .adwwtoin{min-height: calc(100vh - 324px);overflow: auto;}
+/*公共样式*/
+.pbfixed{
+    height:calc(100vh - 52px);
+}
+.topp{padding-top:52px;}
+.vh100{top:52px;height: calc(100vh - 106px);}
+.vh100singlge{height: calc(100vh - 106px);}

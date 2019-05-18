@@ -1,0 +1,24 @@
+<div class="linklr pfixed" ng-init="isIload();dapplinkdata();">
+    <nav ng-controller="topbarController as topbar" class="tab-bar">
+        <section class="left-small">
+            <a  ng-click="cancel()">
+                <img src="./img/back.png">
+            </a>
+        </section>
+        <section class="middle tab-bar-section">
+            <h1 class="ellipsis">{{dapptitle}}</h1>
+        </section>
+    </nav>
+    <!--<iframe  ng-src="{{trustSrc}}" frameborder="0" height="100%" width="100%" scrolling="no"></iframe>-->
+    <!--<p style="width:100%;height:100%;" ng-bind-html="specialHtml"></p>-->
+    <div class="progresslayer" ng-hide="isFrameLoadDone">
+        <div class="spinner1">
+            <div class="cube1"></div>
+            <div class="cube2"></div>
+        </div>
+        <div class="progresslayerin">
+            <span translate>Loading...</span>
+        </div>
+    </div>
+    <iframe class="linkiframe" id="linkiframe" ng-show="isFrameLoadDone" ng-src="{{trustSrc}}" frameborder="0" width="100%" scrolling="auto"></iframe>
+</div>

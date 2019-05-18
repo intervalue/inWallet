@@ -1,0 +1,103 @@
+<style type="text/css">
+	.bot_name {
+		text-overflow: ellipsis;
+		width: 75%;
+		display: inline-block;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+</style>
+<!-- 钱包聊天视图 -->
+<div ng-controller="correspondentDevicesController">
+	<!-- 顶部导航栏 -->
+	<!-- 主显示区 -->
+	<div ui-view="dialog"></div>
+	<!---->
+	<!-- tab对应视图 -->
+	<div class="topp" ng-show="state.is('correspondentDevices')" id="chat" >
+		<nav ng-controller="topbarController as topbar" class="tab-bar chatcurchattops">
+			<section class="middle tab-bar-section">
+				<h1 class="title ellipsis" translate>
+                    Chat
+				</h1>
+			</section>
+			<section class="right-small" ng-click="beginAddCorrespondent()">
+				<a>
+					<img src="./img/add.png">
+				</a>
+			</section>
+		</nav>
+		<!-- contacts页签对应视图 -->
+		<div class="mtab chatbiline" ng-class="{'active': mtab == 1}" ng-init="mtab = 1;readList();" ng-show="list.length !== 0">
+			<ul class="no-bullet m0 correspondentList">
+				<!-- 聊天联系人列表 -->
+				<li  ng-repeat="correspondent in list | orderBy:newMsgByAddressComparator track by $index">
+					<div class="liin" draggable="true" chat-swiper-left ng-click="showCorrespondent(correspondent)">
+						<div class="ld">
+							<div class="correspondentlist_badge"
+								 ng-show="newMessagesCount[correspondent.device_address]">
+								<span ng-if="newMessagesCount[correspondent.device_address] <= 999">{{newMessagesCount[correspondent.device_address]}}</span>
+								<span ng-if="newMessagesCount[correspondent.device_address] > 999">999+</span>
+							</div>
+							<span class="chatname">{{correspondent.name | limitTo:1}}</span>
+							<span class="chatallname">{{correspondent.name}}</span>
+						</div>
+						<div class="rd">
+							{{prefGlobal.deviceName}}
+							<img src="./img/more.png" class="morerimg" ng-show="!editCorrespondentList && hideRemove"/>
+							<!--消息个数提示-->
+							<!--消息个数提示-->
+						</div>
+					</div>
+					<div  class="chatremovep" ng-click="showchatdelete(correspondent.device_address,$event)" translate>
+						Remove
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="nochat vh100" ng-show="list.length == 0">
+			<div class="f9fafch"></div>
+			<div class="nochatin">
+				<div class="nochatinfo">
+					<img src="./img/nochat.png">
+					<h5 translate>No dialogue content</h5>
+				</div>
+			</div>
+		</div>
+		<!-- DApp store标签对应视图 -->
+		<!--<div class="mtab" ng-class="{'active': mtab == 2}">-->
+		<!--<ul class="no-bullet m0 correspondentList">-->
+		<!--<li class="line-b" ng-repeat="bot in bots" style="padding: 10px 10px 5px 10px">-->
+		<!--<div ng-click="showBot(bot)" class="pointer">-->
+		<!--<span class="bot_name">{{bot.name}}</span>-->
+		<!--<div class="right text-gray">-->
+		<!--<i class="icon-arrow-right3 size-24"-->
+		<!--ng-show="!editCorrespondentList && hideRemove"></i>-->
+		<!--</div>-->
+		<!--<div class="right label tu radius light-gray" ng-if="bot.isPaired" translate-->
+		<!--style="margin-top: 5px">Added-->
+		<!--</div>-->
+		<!--</div>-->
+		<!--</li>-->
+		<!--</ul>-->
+		<!--<div class="text-warning size-12 m10b" ng-show="botsError">{{botsError|translate}}</div>-->
+		<!--</div>-->
+	</div>
+	<div ng-show="showchatdel" class="popconfirm">
+		<div class="popmask" ng-click="showchatdel = false;"></div>
+		<div class="popcontent">
+			<div class="m20b chatdeleter">
+				<img src="./img/chatdeleter.png">
+				<div translate class="size-16 redcolor">Are you sure you want to delete the friend?</div>
+			</div>
+			<div class="p25h popbutton">
+				<button ng-click="remove(removechataddr)" translate>Confirm</button>
+				<button class="awbtn" ng-click="showchatdel = false;" translate>Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div ng-controller="correspondentDevicesController">
+	<div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet && state.is('correspondentDevices')"></div>
+</div>
+

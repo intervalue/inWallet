@@ -1,0 +1,18 @@
+<div class="preferences pfixed topp" ng-controller="preferencesLanguageController as prefLang">
+  <div
+          class="topbar-container"
+          ng-include="'views/includes/topbar.html'"
+          ng-init="titleSection='Language'; goBackToState = true; noColor = true">
+  </div>
+  <div class="f9fafch"></div>
+  <ul class="no-bullet m0 ">
+    <li ng-repeat="lang in prefLang.availableLanguages" ng-click="prefLang.save(lang.isoCode)">
+      <div  ng-cloak class="ng-cloak ld">
+        <span translate ng-bind="lang.name"></span>
+      </div>
+      <div class="rd" >
+        <img style="width:13px;" src="./img/right.png" ng-show="index.defaultLanguageIsoCode == lang.isoCode"/>
+      </div>
+    </li>
+  </ul>
+</div>

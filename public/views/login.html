@@ -1,0 +1,42 @@
+<div class="pfixed" ng-controller="loginController as lg">
+    <nav ng-controller="topbarController as topbar" class="tab-bar">
+        <section class="left-small">
+            <a ng-click="$root.go('authorization')">
+                <img src="./img/back.png">
+            </a>
+        </section>
+        <section class="middle tab-bar-section">
+            <h1 class="ellipsis" translate></h1>
+        </section>
+    </nav>
+    <div class="loginlr center">
+        <form name="loginform" ng-submit="lg.submitset()">
+            <div class="topimg">
+                <img src="./img/login.png"/>
+                <div class="title" translate>Account password login</div>
+            </div>
+            <div class="adinputitem" mdinputvalidc>
+                <div class="adinputic">
+                    <div class="adinputimg itemnum"></div>
+                    <input name="host" type="text" placeholder="{{'Phone or mailbox number'|translate}}"/>
+                </div>
+                <p class="adinputp" translate></p>
+            </div>
+            <div class="adinputitem" mdinputvalidc>
+                <div class="adinputic">
+                    <div class="adinputimg itempass"></div>
+                    <input name="username" type="text" placeholder="{{'Password'|translate}}"/>
+                </div>
+                <p class="adinputp" translate></p>
+            </div>
+            <div class="remepass">
+                <input name="username" type="checkbox"/>
+                <span translate ng-click="lg.passrem = !lg.passrem;" ng-class="{'passrem':lg.passrem==true}">Remember password</span>
+            </div>
+            <button type="submit" translate>
+                Login
+            </button>
+            <span class="fbspan" translate ng-click="$root.go('register')">Register</span>
+        </form>
+    </div>
+</div>

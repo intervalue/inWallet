@@ -1,0 +1,197 @@
+<div ng-controller="walletinfoController as winfo" class="winfo pfixed">
+
+    <div>
+        <div class="amount oh"  ng-init="winfo.transactionInfo()"
+             ng-class="{'inveamountbg': winfo.walletBg == 'INVE', 'btcamountbg': winfo.walletBg == 'BTC', 'ethamountbg': winfo.walletBg == 'ETH', 'sncamountbg': winfo.walletBg == 'SNC'}" >
+            <div translate class="plefttop" ng-click="winfo.goHome(winfo.walletType, winfo.walletId)"><img src="./img/backw.png" width="10"/></div>
+            <div translate class="prighttop" ng-click="winfo.goReceive(false,winfo.walletType, winfo.walletId, winfo.address, winfo.name, winfo.image, winfo.ammount, winfo.mnemonic, winfo.mnemonicEncrypted)"><img src="./img/lewm.png" /></div>
+            <div ng-if="!winfo.anyOnGoingProcess || 1">
+                <div ng-show="winfo.updateError" ng-click='winfo.openWallet();'>
+                    <span class="size-12 db m10b">{{winfo.updateError|translate}}</span>
+                    <button class="outline white tiny round" translate>Tap to retry</button>
+                </div>
+                <div>
+                    <div class="whlinfo">
+                        <div class="whtoname" ng-click="index.backtowalletindex = true;winfo.towalletname(winfo.walletType, winfo.walletId, winfo.address, winfo.name, winfo.image, winfo.ammount, winfo.mnemonic, winfo.mnemonicEncrypted)">
+                            <img class="whlogo" ng-src="{{winfo.image}}"/>
+                            <span class="whname">{{winfo.walletName}}</span>
+                        </div>
+                        <div class="whpback" ng-show="winfo.mnemonicEncrypted"
+                             ng-click="winfo.goBack(winfo.walletType, winfo.walletId, winfo.address, winfo.name, winfo.image, winfo.ammount, winfo.mnemonic, winfo.mnemonicEncrypted);index.backchome = true;" translate>Please backup</div>
+                       <!-- <div class="showqian" ng-click="winfo.eye = !winfo.eye">
+                            <img ng-show="winfo.eye" src="./img/eye.png"/>
+                            <img ng-show="!winfo.eye" src="./img/noeye.png"/>
+                        </div>-->
+                    </div>
+                    <div class="whamount">
+                        <div>
+                            <span>{{winfo.stables}}</span>
+                           <!-- <span ng-show="!winfo.eye">＊＊＊＊＊</span>-->
+                        </div>
+                        <span>{{winfo.walletTypeShort}}</span>
+                    </div>
+                    <div class="winfoaddr">
+                        {{winfo.addressabb}}<span class="copyspan" ng-click="winfo.copyAddress(winfo.address,$event)"><img src="./img/copy.png" /></span>
+                    </div>
+                    <!--<div class="whcnyd">
+                        <div ng-show="winfo.defaultCurrencyIsoCode == 'en';">&asymp; $ {{winfo.ammountTatolNmuber * winfo.invedollar/1000000 | number :4}}</div>
+                        <div ng-show="winfo.defaultCurrencyIsoCode == 'zh_CN';">&asymp; &yen; {{winfo.ammountTatolNmuber * winfo.invermb/1000000 | number :4}}</div>
+                    </div>-->
+                </div>
+            </div>
+        </div> <!-- amount -->
+
+
+
+        <div ng-if="winfo.txps[0]">
+            <h4 ng-show="winfo.requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
+            <h4 ng-show="!winfo.requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
+            <div class="last-transactions pr" ng-repeat="tx in winfo.txps"
+                 ng-include="winfo.txTemplateUrl">
+            </div>
+
+            <div class="text-gray center size-12 p10t"
+                 ng-show="winfo.lockedBalanceBytes && !winfo.updatingStatus">
+                <span translate>Total Locked Balance</span>:
+                <b>{{winfo.lockedBalanceStr}} </b>
+            </div>
+        </div>
+        <!--
+
+        history
+
+        -->
+
+        <div  class="history" ng-init="winfo.updateTxHistory(3)">
+
+            <div ng-show="!winfo.txHistory[0] && !winfo.updatingTxHistory">
+
+                <div class="center">
+
+                    <!--<div class="p15h m24t" ng-show="winfo.txHistoryError" ng-click='winfo.readTransactionHistory()'>
+
+                        <p class="graytext m40b" translate>Could not fetch transaction history</p>
+
+                        <button translate>Tap to retry</button>
+
+                    </div>-->
+                    <div class="notximg" ng-show="winfo.txHistoryError" ng-click='winfo.readTransactionHistory()'>
+
+                        <img src="./img/notx.png"/>
+
+                        <div class="graytext" translate>No transactions yet</div>
+
+                    </div>
+
+                    <div class="notximg" ng-show="!winfo.txHistoryError" translate>
+
+                        <img src="./img/notx.png"/>
+
+                        <div class="graytext" translate>No transactions yet</div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="histxdetail" ng-show="winfo.txHistory[0]">
+
+                <div ng-repeat="btx in winfo.txHistory"
+
+                     ng-click="index.openTxModal(btx)"
+
+                     class="last-transactions-content">
+
+                    <div class="histop">
+                        <div class="histopl" ng-show="btx.action == 'received'&& btx.confirmations != 'pending'">
+                            <img src="./img/received.png"><span translate>Received</span>
+                        </div>
+                        <div class="histopl" ng-show="btx.action == 'sent'&& btx.confirmations != 'pending'">
+                            <img src="./img/sent.png"><span translate>Sent</span>
+                        </div>
+                        <div class="histopl" ng-show="btx.action == 'moved'">
+                            <img src="./img/sent.png"><span translate>Moved</span>
+                        </div>
+                        <div class="histopl" ng-show="btx.action == 'invalid'">
+                            <img src="./img/sent.png"><span translate>Invalid</span>
+                        </div>
+                        <div class="histopl" ng-show="btx.confirmations == 'pending' && btx.action == 'sent' " >
+                            <img src="./img/sent.png"><span translate>Pending</span>
+                        </div>
+                        <div class="histopl" ng-show="btx.action == 'received' && btx.confirmations == 'pending'" >
+                            <img src="./img/received.png"><span translate>Pending</span>
+                        </div>
+                        <div class="histopr">
+                            <time ng-if="btx.time">{{btx.creation_date | amTimeAgo}}</time>
+                            <span translate class="text-warning" ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
+                                        Unconfirmed
+                                    </span>
+                        </div>
+                    </div>
+                    <div class="hisbottom">
+                        <span class="hisbramount" ng-if="btx.action == 'received'">+{{btx.amountTl}}<span class="hisunit">{{winfo.walletNameInfo}}</span></span>
+
+                        <span class="hisbsamount" ng-if="btx.action == 'sent'">-{{btx.amountTl}}<span class="hisunit">{{winfo.walletNameInfo}}</span></span>
+
+                        <span class="hisbsamount" ng-if="btx.confirmations == 'pending' && btx.action == 'pending' && btx.result == 'pending'">+{{btx.amountTl}}<span class="hisunit">{{winfo.walletNameInfo}}</span></span>
+
+                        <span  class="size-12" ng-if="btx.action == 'invalid'" translate>
+
+                                    (possible double spend)
+
+                                </span>
+                    </div>
+
+                </div>
+                <div class="progresslayer" ng-show="winfo.historyRendering">
+                    <div class="spinner1">
+                        <div class="cube1"></div>
+                        <div class="cube2"></div>
+                    </div>
+                    <div class="progresslayerin">
+                        <span translate>{{index.progressingmsg | translate}}</span>
+                    </div>
+                </div>
+                <!--<div class="m20t center" ng-show="winfo.historyRendering">
+
+                    <div>
+
+                        <div class="spinner">
+
+                            <div class="rect1"></div>
+
+                            <div class="rect2"></div>
+
+                            <div class="rect3"></div>
+
+                            <div class="rect4"></div>
+
+                            <div class="rect5"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>-->
+                <button type="submit" ng-show="winfo.historyShowShowAll" ng-click="winfo.showAllHistory()" translate>
+                    Show all
+                </button>
+            </div>
+
+        </div> <!-- END History -->
+        <!--
+
+        收款付款
+
+        -->
+        <div class="buttongroup">
+            <button translate ng-click="winfo.goReceive(true,winfo.walletType, winfo.walletId, winfo.address, winfo.name, winfo.image, winfo.ammount, winfo.mnemonic, winfo.mnemonicEncrypted)">Receipt</button>
+            <button translate class="awbtn" ng-click="winfo.goSendPage(winfo.walletType, winfo.walletId, winfo.address, winfo.name, winfo.image, winfo.ammount, winfo.mnemonic, winfo.mnemonicEncrypted)">Transfer</button>
+        </div>
+        <!-- 收款付款 -->
+    </div>
+</div>
+

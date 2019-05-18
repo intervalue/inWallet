@@ -1,0 +1,69 @@
+<div ng-controller="walletnameController as wn" class="pfixed topp" ng-init="wn.backshow();">
+    <!-- header start -->
+    <nav ng-controller="topbarController as topbar" class="tab-bar">
+        <section class="right-small">
+            <button ng-click="wn.changeWalletName(wn.walletId)" class="greencolor size-14" 
+            ng-disabled="!wn.name || wn.name.length < 1 || wn.name.length > 20"><span translate>Save</span></button>
+        </section>
+        <section class="left-small">
+            <a ng-show="index.backwallet == true" ng-click="topbar.goWallet();goToWallet = null;index.backwallet = false;">
+                <img src="./img/back.png" />
+            </a>
+            <a ng-show="index.backtowalletindex == true" ng-click="topbar.gotoWalletIndex(wn.walletType, wn.walletId, wn.address, wn.name, wn.image, wn.ammount, wn.mnemonic, wn.mnemonicEncrypted);goToWallet = null;index.backtowalletindex = false;">
+                <img src="./img/back.png" />
+            </a>
+        </section>
+        <section class="middle tab-bar-section">
+            <h1 class="title ellipsis" translate>{{wn.name}}</h1>
+        </section>
+    </nav>
+    <!-- header end -->
+    <div class="adwnnumo">
+        <div class="adwnnum">
+            <div class="adwnlogo"><img ng-src="{{wn.image}}"></div>
+            <div class="adwnnumamt"><span>{{wn.ammount}}</span>{{wn.walletTypeShort}}</div>
+            <div class="adwnaddr"><span>{{wn.address | tenEllips}}</span><span class="copyspan" ng-click="wn.copyAddress(wn.address,$event)"><img src="./img/copyw.png"></span></div>
+        </div>
+    </div>
+    <form name="changeName">
+        <ul class="adwnlinput">
+            <li class="adwninput">
+                <div class="limg">
+                    <img src="./img/wallet.png"  style="width: 18px;"/>
+                </div>
+                <span translate>Wallet name</span>
+                <input name="name" ng-model="wn.name" ng-minlength="1" ng-maxlength="20" minlength="1" maxlength="20"/>
+            </li>
+            <li ng-click="wn.goChangeWalletpassWord(wn.walletType, wn.walletId, wn.address, wn.name, wn.image, wn.ammount, wn.mnemonic, wn.mnemonicEncrypted)">
+                <div class="ld">
+                    <div class="limg">
+                        <img src="./img/winpass.png" />
+                    </div>
+                    <span translate>Change password</span>
+                </div>
+                <div class="rd">
+                    <img src="./img/more.png" class="morerimg"/>
+                </div>
+            </li>
+        </ul>
+    </form>
+    <div class="btngroup">
+        <button class="m20b" ng-show="wn.mnemonic || wn.mnemonicEncrypted" ng-click="wn.gobackup(wn.walletType, wn.walletId, wn.address, wn.name, wn.image, wn.ammount, wn.mnemonic, wn.mnemonicEncrypted);index.backwaname = true;index.backwallet = false;index.backhome = false;" translate>Backup mnemonic</button>
+        <button class="awbtn" ng-click="wn.deleteWallet(wn.walletId,wn.name)" translate>Delete wallet</button>
+    </div>
+    <div ng-if="wn.showconfirm" class="popconfirm">
+        <div class="popmask" ng-click="wn.showconfirm = false;"></div>
+        <div class="popcontent">
+            <div class="fleximgtextc m20b p25h">
+                <img src="./img/qdeletecode.png">
+                <div translate class="size-16 redcolor">Are you sure you want to delete the wallet?</div>
+            </div>
+            <p class="poptips p25h" translate>After the wallet is deleted, it must be logged by mnemonic to ensure that the mnemonic has been backed up. Do you want to continue deleting?</p>
+            <div class="p25h popbutton">
+                <button ng-click="wn.truedeleteWallet(wn.walletId, wn.name);wn.showconfirm = false;" translate>Confirm</button>
+                <button class="awbtn" ng-click="wn.showconfirm = false;" translate>Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+

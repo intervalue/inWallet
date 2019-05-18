@@ -1,0 +1,18 @@
+<a  ng-click="index.setTab(item.link, false, 0, true)" ng-class="{'active': index.tab == item.link}" id="menu-{{item.link}}">
+    <!--<img class="activecirimg" src="./img/activecirimg.png"/>-->
+    <div class="menuimg">
+        <img id="menuimg-{{item.imgid}}" ng-class="{'activebimg':index.tab == item.link}" ng-src="./img/{{index.tab == item.link ? 'active': ''}}{{item.img}}.png"/>
+     <!--   <img ng-if="index.tab !== item.link" id="menuimg-{{item.imgid}}" ng-src="./img/{{item.img}}.png"/>-->
+        <!--<img id="menuimg-{{item.imgid}}" ng-src="./img/{{item.img}}.png" />-->
+    </div>
+    <div class="size-10 tu">
+        {{ item.title|translate }}
+        <span class="alert round" ng-if="item.link=='walletHome' && index.pendingTxProposalsCountForUs > 0">
+            {{ index.pendingTxProposalsCountForUs }}
+        </span>
+    </div>
+    <div ng-show="item.title == 'Chat' && totalNewMsgCnt > 0" class="badge">
+        <span ng-if="totalNewMsgCnt <= 999">{{totalNewMsgCnt}}</span>
+		<span ng-if="totalNewMsgCnt > 999">999+</span>
+    </div>
+</a>
