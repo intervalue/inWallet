@@ -231,48 +231,9 @@ angular.module('copayApp.controllers').controller('transferController',
             },
             "ETH":{
                 composeAndSend: ethComposeAndSend
-            },
-            "SNC":{
-                composeAndSend: sncComposeAndSend
             }
         }
 
-        /**
-         * 增加SNC交易
-         * @param to_address
-         * @param amount
-         * @param fee
-         */
-        function sncComposeAndSend(to_address, amount, fee) {
-            let fc = profileService.focusedClient;
-            require('inWalletcore/wallet').readAddressByWallet(fc.credentials.walletId, function (cb) {
-                let from_address = cb;
-                var opts = {
-                    from_address: from_address ? from_address : '',
-                    xPrivKey: fc.credentials.xPrivKey,
-                    walletId: fc.credentials.walletId,
-                    sendType: 0,
-                    to_address: to_address,
-                    amount: Number(amount),
-                    fee: fee ? fee : "0",
-                };
-                let wallet_snc = require('inWalletcore/stornet/wallet_snc')
-                wallet_snc.sendTransactions(opts, function (err, res) {
-                    console.log(res)
-                    console.log(err)
-                    if(err){
-                        self.errMessage(err);
-                        return;
-
-                    }
-                    $state.go('walletinfo', {   walletType: self.walletType, walletId: self.walletId, address: self.address, name: self.walletName, image: self.image, ammount: self.ammount, mnemonic: self.mnemonic, mnemonicEncrypted: self.mnemonicEncrypted });
-                    $rootScope.$emit('Local/paymentDone');
-                    $scope.index.updateTxHistory();
-                    self.resetForm();
-                })
-
-            })
-        }
 
         function ethComposeAndSend(toAddress, amount, fee) {
             var ethRpcHelper = require('inWalletcore/HDWallet/eth_rpchelper');
@@ -492,7 +453,7 @@ angular.module('copayApp.controllers').controller('transferController',
              *  // -- over by pmj 沒解密之前一致 解密之後根據不同的類型发起不同交易
              */
 
-            profileService.setAndStoreFocusToWallet((self.walletId).indexOf('SNC-')? (self.walletId).replace('SNC-','INVE-') : self.walletId,function () {
+            profileService.setAndStoreFocusToWallet(self.walletId,function () {
                 fc = profileService.focusedClient;
                 if (fc.isPrivKeyEncrypted()) {
                     profileService.unlockFC(null, function (err) {

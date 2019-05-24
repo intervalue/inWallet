@@ -107,13 +107,38 @@ angular.module('copayApp.controllers').controller('walletnameController',
 
         };
 
-        self.truedeleteWallet = function(walletId,name) {
-
+        self.truedeleteWallet = function(walletId,name,address) {
+            var isWallet = {};
             var walletName = name;
+            if(!name) {
+
+                var walletDefined = require('inWalletcore/wallet_defined_by_keys');
+                walletDefined.deleteWalletFromUIForAddress(address,function (err) {
+                    if (err) {
+                        self.error = err.message || err;
+                    } else {
+                        notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('successfully deleted wallet "{{walletName}}"', {
+                            walletName: walletName
+                        }));
+
+                        $timeout(function () {
+                            if (isCordova)
+                                window.plugins.spinnerDialog.hide();
+                            else
+                                $scope.index.progressing = false;
+                            go.walletHome();
+                            // $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('successfully deleted wallet "{{walletName}}"', {
+                            //     walletName: walletName
+                            // }));
+                        }, 1 * 1000);
+                    }
+                })
+            }
             profileService.setAndStoreFocusToWallet(walletId, function () {
                 let wc = profileService.walletClients;
                 for(let item in wc){
                     if(walletId == item){
+
                         if(wc[item].credentials.xPrivKeyEncrypted && !wc[item].credentials.xPrivKey){
                             profileService.unlockFC(null, function (err) {
                                 if (err) {
@@ -141,6 +166,7 @@ angular.module('copayApp.controllers').controller('walletnameController',
                                             else
                                                 $scope.index.progressing = false;
                                             go.walletHome();
+                                            isWallet[address] = false;
                                             // $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('successfully deleted wallet "{{walletName}}"', {
                                             //     walletName: walletName
                                             // }));
@@ -178,7 +204,9 @@ angular.module('copayApp.controllers').controller('walletnameController',
                             });
                         }
                     }
+
                 }
+
             });
         };
 

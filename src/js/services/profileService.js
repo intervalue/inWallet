@@ -329,9 +329,9 @@ angular.module('copayApp.services')
 
             if (opts.mnemonic) {
                 try {
-                    console.log('come this');
+                    //console.log('come this');
                     opts.mnemonic = root._normalizeMnemonic(opts.mnemonic);
-                    console.log('return this');
+                    //console.log('return this');
                     walletClient.seedFromMnemonic(opts.mnemonic, {
                         network: network,
                         passphrase: opts.passphrase,
@@ -343,8 +343,8 @@ angular.module('copayApp.services')
                         walletName: opts.name,
                         info: ''
                     });
-                    console.log('key  Test');
-                    console.log(walletClient.credentials);
+                    //console.log('key  Test');
+                   // console.log(walletClient.credentials);
                 } catch (ex) {
                     $log.info(ex);
                     // $rootScope.$emit('Local/ShowAlert', gettextCatalog.getString(' Could not create: Invalid wallet seed.'), 'fi-check', function () {

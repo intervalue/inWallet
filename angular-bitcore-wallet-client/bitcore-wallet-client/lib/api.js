@@ -471,7 +471,8 @@ API.prototype.createWallet = function (walletName, m, n, opts, cb, type) {
     }
 
     var walletDefinedByKeys = require('inWalletcore/wallet_defined_by_keys.js');
-    walletDefinedByKeys.createWalletByDevices(self.credentials.xPubKey, opts.account || 0, m, opts.cosigners || [], walletName, opts.isSingleAddress, function (wallet) {
+    walletDefinedByKeys.createWalletByDevices(self.credentials.xPubKey, opts.account || 0, m, opts.cosigners || [], walletName, opts.isSingleAddress, function (wallet,err) {
+        if(err) return cb(err);
         walletDefinedByKeys.issueAddress(wallet, 0, 0, function () {
             self.credentials.walletId = wallet;
             console.log("wallet created: " + JSON.stringify(self.credentials));

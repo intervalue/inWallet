@@ -60,7 +60,7 @@
             </div>
             <p class="poptips p25h" translate>After the wallet is deleted, it must be logged by mnemonic to ensure that the mnemonic has been backed up. Do you want to continue deleting?</p>
             <div class="p25h popbutton">
-                <button ng-click="wn.truedeleteWallet(wn.walletId, wn.name);wn.showconfirm = false;" translate>Confirm</button>
+                <button ng-click="wn.truedeleteWallet(wn.walletId, wn.name,wn.address);wn.showconfirm = false;" translate>Confirm</button>
                 <button class="awbtn" ng-click="wn.showconfirm = false;" translate>Cancel</button>
             </div>
         </div>
