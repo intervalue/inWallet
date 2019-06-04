@@ -6,7 +6,7 @@ var breadcrumbs = require('inWalletcore/breadcrumbs.js');
 var device = require('inWalletcore/device.js');
 var bignumber = require("decimal.js");
 
-angular.module('copayApp.controllers').controller('indexController', function ($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, txFormatService, uxLanguage,uxCurrency, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, promptBackupService, $anchorScroll, $location, newVersion) {
+angular.module('copayApp.controllers').controller('indexController', function ($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, txFormatService, uxLanguage, uxCurrency, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, promptBackupService, $anchorScroll, $location, newVersion) {
     breadcrumbs.add('index.js');
     var self = this;
     self.isCordova = isCordova;
@@ -19,8 +19,8 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     self.assetIndex = 0;
     self.$state = $state;
     self.usePushNotifications = isCordova && !isMobile.Windows();
-    self.showshadow= false;
-    self.showshadow100= false;
+    self.showshadow = false;
+    self.showshadow100 = false;
     self.verificationQRCode = '';
     self.signatureAddr = '';
     self.shadowstep = 'hot1';
@@ -77,7 +77,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     self.relayLength = 0;
     self.defaultLanguageIsoCode = uxLanguage.currentLanguage;
     var checkVerion = require('inWalletcore/checkVersion')
-    checkVerion.version(window.version);
+
     var webHelper = require('inWalletcore/sendTransactionToNode');
     var bigNumber = require("bignumber.js");
     var jsonObject = JSON.parse('{}');
@@ -90,17 +90,24 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     $rootScope.tabFrom = '';
     self.defaultShowQian = true;
 
-    self.getRelayInfo = function(callback){
-        if (new Date().getTime() - self.relaySynTime < 10000 && self.moveRate != undefined){
+    self.updateVersion = function() {
+        checkVerion.version(window.version);
+    }
+    self.updateVersion()
+
+    setInterval(self.updateVersion,24 * 60 * 60 * 1000)//24
+
+    self.getRelayInfo = function (callback) {
+        if (new Date().getTime() - self.relaySynTime < 10000 && self.moveRate != undefined) {
             return;
         }
         self.relaySynTime = new Date().getTime();
-        webHelper.post( device.my_device_hashnetseed_url+'/v1/relay/list', jsonObject, {"Content-Type": "application/json;"},function (err2, result2) {
+        webHelper.post(device.my_device_hashnetseed_url + '/v1/relay/list', jsonObject, {"Content-Type": "application/json;"}, function (err2, result2) {
             try {
                 var backResult = JSON.parse(result2.body.data);
                 var data = backResult[0];
-                self.BTCTOETH  = data.exchangeRatios['BTC:ETH'].toString();
-                self.ETHTOBTC  = new bigNumber(1).dividedBy(data.exchangeRatios['BTC:ETH']).toString();
+                self.BTCTOETH = data.exchangeRatios['BTC:ETH'].toString();
+                self.ETHTOBTC = new bigNumber(1).dividedBy(data.exchangeRatios['BTC:ETH']).toString();
                 self.INVETOBTC = data.exchangeRatios['INVE:BTC'].toString();
                 self.BTCTOINVE = new bigNumber(1).dividedBy(data.exchangeRatios['INVE:BTC']).toString();
                 self.ETHTOINVE = new bigNumber(1).dividedBy(data.exchangeRatios['INVE:ETH']).toString();
@@ -108,7 +115,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                 self.INVETOINVE = 1;
                 self.ETHTOETH = 1;
                 self.BTCTOBTC = 1;
-                self.middleNodeName = (data.name).replace('word','World');
+                self.middleNodeName = (data.name).replace('word', 'World');
                 self.exchangeRate = data.feeRatio;
                 self.chooseNodeList = data.addresses;
                 self.moveRate = self[self.exExchangeFromImg.toUpperCase() + 'TO' + self.exExchangeToImg.toUpperCase()];
@@ -116,17 +123,17 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                 self.url = data.ip + ':' + data.httpPort;
                 urlList = [];
                 var length = backResult.length;
-                for (var i=0; i<length; i++){
-                    if(backResult[i].name=='word')backResult[i].name='World';
+                for (var i = 0; i < length; i++) {
+                    if (backResult[i].name == 'word') backResult[i].name = 'World';
                     self.relayObject[backResult[i].pubkey] = backResult[i];
-                    self.relayLength ++;
+                    self.relayLength++;
                     urlList.push(backResult[i].ip + ':' + backResult[i].httpPort);
                 }
                 light.setMultiUrl(urlList);
                 $scope.$apply();
                 if (callback)
                     callback();
-            } catch(err){
+            } catch (err) {
                 console.log('全节点异常' + err);
             }
         });
@@ -135,9 +142,9 @@ angular.module('copayApp.controllers').controller('indexController', function ($
 
     self.trueRate = 1;
 
-    self.findPaymentAddress = function(walletId,stables,walletName,address,type){
+    self.findPaymentAddress = function (walletId, stables, walletName, address, type) {
         self.showselectwt = false;
-        if(self.selectid == 1){
+        if (self.selectid == 1) {
             self.exTradeOutId = walletId;
             self.exTradeOutName = walletName;
             self.exTradeOutImg = type.toLowerCase();
@@ -146,7 +153,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
             self.exTradeOutAddr = address;
             //self.moveRate = self[self.exTradeOutImg.toUpperCase() + 'TO' + self.exTradeToOutImg.toUpperCase()];
             self.moveRateExchange = self[self.exTradeOutImg.toUpperCase() + 'TO' + self.exTradeInImg.toUpperCase()];
-        }else{
+        } else {
             self.exTradeInId = walletId;
             self.exTradeInName = walletName;
             self.exTradeToOutImg = type.toLowerCase();
@@ -158,10 +165,10 @@ angular.module('copayApp.controllers').controller('indexController', function ($
         }
     }
 
-    self.findPaymentAddressmove = function(walletId,stables,walletName,address,type){
+    self.findPaymentAddressmove = function (walletId, stables, walletName, address, type) {
         let tenexp = /^([a-zA-Z0-9]{10})(.*)([a-zA-Z0-9]{10})$/g;
         self.showselectwtmove = false;
-        if(self.selectidmove == 1){
+        if (self.selectidmove == 1) {
             self.exTradeOutId = walletId;
             self.exExchangeFromId = walletId;
             self.exExchangeFromStable = stables;
@@ -171,7 +178,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
             self.exExchangeFromAddrShow = address.replace(tenexp, '$1...$3');
             self.moveRate = self[self.exExchangeFromImg.toUpperCase() + 'TO' + self.exExchangeToImg.toUpperCase()];
             self.moveRateExchange = self[self.exTradeOutImg.toUpperCase() + 'TO' + self.exTradeInImg.toUpperCase()];
-        }else{
+        } else {
             self.exExchangeToId = walletId;
             self.exExchangeToStable = stables;
             self.exExchangeToName = walletName;
@@ -182,42 +189,43 @@ angular.module('copayApp.controllers').controller('indexController', function ($
             self.moveRateExchange = self[self.exTradeOutImg.toUpperCase() + 'TO' + self.exTradeInImg.toUpperCase()];
         }
     }
-    self.showselectlayer = function(selectid){
+    self.showselectlayer = function (selectid) {
         self.showselectwt = true;
-        if(selectid == 1){
+        if (selectid == 1) {
             self.selectid = 1;
-        }else if(selectid == 2){
+        } else if (selectid == 2) {
             self.selectid = 2;
         }
         self.changesendType('INVE');
     }
-    self.showselectlayermove = function(selectid){
+    self.showselectlayermove = function (selectid) {
         self.showselectwtmove = true;
-        if(selectid == 1){
+        if (selectid == 1) {
             self.selectidmove = 1;
-        }else if(selectid == 2){
+        } else if (selectid == 2) {
             self.selectidmove = 2;
         }
         self.changesendType('INVE');
     }
-    self.changesendType = function(type){
+    self.changesendType = function (type) {
         if (type == self.moveState) {
             return;
         }
         self.showpopwallet = type;
         self.chooseWalletInfo = [];
         var walletInfo = self.walletInfo;
-        var type = self.showpopwallet? self.showpopwallet: 'INVE';
+        var type = self.showpopwallet ? self.showpopwallet : 'INVE';
         var length = self.walletInfo.length;
-        for (var i=0; i<length; i++){
-            var walletType = (walletInfo[i].wallet).split("-")[1] ? (walletInfo[i].wallet).split("-")[0]:'INVE';
-            if (walletType == type){
+        for (var i = 0; i < length; i++) {
+            var walletType = (walletInfo[i].wallet).split("-")[1] ? (walletInfo[i].wallet).split("-")[0] : 'INVE';
+            if (walletType == type) {
                 walletInfo[i].type = walletType;
                 self.chooseWalletInfo.push(walletInfo[i]);
             }
         }
         return;
     }
+
     //到这里都是为了初始化值把js写在index.js
 
     function updatePublicKeyRing(walletClient, onDone) {
@@ -259,7 +267,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
             description += "Language: " + (navigator.userLanguage || navigator.language) + "\n";
             description += "Program: " + conf.program + ' ' + conf.program_version + ' ' + (conf.bLight ? 'light' : 'full') + " #" + window.commitHash + "\n";
 
-            network.sendJustsaying(ws, 'bugreport', { message: error_message, exception: description });
+            network.sendJustsaying(ws, 'bugreport', {message: error_message, exception: description});
         });
     }
 
@@ -282,6 +290,10 @@ angular.module('copayApp.controllers').controller('indexController', function ($
         if (error_message.indexOf('ttl expired') >= 0 || error_message.indexOf('general SOCKS server failure') >= 0) // TOR error after wakeup from sleep
             return;
         console.log('stack', error_object.stack);
+        if (isCordova)
+            window.plugins.spinnerDialog.hide();
+        else
+            $scope.index.progressing = false;
         sendBugReport(error_message, error_object);
         if (error_object && error_object.bIgnore)
             return;
@@ -422,7 +434,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
         // device.readCorrespondent(device_address, function (correspondent) {
         //     notification.info(gettextCatalog.getString('Declined'), "Wallet " + walletName + " declined by " + (correspondent ? correspondent.name : 'peer'));
         // });
-        profileService.deleteWallet({ client: client }, function (err) {
+        profileService.deleteWallet({client: client}, function (err) {
             if (err)
                 console.log(err);
         });
@@ -449,7 +461,9 @@ angular.module('copayApp.controllers').controller('indexController', function ($
         var walletDefinedByKeys = require('inWalletcore/wallet_defined_by_keys.js');
         device.readCorrespondentsByDeviceAddresses(arrDeviceAddresses, function (arrCorrespondentInfos) {
             // my own address is not included in arrCorrespondentInfos because I'm not my correspondent
-            var arrNames = arrCorrespondentInfos.map(function (correspondent) { return correspondent.name; });
+            var arrNames = arrCorrespondentInfos.map(function (correspondent) {
+                return correspondent.name;
+            });
             var name_list = arrNames.join(", ");
             var question = gettextCatalog.getString('Create new wallet ' + walletName + ' together with ' + name_list + ' ?');
             requestApproval(question, {
@@ -493,7 +507,6 @@ angular.module('copayApp.controllers').controller('indexController', function ($
             });
         });
     });
-
 
 
     var accept_msg = gettextCatalog.getString('Yes');
@@ -550,7 +563,6 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     };
 
 
-
     self.openSubwalletModal = function () {
         $rootScope.modalOpened = true;
         var fc = profileService.focusedClient;
@@ -579,13 +591,17 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                 arrSharedWallets,
                 function (objSharedWallet, cb) {
                     walletDefinedByAddresses.readSharedAddressCosigners(objSharedWallet.shared_address, function (cosigners) {
-                        objSharedWallet.shared_address_cosigners = cosigners.map(function (cosigner) { return cosigner.name; }).join(", ");
+                        objSharedWallet.shared_address_cosigners = cosigners.map(function (cosigner) {
+                            return cosigner.name;
+                        }).join(", ");
                         objSharedWallet.creation_ts = cosigners[0].creation_ts;
                         cb();
                     });
                 },
                 function () {
-                    arrSharedWallets.sort(function (o1, o2) { return (o2.creation_ts - o1.creation_ts); });
+                    arrSharedWallets.sort(function (o1, o2) {
+                        return (o2.creation_ts - o1.creation_ts);
+                    });
                     $timeout(function () {
                         $scope.$apply();
                     });
@@ -603,7 +619,9 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                     walletDefinedByAddresses.determineIfHasMerkle(shared_address, function (bHasMerkle) {
                         self.bHasMerkle = bHasMerkle;
                         walletDefinedByAddresses.readSharedAddressCosigners(shared_address, function (cosigners) {
-                            self.shared_address_cosigners = cosigners.map(function (cosigner) { return cosigner.name; }).join(", ");
+                            self.shared_address_cosigners = cosigners.map(function (cosigner) {
+                                return cosigner.name;
+                            }).join(", ");
                             $timeout(function () {
                                 $rootScope.$apply();
                             });
@@ -650,9 +668,9 @@ angular.module('copayApp.controllers').controller('indexController', function ($
             $scope.addAddressbookEntry = false;
             $scope.selectedAddressbook = {};
             //交换页面的input框的address
-            if( addr !== ''){
+            if (addr !== '') {
                 $scope.newAddress = addr;
-            }else{
+            } else {
                 $scope.newAddress = address;
             }
             $scope.walletType = walletType;
@@ -669,14 +687,14 @@ angular.module('copayApp.controllers').controller('indexController', function ($
             $scope.order = order;
             /*$scope.bAllowAddressbook = self.canSendExternalPayment();*/
 
-            $scope.beforeQrCodeScann = function() {
+            $scope.beforeQrCodeScann = function () {
                 $scope.error = null;
                 $scope.addAddressbookEntry = true;
                 $scope.editAddressbook = false;
             };
 
-            $scope.onQrCodeScanned = function(data, addressbookForm) {
-                $timeout(function() {
+            $scope.onQrCodeScanned = function (data, addressbookForm) {
+                $timeout(function () {
                     var form = addressbookForm;
                     if (data && form) {
                         data = data.replace(self.protocol + ':', '');
@@ -685,8 +703,8 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                         form.address.$render();
                     }
                     $timeout(function () {
-                        if(!$rootScope.$$phase) $scope.$apply();
-                    },1);
+                        if (!$rootScope.$$phase) $scope.$apply();
+                    }, 1);
 
                 }, 100);
             };
@@ -696,16 +714,16 @@ angular.module('copayApp.controllers').controller('indexController', function ($
             };
             */
 
-            $scope.toggleEditAddressbook = function() {
+            $scope.toggleEditAddressbook = function () {
                 $scope.editAddressbook = !$scope.editAddressbook;
                 $scope.selectedAddressbook = {};
                 $scope.addAddressbookEntry = false;
-                lodash.forEach($scope.addressList, function(key, value) {
+                lodash.forEach($scope.addressList, function (key, value) {
                     $scope.addressList[value].select = false;
                 })
             };
 
-            $scope.toggleAddAddressbookEntry = function() {
+            $scope.toggleAddAddressbookEntry = function () {
                 $scope.error = null;
                 $scope.addressbook = {
                     'address': ($scope.newAddress || ''),
@@ -716,7 +734,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
 
             $scope.addressbookSave = function (addressbook, curType) {
                 $scope.error = null;
-                addressbookService.add(addressbook, curType, function (err,ab) {
+                addressbookService.add(addressbook, curType, function (err, ab) {
                     if (err) {
                         $timeout(function () {
                             $scope.error = err;
@@ -725,7 +743,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                     }
                     $scope.addressListShow = ab;
                     $scope.addressList = {};
-                    lodash.forEach($scope.addressListShow, function(key, value){
+                    lodash.forEach($scope.addressListShow, function (key, value) {
                         $scope.noAddress = true;
                         $scope.addressList[value] = {
                             addr: value,
@@ -742,7 +760,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
             }
 
             $scope.addressbookList = function (type) {
-                addressbookService.list(type,function (err,ab) {
+                addressbookService.list(type, function (err, ab) {
                     if (err) {
                         $timeout(function () {
                             $scope.error = err;
@@ -752,7 +770,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                     $scope.addressListShow = ab;
                     $scope.addressList = {};
                     $scope.noAddress = false;
-                    lodash.forEach($scope.addressListShow, function(key, value){
+                    lodash.forEach($scope.addressListShow, function (key, value) {
                         $scope.noAddress = true;
                         $scope.addressList[value] = {
                             addr: value,
@@ -764,15 +782,15 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                     $scope.toggleEditAddressbook();
                     $timeout(function () {
                         $rootScope.$apply();
-                    },1);
+                    }, 1);
                 })
             }
-            if( walletType !== ''){
+            if (walletType !== '') {
                 //transfer page
                 $scope.shortType = walletType.split('-')[0];
                 $scope.addressType = $scope.shortType;
                 $scope.addressbookList($scope.shortType);
-            }else{
+            } else {
                 //wallethome send page
                 $scope.shortType = false;
                 $scope.addressType = 'INVE';
@@ -784,10 +802,10 @@ angular.module('copayApp.controllers').controller('indexController', function ($
              * @param address
              * @param type
              */
-            $scope.addressbookRmove = function (address,type) {
+            $scope.addressbookRmove = function (address, type) {
                 $scope.showDelete = false;
                 $scope.error = null;
-                addressbookService.remove(address,type,function (err, ab) {
+                addressbookService.remove(address, type, function (err, ab) {
                     if (err) {
                         $scope.error = err;
                         return;
@@ -795,7 +813,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                     $scope.addressListShow = ab;
                     $scope.addressList = {};
                     $scope.noAddress = false;
-                    lodash.forEach($scope.addressListShow, function(key, value){
+                    lodash.forEach($scope.addressListShow, function (key, value) {
                         $scope.noAddress = true;
                         $scope.addressList[value] = {
                             addr: value,
@@ -804,8 +822,8 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                         }
                     })
                     $timeout(function () {
-                        if(!$rootScope.$$phase) $scope.$apply();
-                    },1);
+                        if (!$rootScope.$$phase) $scope.$apply();
+                    }, 1);
                 })
             }
 
@@ -815,16 +833,16 @@ angular.module('copayApp.controllers').controller('indexController', function ($
              */
             $scope.deleteSelect = function (type) {
                 var selectAddrList = [];
-                lodash.forEach($scope.addressList, function(key, value){
-                    if($scope.addressList[value].select == true){
+                lodash.forEach($scope.addressList, function (key, value) {
+                    if ($scope.addressList[value].select == true) {
                         selectAddrList.push($scope.addressList[value].addr)
                     }
                 })
                 console.log(selectAddrList)
                 $scope.showDeletes = false;
                 $scope.error = null;
-                lodash.forEach(selectAddrList, function(key, value){
-                    addressbookService.remove(key,type,function (err, ab) {
+                lodash.forEach(selectAddrList, function (key, value) {
+                    addressbookService.remove(key, type, function (err, ab) {
                         if (err) {
                             $scope.error = err;
                             return;
@@ -832,7 +850,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                         $scope.addressListShow = ab;
                         $scope.addressList = {};
                         $scope.noAddress = false;
-                        lodash.forEach($scope.addressListShow, function(key, value){
+                        lodash.forEach($scope.addressListShow, function (key, value) {
                             $scope.noAddress = true;
                             $scope.addressList[value] = {
                                 addr: value,
@@ -841,8 +859,8 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                             }
                         })
                         $timeout(function () {
-                            if(!$rootScope.$$phase) $scope.$apply();
-                        },1);
+                            if (!$rootScope.$$phase) $scope.$apply();
+                        }, 1);
                     })
                 })
             }
@@ -852,12 +870,12 @@ angular.module('copayApp.controllers').controller('indexController', function ($
              * @param type
              */
             $scope.selectAll = function () {
-                lodash.forEach($scope.addressList, function(key, value) {
+                lodash.forEach($scope.addressList, function (key, value) {
                     $scope.addressList[value].select = true;
                 })
             }
 
-            $scope.selectWallet = function(walletId, walletName) {
+            $scope.selectWallet = function (walletId, walletName) {
                 $scope.selectedWalletName = walletName;
                 addressService.getAddress(walletId, false, function onGotAddress(err, addr) {
                     $scope.gettingAddress = false;
@@ -873,10 +891,10 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                 });
             };
 
-            $scope.changeType = function(type){
+            $scope.changeType = function (type) {
                 $scope.addressType = type;
                 $scope.addressbookList(type);
-                $timeout(function(){
+                $timeout(function () {
                     $scope.$apply();
                 })
             }
@@ -884,7 +902,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
              * 复制地址
              * @param addr
              */
-            $scope.copyAddress = function(addr,$event) {
+            $scope.copyAddress = function (addr, $event) {
                 $event.stopImmediatePropagation();
                 if (isCordova) {
                     window.cordova.plugins.clipboard.copy(addr);
@@ -897,7 +915,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                     setTimeout(function () {
                         self.layershow = false;
                         $scope.$apply();
-                    },1500);
+                    }, 1500);
                 }
             };
 
@@ -905,9 +923,9 @@ angular.module('copayApp.controllers').controller('indexController', function ($
              *
              * @param $event
              */
-            $scope.goTransfer = function ($event,addr) {
+            $scope.goTransfer = function ($event, addr) {
                 //walletType&walletId&addressess&walletName
-                console.log('self.walletInfo:   ',self.walletInfo);
+                console.log('self.walletInfo:   ', self.walletInfo);
                 $event.stopImmediatePropagation();
                 $scope.cancel();
                 //$state.go('transfer',{ walletType:self.walletType, walletId:self.walletId, address:self.address,walletName :self.walletName });
@@ -917,7 +935,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
              *
              * * @param addr
              */
-            $scope.showDeleteF = function (addr,$event) {
+            $scope.showDeleteF = function (addr, $event) {
                 $event.stopImmediatePropagation();
                 $scope.showDelete = true;
                 $scope.deleteaddr = addr;
@@ -928,7 +946,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
             $scope.hideDeleteF = function () {
                 $scope.showDelete = false;
                 let resetel = document.querySelectorAll('.addeditin .addrremove');
-                lodash.forEach(resetel, function(key, value){
+                lodash.forEach(resetel, function (key, value) {
                     resetel[value].style.width = 0;
                     resetel[value].style.zIndex = 1;
                     resetel[value].style.opacity = 0;
@@ -954,19 +972,19 @@ angular.module('copayApp.controllers').controller('indexController', function ($
              *返回到来的页面，并带上点击地址
              *@params addr
              */
-            $scope.goBackAddr = function (addr,type) {
+            $scope.goBackAddr = function (addr, type) {
 
-                if( walletType !== ''){
+                if (walletType !== '') {
                     //transfer  page
-                    $rootScope.$emit('Local/setAddressVal', addr,type);
+                    $rootScope.$emit('Local/setAddressVal', addr, type);
                     $scope.cancel();
-                }else{
+                } else {
                     //walletHome send page
-                    if($scope.order == 1){
-                        $rootScope.$emit('Local/sethomeAddressVal1', addr,type);
+                    if ($scope.order == 1) {
+                        $rootScope.$emit('Local/sethomeAddressVal1', addr, type);
                         $scope.cancel();
-                    }else if($scope.order == 2){
-                        $rootScope.$emit('Local/sethomeAddressVal2', addr,type);
+                    } else if ($scope.order == 2) {
+                        $rootScope.$emit('Local/sethomeAddressVal2', addr, type);
                         $scope.cancel();
                     }
 
@@ -1039,7 +1057,6 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     }];
 
     self.tab = 'walletHome';
-
 
 
     self.setFocusedWallet = function (cb) {
@@ -1138,88 +1155,88 @@ angular.module('copayApp.controllers').controller('indexController', function ($
      * @param switchState
      * @returns {*}
      */
-   /* self.setTab = function (tab, reset, tries, switchState) {
-        // console.log("setTab", tab, reset, tries, switchState);
-        tries = tries || 0;
+    /* self.setTab = function (tab, reset, tries, switchState) {
+         // console.log("setTab", tab, reset, tries, switchState);
+         tries = tries || 0;
 
-        var changeTab = function (tab) {
+         var changeTab = function (tab) {
 
-            go.path(tab);
+             go.path(tab);
 
-            if (document.getElementById(tab)) {
-                var el = angular.element(document.getElementById(tab));
-                el.removeClass('tab-out').addClass('tab-in');
-                var newe = angular.element(document.getElementById('menu-' + tab));
-                if (newe) {
-                    newe.className = 'active';
-                }
-            }
+             if (document.getElementById(tab)) {
+                 var el = angular.element(document.getElementById(tab));
+                 el.removeClass('tab-out').addClass('tab-in');
+                 var newe = angular.element(document.getElementById('menu-' + tab));
+                 if (newe) {
+                     newe.className = 'active';
+                 }
+             }
 
-            /!**
-             * 根据点击标签内容切换对应标签图标样式
-             *!/
-            let menuu = self.menu;
-            if((self.tab== tab &&!$rootScope.tab) ||$rootScope.tab != tab && !(self.tab == 'chat' && tab == 'correspondentDevices')){
-                for(let item in menuu){
-                    if(menuu[item].link == tab) {
-                        let cc = menuu[item];
-                        cc.img = 'active'+cc.img;
-                        menuu.splice(item,1,cc);
-                    }
-                    if(menuu[item].link == $rootScope.tab) {
-                        let cc = menuu[item];
-                        cc.img = cc.img.substring(6);
-                        menuu.splice(item,1,cc);
-                    }
-                }
-            }
+             /!**
+              * 根据点击标签内容切换对应标签图标样式
+              *!/
+             let menuu = self.menu;
+             if((self.tab== tab &&!$rootScope.tab) ||$rootScope.tab != tab && !(self.tab == 'chat' && tab == 'correspondentDevices')){
+                 for(let item in menuu){
+                     if(menuu[item].link == tab) {
+                         let cc = menuu[item];
+                         cc.img = 'active'+cc.img;
+                         menuu.splice(item,1,cc);
+                     }
+                     if(menuu[item].link == $rootScope.tab) {
+                         let cc = menuu[item];
+                         cc.img = cc.img.substring(6);
+                         menuu.splice(item,1,cc);
+                     }
+                 }
+             }
 
-            $rootScope.tab = self.tab = tab;
+             $rootScope.tab = self.tab = tab;
 
-            $rootScope.$emit('Local/TabChanged', tab);
-        };
+             $rootScope.$emit('Local/TabChanged', tab);
+         };
 
-        // check if the whole menu item passed
-        if (typeof tab == 'object') {
-            if (!tab.new_state) backButton.clearHistory();
-            if (tab.open) {
-                if (tab.link) {
-                    $rootScope.tab = self.tab = tab.link;
-                }
-                tab.open();
-                return;
-            } else if (tab.new_state) {
-                changeTab(tab.link);
-                go.path(tab.new_state);
-                $rootScope.tab = self.tab = tab.link;
-                return;
-            } else {
-                return self.setTab(tab.link, reset, tries, switchState);
-            }
-        }
-        //console.log("current tab " + self.tab + ", requested to set tab " + tab + ", reset=" + reset);
-        if (self.tab === tab && !reset)
-            return;
+         // check if the whole menu item passed
+         if (typeof tab == 'object') {
+             if (!tab.new_state) backButton.clearHistory();
+             if (tab.open) {
+                 if (tab.link) {
+                     $rootScope.tab = self.tab = tab.link;
+                 }
+                 tab.open();
+                 return;
+             } else if (tab.new_state) {
+                 changeTab(tab.link);
+                 go.path(tab.new_state);
+                 $rootScope.tab = self.tab = tab.link;
+                 return;
+             } else {
+                 return self.setTab(tab.link, reset, tries, switchState);
+             }
+         }
+         //console.log("current tab " + self.tab + ", requested to set tab " + tab + ", reset=" + reset);
+         if (self.tab === tab && !reset)
+             return;
 
-        if (!document.getElementById('menu-' + tab) && ++tries < 5) {
-            //console.log("will retry setTab later:", tab, reset, tries, switchState);
-            return $timeout(function () {
-                self.setTab(tab, reset, tries, switchState);
-            }, (tries === 1) ? 10 : 300);
-        }
+         if (!document.getElementById('menu-' + tab) && ++tries < 5) {
+             //console.log("will retry setTab later:", tab, reset, tries, switchState);
+             return $timeout(function () {
+                 self.setTab(tab, reset, tries, switchState);
+             }, (tries === 1) ? 10 : 300);
+         }
 
-        // if (!self.tab || !$state.is('walletHome'))
-        //     $rootScope.tab = self.tab = 'walletHome';
+         // if (!self.tab || !$state.is('walletHome'))
+         //     $rootScope.tab = self.tab = 'walletHome';
 
-        if (switchState && !$state.is('walletHome')) {
-            go.path('walletHome', function () {
-                changeTab(tab);
-            });
-            return;
-        }
+         if (switchState && !$state.is('walletHome')) {
+             go.path('walletHome', function () {
+                 changeTab(tab);
+             });
+             return;
+         }
 
-        changeTab(tab);
-    };*/
+         changeTab(tab);
+     };*/
 
     self.setTab = function (tab) {
         var changeTab = function (tab) {
@@ -1233,22 +1250,22 @@ angular.module('copayApp.controllers').controller('indexController', function ($
         changeTab(tab);
     };
 
-    $rootScope.$on('Local/SetTabDefine',function (event,tab){
+    $rootScope.$on('Local/SetTabDefine', function (event, tab) {
 
         let menuu = self.menu;
-        if((self.tab== tab &&!$rootScope.tab) ||$rootScope.tab != tab ){
-            for(let item in menuu){
-                if(menuu[item].link == tab) {
+        if ((self.tab == tab && !$rootScope.tab) || $rootScope.tab != tab) {
+            for (let item in menuu) {
+                if (menuu[item].link == tab) {
                     let cc = menuu[item];
-                    cc.img = 'active'+cc.img;
-                    menuu.splice(item,1,cc);
+                    cc.img = 'active' + cc.img;
+                    menuu.splice(item, 1, cc);
                 }
-                if(menuu[item].link == $rootScope.tab) {
+                if (menuu[item].link == $rootScope.tab) {
                     let cc = menuu[item];
                     cc.img = cc.img.substring(6);
-                    menuu.splice(item,1,cc);
+                    menuu.splice(item, 1, cc);
                 }
-                console.log(item+': ',menuu);
+                console.log(item + ': ', menuu);
             }
 
         }
@@ -1258,11 +1275,11 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     /**
      * 变更交易的中继节点
      */
-    self.changeRelay = function(pubkey){
+    self.changeRelay = function (pubkey) {
         try {
             var data = self.relayObject[pubkey];
-            self.BTCTOETH  = data.exchangeRatios['BTC:ETH'].toString();
-            self.ETHTOBTC  = new bigNumber(1).dividedBy(data.exchangeRatios['BTC:ETH']).toString();
+            self.BTCTOETH = data.exchangeRatios['BTC:ETH'].toString();
+            self.ETHTOBTC = new bigNumber(1).dividedBy(data.exchangeRatios['BTC:ETH']).toString();
             self.INVETOBTC = data.exchangeRatios['INVE:BTC'].toString();
             self.BTCTOINVE = new bigNumber(1).dividedBy(data.exchangeRatios['INVE:BTC']).toString();
             self.ETHTOINVE = new bigNumber(1).dividedBy(data.exchangeRatios['INVE:ETH']).toString();
@@ -1270,18 +1287,18 @@ angular.module('copayApp.controllers').controller('indexController', function ($
             self.exchangeRate = data.feeRatio;
             self.chooseNodeList = data.addresses;
             self.url = data.ip + ':' + data.httpPort;
-            self.middleNodeName = (data.name).replace('word','world');
-        } catch(err){
+            self.middleNodeName = (data.name).replace('word', 'world');
+        } catch (err) {
             self.showAlert2 = {};
             self.showAlert2.msg = gettextCatalog.getString('The relay node is abnormal. Please select another relay node.');
             self.showAlert = true;
-            return;
+            return
         }
-        return;
+        return
     }
 
 
-    self.resetSendForm = function(){
+    self.resetSendForm = function () {
         /**
          * move
          * 默认设置兑换转出地址信息
@@ -1301,12 +1318,12 @@ angular.module('copayApp.controllers').controller('indexController', function ($
              * 默认设置兑换转入地址信息
              * @type {*|string}
              */
-            self.exExchangeToId = self.walletType.ETH.length > 0 ? self.walletType.ETH[0].walletId: (self.walletType.BTC.length > 0 ? self.walletType.BTC[0].walletId : '');
-            self.exExchangeToStable = self.walletType.ETH.length > 0 ? self.walletType.ETH[0].stables:  (self.walletType.BTC.length > 0 ? self.walletType.BTC[0].stables : 0);
-            self.exExchangeToName = self.walletType.ETH.length > 0 ? self.walletType.ETH[0].walletName:  (self.walletType.BTC.length > 0 ? self.walletType.BTC[0].walletName : '');
-            self.exExchangeToImg = self.walletType.ETH.length > 0 ? 'eth':(self.walletType.BTC.length > 0 ? 'btc' : '');
-            self.exExchangeToAddr = self.walletType.ETH.length > 0 ? self.walletType.ETH[0].address:  (self.walletType.BTC.length > 0 ? self.walletType.BTC[0].address : '');
-            self.exExchangeToAddrShow = (self.walletType.ETH.length > 0 ? self.walletType.ETH[0].address: (self.walletType.BTC.length > 0 ? self.walletType.BTC[0].address : '')).replace(tenexp, '$1...$3');
+            self.exExchangeToId = self.walletType.ETH.length > 0 ? self.walletType.ETH[0].walletId : (self.walletType.BTC.length > 0 ? self.walletType.BTC[0].walletId : '');
+            self.exExchangeToStable = self.walletType.ETH.length > 0 ? self.walletType.ETH[0].stables : (self.walletType.BTC.length > 0 ? self.walletType.BTC[0].stables : 0);
+            self.exExchangeToName = self.walletType.ETH.length > 0 ? self.walletType.ETH[0].walletName : (self.walletType.BTC.length > 0 ? self.walletType.BTC[0].walletName : '');
+            self.exExchangeToImg = self.walletType.ETH.length > 0 ? 'eth' : (self.walletType.BTC.length > 0 ? 'btc' : '');
+            self.exExchangeToAddr = self.walletType.ETH.length > 0 ? self.walletType.ETH[0].address : (self.walletType.BTC.length > 0 ? self.walletType.BTC[0].address : '');
+            self.exExchangeToAddrShow = (self.walletType.ETH.length > 0 ? self.walletType.ETH[0].address : (self.walletType.BTC.length > 0 ? self.walletType.BTC[0].address : '')).replace(tenexp, '$1...$3');
             self.moveRateExchange = self[self.exTradeOutImg.toUpperCase() + 'TO' + self.exTradeInImg.toUpperCase()];
 
             self.showsecnav = 'move';
@@ -1357,14 +1374,13 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     };
 
 
-
-    self.processNewTxs = function (txs,asset) {
+    self.processNewTxs = function (txs, asset) {
         var config = configService.getSync().wallet.settings;
         var now = Math.floor(Date.now() / 1000);
         var ret = [];
 
         lodash.each(txs, function (tx) {
-            tx = txFormatService.processTx(tx,asset);
+            tx = txFormatService.processTx(tx, asset);
 
             // no future transactions...
             if (tx.time > now)
@@ -1390,15 +1406,15 @@ angular.module('copayApp.controllers').controller('indexController', function ($
         self.updateImage();
     });
 
-    self.updateImage = function(){
+    self.updateImage = function () {
         var config = configService.getSync();
         var fc = profileService.walletClients;
         config.colorFor = config.colorFor || {};
         config.imageFor = config.imageFor || {};
-        for(let item in fc){
-            if(!fc[item].image) fc[item].image = './img/rimg/1.png';
-            for(let cf in config.imageFor){
-                if(item == cf){
+        for (let item in fc) {
+            if (!fc[item].image) fc[item].image = './img/rimg/1.png';
+            for (let cf in config.imageFor) {
+                if (item == cf) {
                     fc[item].image = config.imageFor[cf];
                     break;
                 }
@@ -1448,7 +1464,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                 }
             }
             if (balanceInfo.name)
-                profileService.assetMetadata[asset] = { decimals: balanceInfo.decimals, name: balanceInfo.name };
+                profileService.assetMetadata[asset] = {decimals: balanceInfo.decimals, name: balanceInfo.name};
             if (asset === "base" || balanceInfo.name) {
                 balanceInfo.totalStr = profileService.formatAmountWithUnit(balanceInfo.total, asset);
                 balanceInfo.totalStrWithoutUnit = profileService.formatAmount(balanceInfo.total, asset);
@@ -1458,7 +1474,9 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                     balanceInfo.sharedStr = profileService.formatAmountWithUnitIfShort(balanceInfo.shared, asset);
                 if (!balanceInfo.name) {
                     if (!Math.log10) // android 4.4
-                        Math.log10 = function (x) { return Math.log(x) * Math.LOG10E; };
+                        Math.log10 = function (x) {
+                            return Math.log(x) * Math.LOG10E;
+                        };
                     if (asset === "base") {
                         balanceInfo.name = self.unitName;
                         balanceInfo.decimals = Math.round(Math.log10(config.unitValue));
@@ -1484,7 +1502,6 @@ angular.module('copayApp.controllers').controller('indexController', function ($
             $rootScope.$apply();
         });
     };
-
 
 
     this.csvHistory = function () {
@@ -1617,16 +1634,16 @@ angular.module('copayApp.controllers').controller('indexController', function ($
         let ammount_SNC = 0;
         $timeout(function () {
             require('inWalletcore/wallet').getWalletsInfo(function (obj) {
-                if(!obj) return self.updateLocalTxHistory();
+                if (!obj) return self.updateLocalTxHistory();
                 self.updateImage();
                 let tenexp = /^([a-zA-Z0-9]{10})(.*)([a-zA-Z0-9]{10})$/g;
-                obj.forEach(function(tran){
-                    for(var item in fc) {
-                        if(fc[item].credentials.mnemonicEncrypted  && self.remindNetx)
+                obj.forEach(function (tran) {
+                    for (var item in fc) {
+                        if (fc[item].credentials.mnemonicEncrypted && self.remindNetx)
                             promptBackupService.get(function (res) {
-                                if(!res) self.remindbackup = true;
+                                if (!res) self.remindbackup = true;
                             });
-                        if (tran.wallet == fc[item].credentials.walletId){
+                        if (tran.wallet == fc[item].credentials.walletId) {
                             var walletNameIfo = fc[item].credentials.walletName;
                             var imageIfo = fc[item].image;
                             var mnemonicEncryptedIfo = fc
@@ -1635,20 +1652,20 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                             break;
                         }
                     }
-                    let pointLen = (configService.getUnitValue((tran.wallet).split('-')[0].toLowerCase())+"").length-1;
-                    var point = (tran.stablesPoint/configService.getUnitValue((tran.wallet).split('-')[0].toLowerCase())).toFixed(pointLen);
-                    let stables = (tran.wallet).split('-')[0] == 'BTC' ? new bignumber(tran.stablesInt).plus(point).toString(): new bignumber(tran.stablesInt*configService.getUnitValue((tran.wallet).split('-')[0].toLowerCase())).plus(tran.stablesPoint).toString();
+                    let pointLen = (configService.getUnitValue((tran.wallet).split('-')[0].toLowerCase()) + "").length - 1;
+                    var point = (tran.stablesPoint / configService.getUnitValue((tran.wallet).split('-')[0].toLowerCase())).toFixed(pointLen);
+                    let stables = (tran.wallet).split('-')[0] == 'BTC' ? new bignumber(tran.stablesInt).plus(point).toString() : new bignumber(tran.stablesInt * configService.getUnitValue((tran.wallet).split('-')[0].toLowerCase())).plus(tran.stablesPoint).toString();
                     trans.push({
-                        addressabb :tran.address.replace(tenexp, '$1...$3'),
-                        address : tran.address,
-                        wallet  : tran.wallet,
-                        stablesNmuber  : stables,
-                        stabless : stables/configService.getUnitValue((tran.wallet).split('-')[0].toLowerCase()),
-                        stables  : profileService.formatAmount(stables,(tran.wallet).split('-')[0].toLowerCase()),
-                        walletName : walletNameIfo,
-                        image : imageIfo,
+                        addressabb: tran.address.replace(tenexp, '$1...$3'),
+                        address: tran.address,
+                        wallet: tran.wallet,
+                        stablesNmuber: stables,
+                        stabless: stables / configService.getUnitValue((tran.wallet).split('-')[0].toLowerCase()),
+                        stables: profileService.formatAmount(stables, (tran.wallet).split('-')[0].toLowerCase()),
+                        walletName: walletNameIfo,
+                        image: imageIfo,
                         mnemonicEncrypted: mnemonicEncryptedIfo,
-                        mnemonic : mnemonic
+                        mnemonic: mnemonic
                     });
                 });
                 //self.ammountTatolNmuber = ammount;
@@ -1661,17 +1678,17 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                 let transETH = [];
                 let transINVE = [];
                 let transSNC = [];
-                for(let item in trans) {
-                    if(trans[item].wallet.indexOf('BTC-') != -1){
+                for (let item in trans) {
+                    if (trans[item].wallet.indexOf('BTC-') != -1) {
                         ammount_BTC = new bignumber(ammount_BTC).plus(trans[item].stablesNmuber).toString();
                         transBTC.push(trans[item]);
-                    }else if(trans[item].wallet.indexOf('ETH-') != -1){
+                    } else if (trans[item].wallet.indexOf('ETH-') != -1) {
                         ammount_ETH = new bignumber(ammount_ETH).plus(trans[item].stablesNmuber).toString();
                         transETH.push(trans[item]);
-                    }else if(trans[item].wallet.indexOf('INVE-') != -1){
+                    } else if (trans[item].wallet.indexOf('INVE-') != -1) {
                         ammount_INVE = new bignumber(ammount_INVE).plus(trans[item].stablesNmuber).toString();
                         transINVE.push(trans[item]);
-                    } else if(trans[item].wallet.indexOf('SNC-') != -1){
+                    } else if (trans[item].wallet.indexOf('SNC-') != -1) {
                         ammount_SNC = new bignumber(ammount_SNC).plus(trans[item].stablesNmuber).toString();
                         transSNC.push(trans[item]);
                     }
@@ -1684,21 +1701,21 @@ angular.module('copayApp.controllers').controller('indexController', function ($
 {ammount: number, ammountFro: *}, ammount_INVE: {ammount: number, ammountFro: *}}}
                  */
                 self.ammount = {
-                    ammount_BTC :{
-                        ammount : ammount_BTC/configService.getUnitValue('btc'),
-                        ammountFro : profileService.formatAmount(ammount_BTC,'btc')
+                    ammount_BTC: {
+                        ammount: ammount_BTC / configService.getUnitValue('btc'),
+                        ammountFro: profileService.formatAmount(ammount_BTC, 'btc')
                     },
-                    ammount_ETH :{
-                        ammount : ammount_ETH/configService.getUnitValue('eth'),
-                        ammountFro : profileService.formatAmount(ammount_ETH,'eth')
+                    ammount_ETH: {
+                        ammount: ammount_ETH / configService.getUnitValue('eth'),
+                        ammountFro: profileService.formatAmount(ammount_ETH, 'eth')
                     },
-                    ammount_INVE :{
-                        ammount : ammount_INVE/configService.getUnitValue('inve'),
-                        ammountFro : profileService.formatAmount(ammount_INVE,'inve')
+                    ammount_INVE: {
+                        ammount: ammount_INVE / configService.getUnitValue('inve'),
+                        ammountFro: profileService.formatAmount(ammount_INVE, 'inve')
                     },
-                    ammount_SNC :{
-                        ammount : ammount_SNC,
-                        ammountFro : profileService.formatAmount(ammount_SNC,'snc')
+                    ammount_SNC: {
+                        ammount: ammount_SNC,
+                        ammountFro: profileService.formatAmount(ammount_SNC, 'snc')
                     }
                 }
                 //console.log('self.ammount',self.ammount)
@@ -1709,16 +1726,17 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                 self.walletType.INVE = transINVE;
                 self.walletType.SNC = transSNC;
                 //self.exExchangeToImg = self.walletType.ETH.length > 0 ? 'eth' : (self.walletType.BTC.length > 0 ? 'btc' : '');
-                if(!self.exExchangeToImg){
-                    lodash.forEach(fc,function(uu){
-                        let e = lodash.find(uu,{type: "ETH"});
-                        let b = lodash.find(uu,{type: "BTC"});
-                        if(e) self.exExchangeToImg = "eth";
-                        if(b) self.exExchangeToImg = "btc";
+                console.log(self.walletType)
+                if (!self.exExchangeToImg) {
+                    lodash.forEach(fc, function (uu) {
+                        let e = lodash.find(uu, {type: "ETH"});
+                        let b = lodash.find(uu, {type: "BTC"});
+                        if (e) self.exExchangeToImg = "eth";
+                        if (b) self.exExchangeToImg = "btc";
                     });
                 }
 
-                if(!count || !self.exExchangeFromImg){
+                if (!count || !self.exExchangeFromImg) {
                     count = true;
                     /**
                      * move
@@ -1739,19 +1757,19 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                      * @type {*|string}
                      */
                     //console.log('transETH: ',transETH)
-                    self.exExchangeToId = transETH.length > 0 ? transETH[0].walletId: (transBTC.length > 0 ? transBTC[0].walletId : '');
-                    self.exExchangeToStable = transETH.length > 0 ? transETH[0].stables:  (transBTC.length > 0 ? transBTC[0].stables : 0);
-                    self.exExchangeToName = transETH.length > 0 ? transETH[0].walletName:  (transBTC.length > 0 ? transBTC[0].walletName : '');
-                    self.exExchangeToImg = transETH.length > 0 ? 'eth':(transBTC.length > 0 ? 'btc' : '');
-                    self.exExchangeToAddr = transETH.length > 0 ? transETH[0].address:  (transBTC.length > 0 ? transBTC[0].address : '');
-                    self.exExchangeToAddrShow = (transETH.length > 0 ? transETH[0].address: (transBTC.length > 0 ? transBTC[0].address : '')).replace(tenexp, '$1...$3');
+                    self.exExchangeToId = transETH.length > 0 ? transETH[0].walletId : (transBTC.length > 0 ? transBTC[0].walletId : '');
+                    self.exExchangeToStable = transETH.length > 0 ? transETH[0].stables : (transBTC.length > 0 ? transBTC[0].stables : 0);
+                    self.exExchangeToName = transETH.length > 0 ? transETH[0].walletName : (transBTC.length > 0 ? transBTC[0].walletName : '');
+                    self.exExchangeToImg = transETH.length > 0 ? 'eth' : (transBTC.length > 0 ? 'btc' : '');
+                    self.exExchangeToAddr = transETH.length > 0 ? transETH[0].address : (transBTC.length > 0 ? transBTC[0].address : '');
+                    self.exExchangeToAddrShow = (transETH.length > 0 ? transETH[0].address : (transBTC.length > 0 ? transBTC[0].address : '')).replace(tenexp, '$1...$3');
                     self.moveRateExchange = self[self.exTradeOutImg.toUpperCase() + 'TO' + self.exTradeInImg.toUpperCase()];
                 }
 
 
                 let walletInfo = self.walletInfo;
-                for(let item in walletInfo){
-                    if(walletInfo[item].wallet == profileService.focusedClient.credentials.walletId) {
+                for (let item in walletInfo) {
+                    if (walletInfo[item].wallet == profileService.focusedClient.credentials.walletId) {
                         self.stables = walletInfo[item].stables;
                         break;
                     }
@@ -1759,15 +1777,15 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                 self.txTotal = null;
                 self.walletInfomation = {};
                 let txTotal = [];
-                for(let item in fc){
+                for (let item in fc) {
                     let light = require('inWalletcore/light');
-                    light.findTranList(item,function (txs,cb) {
+                    light.findTranList(item, function (txs, cb) {
                         //console.log('item',item)
-                        for(let sa in txs){
-                            let pointLen = (configService.getUnitValue(item.split('-')[0].toLowerCase())+"").length-1;
-                            txs[sa].type = txs[sa].type == 0 ? 'tranfer':(txs[sa].type == 1 ? 'move':'exchange');
-                            let amount1 = item.indexOf('BTC') != -1 ? txs[sa].amount : txs[sa].amount*configService.getUnitValue(item.split('-')[0].toLowerCase());
-                            let amount2 =  item.indexOf('BTC') != -1 ? new bignumber (txs[sa].amount_point.toFixed(pointLen)).dividedBy(configService.getUnitValue(item.split('-')[0].toLowerCase())).toString():txs[sa].amount_point;
+                        for (let sa in txs) {
+                            let pointLen = (configService.getUnitValue(item.split('-')[0].toLowerCase()) + "").length - 1;
+                            txs[sa].type = txs[sa].type == 0 ? 'tranfer' : (txs[sa].type == 1 ? 'move' : 'exchange');
+                            let amount1 = item.indexOf('BTC') != -1 ? txs[sa].amount : txs[sa].amount * configService.getUnitValue(item.split('-')[0].toLowerCase());
+                            let amount2 = item.indexOf('BTC') != -1 ? new bignumber(txs[sa].amount_point.toFixed(pointLen)).dividedBy(configService.getUnitValue(item.split('-')[0].toLowerCase())).toString() : txs[sa].amount_point;
                             let num = new bignumber(amount1).plus(amount2).toString();
                             let result = String(num);
                             if (result.indexOf('-') >= 0) {
@@ -1776,10 +1794,10 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                             txs[sa].amount = result;
                             txTotal.push(txs[sa]);
                         }
-                        self.walletInfomation[item] =  item;
+                        self.walletInfomation[item] = item;
                         self.updatingTxHistory = false;
-                        if(!txs) self.txHistoryError = true;
-                        let newHistory= self.processNewTxs(txs,item.split('-')[0].toLowerCase());
+                        if (!txs) self.txHistoryError = true;
+                        let newHistory = self.processNewTxs(txs, item.split('-')[0].toLowerCase());
                         self.completeHistory = newHistory;
                         self.walletInfomation[item] = newHistory;
                         self.txHistory = newHistory;
@@ -1802,7 +1820,6 @@ angular.module('copayApp.controllers').controller('indexController', function ($
             });
 
 
-
         });
 
     };
@@ -1811,7 +1828,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
         self.historyShowShowAll = false;
         self.historyRendering = true;
         $timeout(function () {
-            if(!$rootScope.$$phase) $rootScope.$apply();
+            if (!$rootScope.$$phase) $rootScope.$apply();
             $timeout(function () {
                 self.historyRendering = false;
                 self.txHistory = self.completeHistory;
@@ -1842,12 +1859,12 @@ angular.module('copayApp.controllers').controller('indexController', function ($
      * 交易完成后跳转首页
      * @param obj
      */
-    $rootScope.$on('Local/paymentDone', function(event){
+    $rootScope.$on('Local/paymentDone', function (event) {
         //$rootScope.$emit('Local/SetTab', 'walletHome');
         self.updateTxHistory(3);
     });
 
-    $rootScope.$on('Local/addWallets', function(event){
+    $rootScope.$on('Local/addWallets', function (event) {
         self.updateTxHistory(3);
     });
 
@@ -1959,7 +1976,6 @@ angular.module('copayApp.controllers').controller('indexController', function ($
         self.defaultCurrencyIsoCode = userCoin;
         self.defaultCurrencyName = uxCurrency.getName(userCoin);
     };
-
 
 
     function getNumberOfSelectedSigners() {
@@ -2099,7 +2115,6 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     });
 
 
-
     $rootScope.$on('NewOutgoingTx', function () {
         breadcrumbs.add('NewOutgoingTx');
     });
@@ -2203,7 +2218,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     /**
      * 生成待授权二维码
      */
-    $rootScope.$on('Local/ShadowAddress', function(event,address){
+    $rootScope.$on('Local/ShadowAddress', function (event, address) {
         self.signatureAddr = address;
         setTimeout(function () {
             $rootScope.$apply()
@@ -2214,16 +2229,16 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     /**
      * 生成授权签名二维码
      */
-    $rootScope.$on('Local/ShadowAddressForm', function(event,address){
+    $rootScope.$on('Local/ShadowAddressForm', function (event, address) {
         var shadowWallet = require('inWalletcore/shadowWallet');
-        shadowWallet.getSignatureCode(address,function(signatureCodeQRCode) {
-            if(typeof signatureCodeQRCode == "object"){
+        shadowWallet.getSignatureCode(address, function (signatureCodeQRCode) {
+            if (typeof signatureCodeQRCode == "object") {
                 self.signatureCodeQRCode = JSON.stringify(signatureCodeQRCode);
                 self.showshadow = true;
                 self.shadowstep = 'hot2';
                 console.log(signatureCodeQRCode);
-            }else{
-                $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString("The address: ")+gettextCatalog.getString(signatureCodeQRCode));
+            } else {
+                $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString("The address: ") + gettextCatalog.getString(signatureCodeQRCode));
             }
             $timeout(function () {
                 $rootScope.$apply();
@@ -2234,7 +2249,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     /**
      * 冷钱包授权签名详情
      */
-    $rootScope.$on('Local/ShadowSignInvitation', function(event,signatureDetlCode){
+    $rootScope.$on('Local/ShadowSignInvitation', function (event, signatureDetlCode) {
         self.signatureDetlCodeAddr = signatureDetlCode.addr;
         self.sinatureRandom = signatureDetlCode.random;
         self.signatureDetlCode = JSON.stringify(signatureDetlCode);
@@ -2248,7 +2263,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     /**
      * 热钱包扫描授权签名详情
      */
-    $rootScope.$on('Local/generateShadowWallet', function(event,shadowWallet){
+    $rootScope.$on('Local/generateShadowWallet', function (event, shadowWallet) {
         self.signatureData = shadowWallet.sign;
         self.shadowWallet = JSON.stringify(shadowWallet);
         self.shadowstep = 'hot3';
@@ -2260,7 +2275,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     /**
      * 热钱包生成未签名的交易二维码
      */
-    $rootScope.$on('Local/unsignedTransactionIfo', function(event,unsignedTransactionIfo){
+    $rootScope.$on('Local/unsignedTransactionIfo', function (event, unsignedTransactionIfo) {
         self.unsignedTransactionIfo = JSON.stringify(unsignedTransactionIfo);
         self.showshadow = true;
         self.shadowstep = 'hsend1';
@@ -2272,7 +2287,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     /**
      * 热钱包生成已签名的交易信息
      */
-    $rootScope.$on('Local/signedTransactionIfoHot', function(event,signedTransactionIfo){
+    $rootScope.$on('Local/signedTransactionIfoHot', function (event, signedTransactionIfo) {
         self.signatureIfo = signedTransactionIfo.signature;
         self.signedTransactionIfo = JSON.stringify(signedTransactionIfo);
         self.showshadow = true;
@@ -2285,10 +2300,10 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     /**
      * 冷钱包扫码后，展示预览交易信息
      */
-    $rootScope.$on('Local/showUnsignedTransactionIfo', function(event,showUnsignedTransactionIfo){
+    $rootScope.$on('Local/showUnsignedTransactionIfo', function (event, showUnsignedTransactionIfo) {
         self.showUnsignedTransactionIfoObj = showUnsignedTransactionIfo;
         self.showUnsignedTransactionInfo = JSON.stringify(showUnsignedTransactionIfo);
-        self.ShowAmount = profileService.formatAmount(parseInt(showUnsignedTransactionIfo.amount),'bytes');
+        self.ShowAmount = profileService.formatAmount(parseInt(showUnsignedTransactionIfo.amount), 'bytes');
         self.showshadow = true;
         self.showshadow100 = true;
         self.shadowstep = 'csend1';
@@ -2301,7 +2316,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
      * 冷钱包点击授权签名后，生成对应二维码
      * @param obj
      */
-    $rootScope.$on('Local/signedTransactionIfo', function(event,signedTransactionIfo){
+    $rootScope.$on('Local/signedTransactionIfo', function (event, signedTransactionIfo) {
         self.signedTransactionIfo = JSON.stringify(signedTransactionIfo);
         self.showshadow = true;
         self.shadowstep = 'csend2';
@@ -2314,17 +2329,17 @@ angular.module('copayApp.controllers').controller('indexController', function ($
      * 在聊天窗口点击【转账完成信息】后触发
      * @type {*|(function())|angular.noop}
      */
-    var openTranInfoListener = $rootScope.$on('openTranInfo',function (event,tranId) {
+    var openTranInfoListener = $rootScope.$on('openTranInfo', function (event, tranId) {
         console.log('openTranInfoListener')
         let db = require('inWalletcore/db');
         $scope.btx = {};
-        db.query('SELECT * FROM transactions WHERE id=?',[tranId],function (rows) {
-            if(rows.length == 1){
+        db.query('SELECT * FROM transactions WHERE id=?', [tranId], function (rows) {
+            if (rows.length == 1) {
                 $scope.btx.id = rows[0].id;
                 $scope.btx.creation_date = rows[0].creation_date;
-                $scope.btx.amountTl = rows[0].amount+rows[0].amount_point/configService.getUnitValue('inve');
-                $scope.btx.amountStr = rows[0].amount+rows[0].amount_point/configService.getUnitValue('inve') +' INVE';
-                $scope.btx.feeStr = profileService.formatAmount(rows[0].fee*configService.getUnitValue('inve')+rows[0].fee_point,'inve')+ ' INVE';
+                $scope.btx.amountTl = rows[0].amount + rows[0].amount_point / configService.getUnitValue('inve');
+                $scope.btx.amountStr = rows[0].amount + rows[0].amount_point / configService.getUnitValue('inve') + ' INVE';
+                $scope.btx.feeStr = profileService.formatAmount(rows[0].fee * configService.getUnitValue('inve') + rows[0].fee_point, 'inve') + ' INVE';
                 $scope.btx.addressTo = rows[0].addressTo;
                 $scope.btx.addressFrom = rows[0].addressFrom;
                 $scope.btx.time = rows[0].creation_date;
@@ -2344,28 +2359,28 @@ angular.module('copayApp.controllers').controller('indexController', function ($
      * 点击交易记录跳转到单笔交易详情
      * @param btx
      */
-    self.openTxModal = function(btx) {
+    self.openTxModal = function (btx) {
         console.log(btx)
         let walletInfo = self.walletInfo;
-        for(let item in walletInfo){
+        for (let item in walletInfo) {
             /**
              * 发送地址钱包名字
              */
-            if(walletInfo[item].address == btx.addressFrom){
+            if (walletInfo[item].address == btx.addressFrom) {
                 btx.fromName = walletInfo[item].walletName;
             }
             /**
              * 转移收款钱包名字
              */
-            if(walletInfo[item].address == btx.addressTo){
+            if (walletInfo[item].address == btx.addressTo) {
                 btx.toName = walletInfo[item].walletName;
             }
         }
         $rootScope.modalOpened = true;
-        let ModalInstanceCtrl = function($scope, $modalInstance) {
+        let ModalInstanceCtrl = function ($scope, $modalInstance) {
             $scope.btx = btx;
             $scope.btx.defaultLanguageIsoCode = self.defaultLanguageIsoCode;
-            $scope.cancel = function() {
+            $scope.cancel = function () {
                 breadcrumbs.add('dismiss tx details');
                 try {
                     $modalInstance.dismiss('cancel');
@@ -2373,7 +2388,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                 catch (e) {
                 }
             };
-            $scope.copyAddress = function(addr,$event) {
+            $scope.copyAddress = function (addr, $event) {
                 $event.stopImmediatePropagation();
                 if (isCordova) {
                     window.cordova.plugins.clipboard.copy(addr);
@@ -2391,12 +2406,12 @@ angular.module('copayApp.controllers').controller('indexController', function ($
             controller: ModalInstanceCtrl,
         });
 
-        let disableCloseModal = $rootScope.$on('closeModal', function() {
+        let disableCloseModal = $rootScope.$on('closeModal', function () {
             breadcrumbs.add('on closeModal tx details');
             modalInstance.dismiss('cancel');
         });
 
-        modalInstance.result.finally(function() {
+        modalInstance.result.finally(function () {
             $rootScope.modalOpened = false;
             disableCloseModal();
             let m = angular.element(document.getElementsByClassName('reveal-modal'));
@@ -2408,8 +2423,8 @@ angular.module('copayApp.controllers').controller('indexController', function ($
      * 根据当前地址生成对应二维码
      * @param address
      */
-    self.generatePubkey =  function (address) {
-        self.verificationAddress = "inWallet:"+address;
+    self.generatePubkey = function (address) {
+        self.verificationAddress = "inWallet:" + address;
         self.showshadow = true;
         self.shadowstep = 'hot1';
         $timeout(function () {
@@ -2441,8 +2456,15 @@ angular.module('copayApp.controllers').controller('indexController', function ($
         promptBackupService.set();
     }
 
-    self.goDestination = function(addr, page, walletType, walletId, address, walletName){
-        $state.go('destination-address',{addr:addr, page:page, walletType:walletType, walletId:walletId, address:address, walletName:walletName});
+    self.goDestination = function (addr, page, walletType, walletId, address, walletName) {
+        $state.go('destination-address', {
+            addr: addr,
+            page: page,
+            walletType: walletType,
+            walletId: walletId,
+            address: address,
+            walletName: walletName
+        });
     }
 
     let news = require("inWalletcore/newsServers");
@@ -2450,8 +2472,8 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     /**
      * 获取BTC、ETH市价
      */
-    news.getCurrencyData(6,1,null,function(res) {
-        if(!!res) {
+    news.getCurrencyData(6, 1, null, function (res) {
+        if (!!res) {
             self.coinlists = res.page.list;
             self.coinlist = res.page.list;
             /**
@@ -2473,12 +2495,12 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     /**
      * 获取INVE市价
      */
-    self.updateInvePrice = function(){
+    self.updateInvePrice = function () {
         news.getInveData2(function (res) {
             if (!!res && res != null) {
                 self.invedollar = res.page.list.INVE.price;//usd
                 self.invermb = res.page.list.INVE.cnyPrice;//rmb
-                $timeout(function(){
+                $timeout(function () {
                     $scope.$apply();
                 })
             }
@@ -2494,8 +2516,6 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     var updateInvePrice = setInterval(function () {
         self.updateInvePrice();
     }, 5 * 1000);
-
-
 
 
     /**
@@ -2520,9 +2540,9 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     /**
      * 相同设备地址登录多个设备时
      */
-    eventBus.on('sameDeviceAddress',function (res) {
-        $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('device address {{deviceAddress}} log in to multiple devices with the same device address'),{
-            deviceAddress:res
+    eventBus.on('sameDeviceAddress', function (res) {
+        $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('device address {{deviceAddress}} log in to multiple devices with the same device address'), {
+            deviceAddress: res
         });
     });
 
@@ -2531,10 +2551,10 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     }
 
 
-    self.toggleAllQian = function(){
-        if(self.defaultShowQian) self.defaultShowQian = false;
+    self.toggleAllQian = function () {
+        if (self.defaultShowQian) self.defaultShowQian = false;
         else self.defaultShowQian = true;
-        storageService.setEye({eye:self.defaultShowQian}, function(err) {
+        storageService.setEye({eye: self.defaultShowQian}, function (err) {
             storageService.getEye(function (res) {
                 /*console.log('eye:',res.eye)*/
             })
@@ -2545,11 +2565,11 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     /**
      * 实时刷新交易页面，fromAddress stables
      */
-    self.updateFromStable = function(){
+    self.updateFromStable = function () {
         let imgFrom = self.exExchangeFromImg;
-        let unitFrom =  self.walletType[imgFrom.toUpperCase()];
-        let indexFrom = lodash.findIndex(unitFrom,function (res) {
-            res.wallet ==self.exExchangeFromId
+        let unitFrom = self.walletType[imgFrom.toUpperCase()];
+        let indexFrom = lodash.findIndex(unitFrom, function (res) {
+            res.wallet == self.exExchangeFromId
         });
         self.exExchangeFromStable = indexFrom >= 0 ? unitFrom[indexFrom].stables : unitFrom[0].stables;
 
@@ -2558,35 +2578,46 @@ angular.module('copayApp.controllers').controller('indexController', function ($
     /**
      * 钱包内页返回首页，首页滚动到选择钱包处
      */
-    $rootScope.$on('Local/homeScrollToWallet', function(event, wallettype, walletid){
-        var el = angular.element(document.getElementById(wallettype+'-homelist'));
+    $rootScope.$on('Local/homeScrollToWallet', function (event, wallettype, walletid) {
+        var el = angular.element(document.getElementById(wallettype + '-homelist'));
         angular.element(el[0].nextElementSibling).removeClass('downHeightOut');
         angular.element(el[0].nextElementSibling).removeClass('ng-hide');
         angular.element(el[0].nextElementSibling).addClass('downHeightIn');
         el.removeClass('rotateimgback');
         el.addClass('rotateimg');
         $timeout(function () {
-            $location.hash(wallettype+'-'+walletid);
+            $location.hash(wallettype + '-' + walletid);
             $anchorScroll();
             $rootScope.$apply();
         });
     });
 
+    self.getAddress = function () {
+        var webSocket = require('inWalletcore/webSocket.js');
+        if (self.walletType) {//判断walletType是否赋值
+            let address = self.walletType.INVE[0].address;
+            if (address) {//如果获取到地址则注册，用于页面充值跳转
+                webSocket.register(address);
+            } else {
+                setTimeout(function () {
+                    self.getAddress();
+                }, 2 * 1000)
+            }
+        }
+        else {
+            setTimeout(function () {
+                self.getAddress();
+            }, 2 * 1000)
+
+        }
+    }
+    self.getAddress();
+
     /**
      * 接受nrgPrice
      */
-    eventBus.on('nrgPrice',function (res) {
+    eventBus.on('nrgPrice', function (res) {
         self.nrgPrice = res;
     });
-
-    self.resetTransactions = function () {
-        var arrQueries = [];
-        db.addQuery(arrQueries, "DELETE FROM transactions_index");
-        db.addQuery(arrQueries, "DELETE FROM transactions");
-        async.series(arrQueries, function (err, res) {
-            require('inWalletcore/light.js').updateStatu()
-            $state.go('walletHome')
-        });
-    }
 
 });
