@@ -208,5 +208,17 @@ angular.module('copayApp.services')
               cb(JSON.parse(data))
           });
       };
+
+      root.setDapp = function(obj, cb) {
+          storage.set('dapp', JSON.stringify(obj), cb);
+      };
+
+      root.getDapp = function( cb) {
+          storage.get('dapp', function (err,data) {
+              if(err || !data) return cb('err');
+              cb(null,JSON.parse(data))
+          });
+      };
+
     return root;
   });
