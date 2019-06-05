@@ -760,7 +760,7 @@ angular.module('copayApp.controllers').controller('discoveryController',
                         amount: res.amount
                     }
                     let objJson = {
-                        change_address: self.address,
+                        fromAddress: self.address,
                         to_address: res.toaddress,
                         amount: obj.amount,
                         xprivKey: res1.xprivKey,
