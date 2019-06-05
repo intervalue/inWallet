@@ -655,7 +655,7 @@ angular.module('copayApp.controllers').controller('discoveryController',
             } else {
                 $rootScope.modalOpened = true;
 
-                var ModalInstanceCtrl = function ($scope, $modalInstance, $sce) {
+                let ModalInstanceCtrl = function ($scope, $modalInstance, $sce) {
                     $scope.dapplinkdata = function () {
                         $scope.trustSrc = $sce.trustAsResourceUrl(link);
                     }
@@ -663,27 +663,13 @@ angular.module('copayApp.controllers').controller('discoveryController',
                     $scope.isFrameLoadDone = false;
                     //监听iframe的资源加载
                     $scope.isIload = function () {
-                        var iframe = document.getElementById('linkiframe');
+                        let iframe = document.getElementById('linkiframe');
                         iframe.onload = function () {
                             $scope.$apply(function () {
                                 $scope.isFrameLoadDone = true;
                             });
                         };
                     }
-                    //监听iframe地址变化
-                    /*  $scope.isAddrChange = function(){
-                          var iframe = document.getElementById('linkiframe');
-                          $timeout(function(){
-                              return iframe.src;
-                          })
-                      }
-                      $scope.$watch(function(){
-                          var iframe = document.getElementById('linkiframe');
-                          return JSON.stringify(iframe.src);
-                      }, function (newValue, oldValue) {
-                          console.log('oldValue--------------'+oldValue)
-                          console.log('newValue--------------'+newValue)
-                      });*/
                     $scope.cancel = function () {
                         $modalInstance.dismiss('cancel');
                     };
@@ -706,14 +692,12 @@ angular.module('copayApp.controllers').controller('discoveryController',
                 });
 
                 modalInstance.result.then(function onDestModalDone(addr) {
-
                 });
             }
-
         };
 
-
         /**
+         *
          * 输入金额
          * @param addr
          */
@@ -916,7 +900,6 @@ angular.module('copayApp.controllers').controller('discoveryController',
                 $scope.$apply();
             });
         }
-
 
         //    dapp列表查询
         function _getDappList() {

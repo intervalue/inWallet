@@ -2,7 +2,7 @@
 
 
 angular.module('copayApp.controllers').controller('importbtcController',
-    function ($rootScope, $scope, $timeout, storageService, notification, profileService, bwcService, $log, $stateParams, gettext, gettextCatalog,lodash,go, isCordova) {
+    function ($rootScope, $scope, $timeout, storageService, notification, profileService, bwcService, $log, $stateParams, gettext, gettextCatalog, lodash, go, isCordova) {
         var self = this;
         self.addwalleterr = false;
         self.importcode = '';
@@ -23,42 +23,52 @@ angular.module('copayApp.controllers').controller('importbtcController',
         self.addwirpass_seed = '';
 
 
-
         self.importcode_pri = '';
         self.addwiname_pri = '';
         self.addwipass_pri = '';
         self.addwirpass_pri = '';
         self.btctype = 1;
         self.switchType = 'segwit';
-        self.switchBtcType = function(val, type){
+        self.switchBtcType = function (val, type) {
             self.btctype = val;
             self.switchType = type;
-            $timeout(function(){
+            $timeout(function () {
                 $scope.$apply();
             })
         }
 
 
-        self.importSeed_btc = function(){
+        self.importSeed_btc = function () {
             let flag = require("bitcore-mnemonic").isValid(self.importcode_seed.toString());
-            if(!flag){
+            if (!flag) {
                 $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Could not create: Invalid wallet seed'));
-                return ;
+                return;
             }
             if (isCordova)
                 window.plugins.spinnerDialog.show(null, gettextCatalog.getString('Loading...'), true);
-            else{
+            else {
                 $scope.index.progressing = true;
                 $scope.index.progressingmsg = 'Loading...';
             }
 
             $timeout(function () {
-                profileService.importWallets({  networkName: 'livenet', cosigners: [],n:1,m:1,name: self.addwiname_seed, passphrase: '', password: self.addwipass_seed, mnemonic: self.importcode_seed.toString(), type: 'BTC', segwit: self.switchType == 'segwit'}, function (err,walletId) {
+                profileService.importWallets({
+                    networkName: 'livenet',
+                    cosigners: [],
+                    n: 1,
+                    m: 1,
+                    name: self.addwiname_seed,
+                    passphrase: '',
+                    password: self.addwipass_seed,
+                    mnemonic: self.importcode_seed.toString(),
+                    type: 'BTC',
+                    segwit: self.switchType == 'segwit'
+                }, function (err, walletId) {
                     if (isCordova)
                         window.plugins.spinnerDialog.hide();
                     else
                         $scope.index.progressing = false;
-                    if(err){
+                    if (err) {
                         self.creatingProfile = false;
                         $log.warn(err);
                         self.error = err;
@@ -77,20 +87,31 @@ angular.module('copayApp.controllers').controller('importbtcController',
             }, 100);
         };
 
-        self.importPrivateKey_btc = function(){
+        self.importPrivateKey_btc = function () {
             try {
                 if (isCordova)
                     window.plugins.spinnerDialog.show(null, gettextCatalog.getString('Loading...'), true);
-                else{
+                else {
                     $scope.index.progressing = true;
                     $scope.index.progressingmsg = 'Loading...';
                 }
-                profileService.importWallets({privateKey: self.importcode_pri, cosigners: [],n:1,m:1, passphrase: self.addwipass_pri, type: 'BTC', segwit: true, networkName: 'livenet', name: self.addwiname_pri, info: ''}, function (err,walletId) {
+                profileService.importWallets({
+                    privateKey: self.importcode_pri,
+                    cosigners: [],
+                    n: 1,
+                    m: 1,
+                    passphrase: self.addwipass_pri,
+                    type: 'BTC',
+                    segwit: true,
+                    networkName: 'livenet',
+                    name: self.addwiname_pri,
+                    info: ''
+                }, function (err, walletId) {
                     if (isCordova)
                         window.plugins.spinnerDialog.hide();
                     else
                         $scope.index.progressing = false;
-                    if(err){
+                    if (err) {
                         indexScope.showAlert2 = {};
                         indexScope.showAlert2.msg = err;
                         indexScope.showAlert = true;
@@ -102,13 +123,13 @@ angular.module('copayApp.controllers').controller('importbtcController',
                     $rootScope.$emit('Local/addWallets');
                     go.walletHome();
                 });
-            } catch(err){
+            } catch (err) {
                 if (isCordova)
                     window.plugins.spinnerDialog.hide();
                 else
                     $scope.index.progressing = false;
                 $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Could not create: Invalid wallet seed'));
-                return ;
+                return;
             }
         }
     });

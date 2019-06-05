@@ -475,8 +475,10 @@
             <!--</div>-->
             <!--</div>-->
 
+            <!--<div ng-repeat="item in dc.dappList" class="item"-->
+            <!--ng-click="dc.JumpHref( item.suffix==='1' ? item.appHomepage+'?address='+dc.address : item.appHomepage)">-->
             <div ng-repeat="item in dc.dappList" class="item"
-                 ng-click="dc.JumpHref( item.suffix==='1' ? item.appHomepage+'?address='+dc.address : item.appHomepage)">
+                 ng-click="dc.JumpHref(item.suffix==='1' ? item.appHomepage+dc.address : item.appHomepage)">
 
                 <img ng-src="{{item.appPortrait}}"/>
                 <div class="info">
@@ -486,7 +488,15 @@
                     </div>
                 </div>
             </div>
-
+            <div class="item" ng-click="$root.go('diceWin')">
+                <img src="./img/dtran1.png"/>
+                <div class="info">
+                    <div class="title">diceWin</div>
+                    <div class="litinfo" translate>
+                        抛硬币了!!!!!!!!
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="dapptitle dapptooltitle" translate>
@@ -586,6 +596,130 @@
             </div>
         </div>
     </div>
+
+
+    <div ng-if="index.payController" class="payBox" id="iframeCen">
+        <div class="payReqBox">
+            <div class="payReqTitle">
+                支付请求
+            </div>
+            <div class="payReqValueBox">
+                <span class="payReqValue">{{dc.orderPayData.amount}}</span>
+                <span class="payReqCompany">INVE</span>
+            </div>
+            <div class="payReqTo">
+                <div class="toName">to</div>
+                <div class="toValue">{{dc.orderPayData.toaddress}}</div>
+            </div>
+            <div class="payReqFrom">
+                <div class="fromName">from</div>
+                <div class="fromValue">{{dc.address}}</div>
+            </div>
+            <div class="payReqBtn">
+                <div class="BtnYes" ng-click="dc.confirmPay()">确定</div>
+                <div class="BtnNo" ng-click="dc.cancelPay()">取消</div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .payBox {
+            position: fixed;
+            top: 0;
+            z-index: 9999;
+            width: 100%;
+            height: 100%;
+            background: rgba(000, 000, 000, 0.3);
+        }
+
+        .payBox .payReqBox {
+            width: 80%;
+            margin: 20% 10%;
+            background: #fff;
+            padding: 19px;
+        }
+
+        .payBox .payReqBox .payReqTitle {
+            font-size: 16px;
+            color: #333;
+            text-align: center;
+            padding: 13px 0 26px 0;
+        }
+
+        .payBox .payReqBox .payReqValueBox {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .payBox .payReqBox .payReqValueBox .payReqValue {
+            flex: 1;
+            text-align: right;
+            font-size: 64px;
+            color: #45AD8E;
+        }
+
+        .payBox .payReqBox .payReqValueBox .payReqCompany {
+            flex: 1;
+            text-align: left;
+            font-size: 16px;
+            color: #bbb;
+            padding-bottom: 20px;
+        }
+
+        .payBox .payReqBox .payReqTo {
+        }
+
+        .payBox .payReqBox .payReqTo .toName {
+            color: #323232;
+            font-size: 14px;
+        }
+
+        .payBox .payReqBox .payReqTo .toValue {
+            color: #909090;
+            font-size: 12px;
+        }
+
+        .payBox .payReqBox .payReqFrom {
+            margin: 24px 0;
+        }
+
+        .payBox .payReqBox .payReqFrom .fromName {
+            color: #323232;
+            font-size: 14px;
+        }
+
+        .payBox .payReqBox .payReqFrom .fromValue {
+            color: #909090;
+            font-size: 12px;
+        }
+
+        .payBox .payReqBox .payReqBtn {
+            display: flex;
+        }
+
+        .payBox .payReqBox .payReqBtn .BtnYes {
+            flex: 1;
+            margin: 0 10px;
+            text-align: center;
+            height: 35px;
+            line-height: 35px;
+            color: #fff;
+            background: #3B3B3B;
+        }
+
+        .payBox .payReqBox .payReqBtn .BtnNo {
+            flex: 1;
+            margin: 0 10px;
+            text-align: center;
+            height: 35px;
+            line-height: 35px;
+            color: #3B3B3B;
+            border: 1px solid #3B3B3B;
+            background: #fff;
+        }
+
+
+    </style>
 </div>
 
 <!-- discovery dis -->

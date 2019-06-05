@@ -509,6 +509,14 @@ angular
                 }
             }
         })
+        .state('diceWin', {
+            url: '/diceWin',
+            views: {
+                'main': {
+                    templateUrl: 'views/diceWin.html'
+                }
+            }
+        })
         /*.state('destination-address', {
             url: '/destination-address?addr&page&walletType&walletId&addressess&walletName',
             views: {
