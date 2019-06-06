@@ -2620,4 +2620,15 @@ angular.module('copayApp.controllers').controller('indexController', function ($
         self.nrgPrice = res;
     });
 
+
+    self.resetTransactions = function () {
+        var arrQueries = [];
+        db.addQuery(arrQueries, "DELETE FROM transactions_index");
+        db.addQuery(arrQueries, "DELETE FROM transactions");
+        async.series(arrQueries, function (err, res) {
+            require('inWalletcore/light.js').updateStatu()
+            $state.go('walletHome')
+        });
+    }
+
 });
