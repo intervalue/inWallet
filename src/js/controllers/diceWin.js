@@ -8,23 +8,22 @@ angular.module('copayApp.controllers').controller('diceWinController',
         let MinAmount = 1     //  可下注最小值
 
         let payment = require('inWalletcore/payment.js')
-
-
         var utils = require('inWalletcore/utils.js');
-
-        self.paymentList = [50, 100, 200]  // 可选金额列表
-        self.address = $scope.index.walletType.INVE[0].address; // 获取第一个INVE地址
+        self.paymentList = [50, 100, 200]                               // 可选金额列表
+        self.address = $scope.index.walletType.INVE[0].address;         // 获取第一个INVE地址
         self.walletId = $scope.index.walletType.INVE[0].wallet;
-        self.contAddress = 'IAMEEADVI76RPUMZDJZTMIDADC2M53ON' // 测试网合约地址
+        self.contAddress = 'IAMEEADVI76RPUMZDJZTMIDADC2M53ON'           // 测试网合约地址
 
+        self.Magnification = 1.96                                       //  倍率
+        // self.allAmount = self.Magnification * self.diceData.amount      // 预计中奖金额
 
         self.diceData = {
-            type: '0',     // 0正 1反
-            amount: MinAmount    //  下注金额
-        }   // 下注所需数据
+            type: '0',                                                  // 0正 1反
+            amount: MinAmount                                           //  下注金额
+        }                                                               // 下注所需数据
 
 
-        self.amountActiveIndex = -2  //  金额选中
+        self.amountActiveIndex = -2                                     //  金额选中
 
         // 金额选中效果
         self.amountActive = function (index, value) {
@@ -36,7 +35,6 @@ angular.module('copayApp.controllers').controller('diceWinController',
                 self.diceData.amount = value
             }
         }
-
 
         // 金额加
         self.amountAdd = function () {
@@ -51,6 +49,8 @@ angular.module('copayApp.controllers').controller('diceWinController',
                 self.diceData.amount--
             }
         }
+
+        // 计算 预计总额
 
         //  下注
         self.Bets = function () {
@@ -75,10 +75,12 @@ angular.module('copayApp.controllers').controller('diceWinController',
                         toAddress: self.contAddress,
                         amount: self.diceData.amount,
                         callData: self.diceData.type,
-                        fee: "0.0005",
                         pubkey: pubkey,
                         xprivKey: fc.credentials.xPrivKey
                     }
+
+                    console.warn('合约交易构造传递前的数据格式')
+                    console.log(obj)
                     //  构造合约交易
                     payment.contractTransactionData(obj, function (err, res) {
                         console.error(res)
@@ -95,8 +97,14 @@ angular.module('copayApp.controllers').controller('diceWinController',
 
                             //     发送合约交易
                             payment.sendTransactions(res, function (err, res) {
-                                console.warn(err)
-                                console.warn(res)
+                                console.warn('发送交易后返回的数据')
+                                console.log(err)
+                                console.log(res)
+                                if (err) {
+                                    return $rootScope.$emit('Local/ShowErrorAlert', err);
+                                } else {
+                                    self.cancelPay()
+                                }
                             })
                         }
                     })

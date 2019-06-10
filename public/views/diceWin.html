@@ -91,11 +91,14 @@
                             </div>
                             <div class="bottom_item">
                                 <div class="item_title">赢得投注</div>
-                                <div class="item_value">1000 <span>INVE</span></div>
+                                <div class="item_value">
+                                    {{(dice.Magnification * dice.diceData.amount).toFixed(2)}}
+                                    <span>INVE</span>
+                                </div>
                             </div>
                         </div>
                         <div class="bottom_explain">
-                            (1%平台费,赔率1.96 X)
+                            (1%平台费,赔率 {{dice.Magnification}} X)
                         </div>
                     </div>
                 </div>
