@@ -1,7 +1,6 @@
 <div ng-controller="diceWinController as dice">
     <!--导入钱包-导入钱包  start-->
     <div class="cwpage iwpage pfixed topp" ng-init="dice.showtab = 'tabcold'">
-
         <!--浏览器默认的返回-->
         <div>
             <div
@@ -10,8 +9,625 @@
                     ng-init="titleSection='Import INVE wallet'; goToBackDefault = true;">
             </div>
         </div>
-    </div>
-    <div>
-        11111111111111111
+
+        <!--  <div class="dice_main">
+              <div class="dice_title">
+                  <div>选择正反</div>
+                  <div ng-click="dice.diceData.type='1'">正</div>
+                  <div ng-click="dice.diceData.type='2'">反</div>
+              </div>
+              <div class="dice_amount">
+                  <div>选择金额</div>
+                  <span ng-repeat="item in dice.paymentList" ng-click="dice.diceData.amount=item">{{item}}</span>
+                  <input type="text" placeholder="其他金额">
+              </div>
+              <div>
+                  <button ng-click="dice.Bets()">下注</button>
+              </div>
+              <div>
+                  <div>
+                      选择的type == {{dice.diceData.type}}
+                  </div>
+                  <div>
+                      选择的金额 === {{dice.diceData.amount}}
+                  </div>
+              </div>
+          </div>-->
+
+        <div class="dice_main">
+            <div class="dice_header">
+                <div class="dice_logo">
+                    <img src="./img/dice/dice_logo.png" alt="">
+                </div>
+                <div class="dice_type">
+                    <div class="center"></div>
+                    <div class="dice_left">
+                        <div ng-class="{active:dice.diceData.type==='0'}"
+                             ng-click="dice.diceData.type='0'"
+                        >
+                            1
+                        </div>
+                    </div>
+                    <div class="dice_right">
+                        <div ng-class="{active:dice.diceData.type==='1'}"
+                             ng-click="dice.diceData.type='1'">
+                            INVE
+                        </div>
+                    </div>
+                    <div class="center"></div>
+                </div>
+                <div class="dice_explain">选择硬币的一面来进行投注</div>
+            </div>
+            <div class="dice_content">
+                <div class="content_box">
+                    <div class="content_top">
+                        <div class="top_list">
+                            <ul>
+                                <li ng-class="{active : dice.amountActiveIndex===$index}"
+                                    ng-click="dice.amountActive($index,item)"
+                                    ng-repeat="item in dice.paymentList"><span>{{item}}</span></li>
+                                <li ng-class="{active : dice.amountActiveIndex===-1}"
+                                    ng-click="dice.amountActive(-1)">
+                                    <span>最大</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="top_box">
+                            <img src="./img/dice/dice_rem.png" alt="" ng-click="dice.amountCut()">
+                            <input type="text" disabled ng-model="dice.diceData.amount">
+                            <img src="./img/dice/dice_add.png" alt="" ng-click="dice.amountAdd()">
+                        </div>
+                        <div class="top_explain">您当前的赌注</div>
+                    </div>
+                    <div class="content_center"></div>
+                    <div class="content_bottom">
+                        <div class="bottom_btn">
+                            <div ng-click="dice.Bets()">下注</div>
+                        </div>
+                        <div class="bottom_box">
+                            <div class="bottom_item">
+                                <div class="item_title">获胜机会</div>
+                                <div class="item_value">50%</div>
+                            </div>
+                            <div class="bottom_item">
+                                <div class="item_title">赢得投注</div>
+                                <div class="item_value">1000 <span>INVE</span></div>
+                            </div>
+                        </div>
+                        <div class="bottom_explain">
+                            (1%平台费,赔率1.96 X)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dice_record">
+                <div class="record_header">
+                    <div class="left">游戏历史</div>
+                    <div class="center"></div>
+                    <div class="right">只看我的</div>
+                </div>
+                <div class="record_content">
+                    <div class="record_title">
+                        <ul>
+                            <li>玩家</li>
+                            <li>赌注</li>
+                            <li>结果</li>
+                            <li></li>
+                        </ul>
+                    </div>
+                    <div class="record_box">
+                        <ul class="record_list">
+                            <li class="record_name">
+                                <div>
+                                    JKHDF287UDFJHKQJ...
+                                </div>
+                            </li>
+                            <li class="record_value">
+                                <div class="value">100</div>
+                                <div class="coinBox">
+                                    INVE
+                                </div>
+                            </li>
+                            <li class="record_result">
+                                <div class="coinBox">
+                                    INVE
+                                </div>
+                                <div class="value">200</div>
+                            </li>
+                            <li class="record_img">
+                                <img src="./img/dice/dice_down.png" alt="">
+                            </li>
+                        </ul>
+                        <ul class="record_list">
+                            <li class="record_name">
+                                <div class="active">
+                                    JKHDF287UDFJHKQJ...
+                                </div>
+                            </li>
+                            <li class="record_value">
+                                <div class="value">100</div>
+                                <div class="coinBox">
+                                    INVE
+                                </div>
+                            </li>
+                            <li class="record_result">
+                                <div class="coinBox">
+                                    INVE
+                                </div>
+                                <div class="value">200</div>
+                            </li>
+                            <li class="record_img">
+                                <img src="./img/dice/dice_down.png" alt="">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="dice_footer">inve.one</div>
+        </div>
+
+
+        <div ng-if="index.payController" class="payBox" id="iframeCen">
+            <div class="payReqBox">
+                <div class="payReqTitle">
+                    支付请求
+                </div>
+                <div class="payReqValueBox">
+                    <span class="payReqValue">{{dice.diceData.amount}}</span>
+                    <span class="payReqCompany">INVE</span>
+                </div>
+                <div class="payReqTo">
+                    <div class="toName">to</div>
+                    <div class="toValue">{{dice.contAddress}}</div>
+                </div>
+                <div class="payReqFrom">
+                    <div class="fromName">from</div>
+                    <div class="fromValue">{{dice.address}}</div>
+                </div>
+                <div class="payReqBtn">
+                    <div class="BtnYes" ng-click="dice.confirmPay()">确定</div>
+                    <div class="BtnNo" ng-click="dice.cancelPay()">取消</div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            .payBox {
+                position: fixed;
+                top: 0;
+                z-index: 9999;
+                width: 100%;
+                height: 100%;
+                background: rgba(000, 000, 000, 0.3);
+            }
+
+            .payBox .payReqBox {
+                width: 80%;
+                margin: 20% 10%;
+                background: #fff;
+                padding: 19px;
+            }
+
+            .payBox .payReqBox .payReqTitle {
+                font-size: 16px;
+                color: #333;
+                text-align: center;
+                padding: 13px 0 26px 0;
+            }
+
+            .payBox .payReqBox .payReqValueBox {
+                display: flex;
+                align-items: flex-end;
+            }
+
+            .payBox .payReqBox .payReqValueBox .payReqValue {
+                flex: 1;
+                text-align: right;
+                font-size: 64px;
+                color: #45AD8E;
+            }
+
+            .payBox .payReqBox .payReqValueBox .payReqCompany {
+                flex: 1;
+                text-align: left;
+                font-size: 16px;
+                color: #bbb;
+                padding-bottom: 20px;
+            }
+
+            .payBox .payReqBox .payReqTo {
+            }
+
+            .payBox .payReqBox .payReqTo .toName {
+                color: #323232;
+                font-size: 14px;
+            }
+
+            .payBox .payReqBox .payReqTo .toValue {
+                color: #909090;
+                font-size: 12px;
+            }
+
+            .payBox .payReqBox .payReqFrom {
+                margin: 24px 0;
+            }
+
+            .payBox .payReqBox .payReqFrom .fromName {
+                color: #323232;
+                font-size: 14px;
+            }
+
+            .payBox .payReqBox .payReqFrom .fromValue {
+                color: #909090;
+                font-size: 12px;
+            }
+
+            .payBox .payReqBox .payReqBtn {
+                display: flex;
+            }
+
+            .payBox .payReqBox .payReqBtn .BtnYes {
+                flex: 1;
+                margin: 0 10px;
+                text-align: center;
+                height: 35px;
+                line-height: 35px;
+                color: #fff;
+                background: #3B3B3B;
+            }
+
+            .payBox .payReqBox .payReqBtn .BtnNo {
+                flex: 1;
+                margin: 0 10px;
+                text-align: center;
+                height: 35px;
+                line-height: 35px;
+                color: #3B3B3B;
+                border: 1px solid #3B3B3B;
+                background: #fff;
+            }
+
+
+            .dice_main {
+                background-color: #5334B7;
+                background-image: url("./img/dice/dice_bj.png");
+                background-size: 100%;
+            }
+
+        </style>
+
+        <style>
+            .dice_main {
+                background-color: #5334B7;
+            }
+
+            .dice_main .dice_header .dice_logo {
+                text-align: center;
+                padding-top: 15px;
+            }
+
+            .dice_main .dice_header .dice_logo img {
+                height: 30px;
+            }
+
+            .dice_main .dice_header .dice_type {
+                display: flex;
+                margin-top: 27px;
+            }
+
+            .dice_main .dice_header .dice_type .dice_left div {
+                margin-right: 20px;
+                width: 78px;
+                height: 78px;
+                background: white;
+                box-shadow: 0px 0px 5px 5px rgba(66, 38, 120, 0.5);
+                border: 3px solid #a891d5;
+                color: #A891D5;
+                font-size: 50px;
+                text-align: center;
+                border-radius: 50%;
+                line-height: 78px;
+            }
+
+            .dice_main .dice_header .dice_type .dice_left div.active {
+                color: #633BBB;
+                border-color: #633BBB;
+            }
+
+            .dice_main .dice_header .dice_type .dice_right div {
+                margin-left: 20px;
+                width: 78px;
+                height: 78px;
+                background: white;
+                box-shadow: 0px 0px 5px 5px rgba(66, 38, 120, 0.5);
+                border: 3px solid #a891d5;
+                color: #A891D5;
+                font-size: 25px;
+                text-align: center;
+                border-radius: 50%;
+                line-height: 78px;
+            }
+
+            .dice_main .dice_header .dice_type .dice_right div.active {
+                color: #633BBB;
+                border-color: #633BBB;
+            }
+
+            .dice_main .dice_header .dice_type .center {
+                flex: 1;
+            }
+
+            .dice_main .dice_header .dice_explain {
+                text-align: center;
+                margin-top: 11px;
+                color: #fff;
+                font-size: 12px;
+            }
+
+            .dice_main .dice_content .content_box {
+                width: 270px;
+                margin: 23px auto 0 auto;
+                background-color: #fff;
+                box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.21);
+                border-radius: 4px;
+                border: 1px solid white;
+            }
+
+            .dice_main .dice_content .content_box .content_top {
+                padding: 14px;
+            }
+
+            .dice_main .dice_content .content_box .content_top .top_list {
+                padding-bottom: 15px;
+                border-bottom: 1px solid #814AC4;
+            }
+
+            .dice_main .dice_content .content_box .content_top .top_list ul {
+                display: flex;
+            }
+
+            .dice_main .dice_content .content_box .content_top .top_list ul li {
+                flex: 1;
+                height: 30px;
+                line-height: 30px;
+                text-align: center;
+                cursor: pointer;
+            }
+
+            .dice_main .dice_content .content_box .content_top .top_list ul li span {
+                font-size: 14px;
+            }
+
+            .dice_main .dice_content .content_box .content_top .top_list ul .active {
+                background: #eee8f1;
+                border-radius: 15px;
+                border: 1px solid #b19ad6;
+            }
+
+            .dice_main .dice_content .content_box .content_top .top_box {
+                display: flex;
+                align-items: center;
+                margin-top: 25px;
+            }
+
+            .dice_main .dice_content .content_box .content_top .top_box input {
+                flex: 1;
+                height: 50px;
+                text-align: center;
+                font-size: 28px;
+                color: #5736B8;
+                border-radius: 25px;
+                border: 1px solid #b19ad6;
+            }
+
+            .dice_main .dice_content .content_box .content_top .top_box img {
+                width: 30px;
+                margin: 0 12px;
+            }
+
+            .dice_main .dice_content .content_box .content_top .top_explain {
+                margin-top: 10px;
+                text-align: center;
+                color: #9B9DB1;
+                font-size: 12px;
+            }
+
+            .dice_main .dice_content .content_box .content_center {
+                border-bottom: 3px dashed #72409F;
+                margin: 20px 0;
+            }
+
+            .dice_main .dice_content .content_box .content_bottom {
+                padding: 14px;
+            }
+
+            .dice_main .dice_content .content_box .content_bottom .bottom_btn {
+                margin-bottom: 20px;
+            }
+
+            .dice_main .dice_content .content_box .content_bottom .bottom_btn div {
+                height: 38px;
+                line-height: 38px;
+                text-align: center;
+                color: #fff;
+                border-radius: 20px;
+                background-color: #633BBB;
+            }
+
+            .dice_main .dice_content .content_box .content_bottom .bottom_box {
+                display: flex;
+                align-items: center;
+            }
+
+            .dice_main .dice_content .content_box .content_bottom .bottom_box .bottom_item {
+                flex: 1;
+                text-align: center;
+            }
+
+            .dice_main .dice_content .content_box .content_bottom .bottom_box .bottom_item .item_title {
+                font-size: 12px;
+                color: #9B9DB1;
+            }
+
+            .dice_main .dice_content .content_box .content_bottom .bottom_box .bottom_item .item_value {
+                color: #5736B8;
+                font-size: 25px;
+            }
+
+            .dice_main .dice_content .content_box .content_bottom .bottom_box .bottom_item .item_value span {
+                font-size: 18px;
+            }
+
+            .dice_main .dice_content .content_box .content_bottom .bottom_explain {
+                margin-top: 13px;
+                color: #A4A6B8;
+                font-size: 12px;
+                text-align: center;
+            }
+
+            .dice_main .dice_record {
+                margin-top: 66px;
+            }
+
+            .dice_main .dice_record .record_header {
+                display: flex;
+                padding: 34px 17px 18px 17px;
+                align-items: center;
+            }
+
+            .dice_main .dice_record .record_header .left {
+                color: #FFFF5C;
+                font-size: 16px;
+            }
+
+            .dice_main .dice_record .record_header .center {
+                flex: 1;
+            }
+
+            .dice_main .dice_record .record_header .right {
+                color: #fff;
+                font-size: 12px;
+            }
+
+            .dice_main .dice_record .record_content {
+                padding: 4px;
+            }
+
+            .dice_main .dice_record .record_content .record_title {
+                background-color: #BFAFD7;
+            }
+
+            .dice_main .dice_record .record_content .record_title ul {
+                display: flex;
+            }
+
+            .dice_main .dice_record .record_content .record_title ul li {
+                width: 25%;
+                overflow: hidden;
+                height: 30px;
+                color: #633BBB;
+                font-size: 14px;
+                line-height: 30px;
+                text-align: center;
+                padding: 0 8px;
+            }
+
+            .dice_main .dice_record .record_content .record_box {
+                background-color: #E3D9F2;
+                padding: 10px 0;
+            }
+
+            .dice_main .dice_record .record_content .record_box .record_list {
+                display: flex;
+                align-items: center;
+                margin-bottom: 13px;
+            }
+
+            .dice_main .dice_record .record_content .record_box .record_list li {
+                overflow: hidden;
+                padding: 0 8px;
+            }
+
+            .dice_main .dice_record .record_content .record_box .record_list .record_name {
+                width: 30%;
+            }
+
+            .dice_main .dice_record .record_content .record_box .record_list .record_name div {
+                color: #7545C0;
+                font-size: 12px;
+            }
+
+            .dice_main .dice_record .record_content .record_box .record_list .record_name .active {
+                color: #fff;
+            }
+
+            .dice_main .dice_record .record_content .record_box .record_list .record_value {
+                width: 30%;
+                display: flex;
+                align-items: center;
+            }
+
+            .dice_main .dice_record .record_content .record_box .record_list .record_value .value {
+                color: #633BBB;
+                font-size: 12px;
+                margin: 0 8px;
+            }
+
+            .dice_main .dice_record .record_content .record_box .record_list .record_value .coinBox {
+                width: 25px;
+                height: 25px;
+                background: #eee8f1;
+                border: 1px solid #5736b8;
+                color: #633BBB;
+                line-height: 25px;
+                text-align: center;
+                font-size: 9px;
+                border-radius: 50%;
+            }
+
+            .dice_main .dice_record .record_content .record_box .record_list .record_value .active {
+                font-size: 16px;
+            }
+
+            .dice_main .dice_record .record_content .record_box .record_list .record_result {
+                display: flex;
+                width: 30%;
+                align-items: center;
+            }
+
+            .dice_main .dice_record .record_content .record_box .record_list .record_result .coinBox {
+                width: 25px;
+                height: 25px;
+                background: #633BBB;
+                border: 1px solid #5736b8;
+                color: #FFF;
+                line-height: 25px;
+                text-align: center;
+                font-size: 9px;
+                border-radius: 50%;
+            }
+
+            .dice_main .dice_record .record_content .record_box .record_list .record_result .active {
+                font-size: 16px;
+            }
+
+            .dice_main .dice_record .record_content .record_box .record_list .record_result .value {
+                margin: 0 8px;
+                color: #633BBB;
+                font-size: 12px;
+            }
+
+            .dice_main .dice_record .record_content .record_box .record_list .record_img img {
+                width: 9px;
+            }
+
+            .dice_main .dice_footer {
+                height: 37px;
+                text-align: center;
+                color: #fff;
+                background-color: #7545C0;
+            }
+        </style>
+
     </div>
 </div>
