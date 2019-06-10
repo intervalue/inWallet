@@ -477,9 +477,10 @@
 
             <!--<div ng-repeat="item in dc.dappList" class="item"-->
             <!--ng-click="dc.JumpHref( item.suffix==='1' ? item.appHomepage+'?address='+dc.address : item.appHomepage)">-->
-            <div ng-repeat="item in dc.dappList" class="item"
+            <div ng-if="dc.isCordova"
+                 ng-repeat="item in dc.dappList"
+                 class="item"
                  ng-click="dc.JumpHref(item.suffix==='1' ? item.appHomepage+dc.address : item.appHomepage)">
-
                 <img ng-src="{{item.appPortrait}}"/>
                 <div class="info">
                     <div class="title">{{item.appName}}</div>
@@ -489,13 +490,13 @@
                 </div>
             </div>
             <!--<div class="item" ng-click="$root.go('diceWin')">-->
-                <!--<img src="./img/dtran1.png"/>-->
-                <!--<div class="info">-->
-                    <!--<div class="title">diceWin</div>-->
-                    <!--<div class="litinfo" translate>-->
-                        <!--抛硬币了!!!!!!!!-->
-                    <!--</div>-->
-                <!--</div>-->
+            <!--<img src="./img/dtran1.png"/>-->
+            <!--<div class="info">-->
+            <!--<div class="title">diceWin</div>-->
+            <!--<div class="litinfo" translate>-->
+            <!--抛硬币了!!!!!!!!-->
+            <!--</div>-->
+            <!--</div>-->
             <!--</div>-->
         </div>
 

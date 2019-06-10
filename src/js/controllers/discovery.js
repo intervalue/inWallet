@@ -36,6 +36,7 @@ angular.module('copayApp.controllers').controller('discoveryController',
         self.orderByQuoteChange = '';
         let news = require("inWalletcore/newsServers");
 
+        self.isCordova = isCordova
         // dapp列表
         self.dappList = []
         self.address = '' // 当前地址
