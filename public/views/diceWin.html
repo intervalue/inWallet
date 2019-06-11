@@ -6,7 +6,7 @@
             <div
                     class="topbar-container"
                     ng-include="'views/includes/topbar.html'"
-                    ng-init="titleSection='Import INVE wallet'; goToBackDefault = true;">
+                    ng-init="titleSection='diceWin'; goToBackDefault = true;">
             </div>
         </div>
 
@@ -56,7 +56,7 @@
                     </div>
                     <div class="center"></div>
                 </div>
-                <div class="dice_explain">选择硬币的一面来进行投注</div>
+                <div class="dice_explain" translate>Choose the side of the coin for betting</div>
             </div>
             <div class="dice_content">
                 <div class="content_box">
@@ -68,7 +68,7 @@
                                     ng-repeat="item in dice.paymentList"><span>{{item}}</span></li>
                                 <li ng-class="{active : dice.amountActiveIndex===-1}"
                                     ng-click="dice.amountActive(-1)">
-                                    <span>最大</span>
+                                    <span translate>Maximum</span>
                                 </li>
                             </ul>
                         </div>
@@ -77,44 +77,44 @@
                             <input type="text" disabled ng-model="dice.diceData.amount">
                             <img src="./img/dice/dice_add.png" alt="" ng-click="dice.amountAdd()">
                         </div>
-                        <div class="top_explain">您当前的赌注</div>
+                        <div class="top_explain" translate>Your current bet</div>
                     </div>
                     <div class="content_center"></div>
                     <div class="content_bottom">
                         <div class="bottom_btn">
-                            <div ng-click="dice.Bets()">下注</div>
+                            <div ng-click="dice.Bets()" translate>Bets</div>
                         </div>
                         <div class="bottom_box">
                             <div class="bottom_item">
-                                <div class="item_title">获胜机会</div>
+                                <div class="item_title" translate>Chance to win</div>
                                 <div class="item_value">50%</div>
                             </div>
                             <div class="bottom_item">
-                                <div class="item_title">赢得投注</div>
+                                <div class="item_title" translate>Win the bet</div>
                                 <div class="item_value">
                                     {{(dice.Magnification * dice.diceData.amount).toFixed(2)}}
                                     <span>INVE</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="bottom_explain">
-                            (1%平台费,赔率 {{dice.Magnification}} X)
+                        <div class="bottom_explain" translate>
+                            1% Platform fee Odds {{dice.Magnification}} X
                         </div>
                     </div>
                 </div>
             </div>
             <div class="dice_record">
                 <div class="record_header">
-                    <div class="left">游戏历史</div>
+                    <div class="left" translate>Game History</div>
                     <div class="center"></div>
-                    <div class="right">只看我的</div>
+                    <div class="right" translate>Just look at me</div>
                 </div>
                 <div class="record_content">
                     <div class="record_title">
                         <ul>
-                            <li>玩家</li>
-                            <li>赌注</li>
-                            <li>结果</li>
+                            <li translate>Game player</li>
+                            <li translate>bet</li>
+                            <li translate>Result</li>
                             <li></li>
                         </ul>
                     </div>
@@ -169,11 +169,10 @@
             <div class="dice_footer">inve.one</div>
         </div>
 
-
         <div ng-if="index.payController" class="payBox" id="iframeCen">
             <div class="payReqBox">
-                <div class="payReqTitle">
-                    支付请求
+                <div class="payReqTitle" translate>
+                    Request payment
                 </div>
                 <div class="payReqValueBox">
                     <span class="payReqValue">{{dice.diceData.amount}}</span>
@@ -188,8 +187,8 @@
                     <div class="fromValue">{{dice.address}}</div>
                 </div>
                 <div class="payReqBtn">
-                    <div class="BtnYes" ng-click="dice.confirmPay()">确定</div>
-                    <div class="BtnNo" ng-click="dice.cancelPay()">取消</div>
+                    <div class="BtnYes" ng-click="dice.confirmPay()" translate>OK</div>
+                    <div class="BtnNo" ng-click="dice.cancelPay()" translate>CANCEL</div>
                 </div>
             </div>
         </div>

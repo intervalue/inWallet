@@ -601,8 +601,8 @@
 
     <div ng-if="index.payController" class="payBox" id="iframeCen">
         <div class="payReqBox">
-            <div class="payReqTitle">
-                支付请求
+            <div class="payReqTitle" translate>
+                Request payment
             </div>
             <div class="payReqValueBox">
                 <span class="payReqValue">{{dc.orderPayData.amount}}</span>
@@ -617,8 +617,8 @@
                 <div class="fromValue">{{dc.address}}</div>
             </div>
             <div class="payReqBtn">
-                <div class="BtnYes" ng-click="dc.confirmPay()">确定</div>
-                <div class="BtnNo" ng-click="dc.cancelPay()">取消</div>
+                <div class="BtnYes" ng-click="dc.confirmPay()" translate>OK</div>
+                <div class="BtnNo" ng-click="dc.cancelPay()" translate>CANCEL</div>
             </div>
         </div>
     </div>

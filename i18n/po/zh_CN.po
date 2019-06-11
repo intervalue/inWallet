@@ -290,7 +290,7 @@ msgstr ""
 msgid "inWallet address"
 msgstr "inWallet 地址"
 
-#: public/views/includes/password.html:24
+
 msgid "CANCEL"
 msgstr "取消"
 
@@ -305,6 +305,7 @@ msgstr "继续"
 #: src/js/controllers/preferencesDelete.js:10
 #: src/js/controllers/walletHome.js:124
 #: src/js/services/confirmDialog.js:9
+
 msgid "Cancel"
 msgstr "取消"
 
@@ -3153,6 +3154,47 @@ msgstr "重新同步交易数据"
 msgid "Please confirm whether to perform data synchronization. After execution, the local transaction data will be cleared, and the main network will be reconnected to synchronize historical transaction data."
 msgstr "请确认是否执行数据同步，执行后将清除本地交易数据，并重新连接主网同步历史交易数据。"
 
+msgid "diceWin"
+msgstr "翻硬币"
+
+msgid "Choose the side of the coin for betting"
+msgstr "选择硬币的一面来进行投注"
+
+msgid "Bets"
+msgstr "下注"
+
+msgid "Chance to win"
+msgstr "获胜机会"
+
+msgid "Win the bet"
+msgstr "赢得投注"
+
+msgid "1% Platform fee Odds {{dice.Magnification}} X"
+msgstr "1%平台费,赔率 {{dice.Magnification}} X"
+
+msgid "Game History"
+msgstr "游戏历史"
+
+msgid "Just look at me"
+msgstr "只看我的"
+
+msgid "Game player"
+msgstr "玩家"
+
+msgid "bet"
+msgstr "赌注"
+
+msgid "Result"
+msgstr "结果"
+
+msgid "Request payment"
+msgstr "支付请求"
+
+msgid "Maximum"
+msgstr "最大"
+
+msgid "Your current bet"
+msgstr "您当前的赌注"
 
 
 
