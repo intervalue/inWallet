@@ -194,18 +194,18 @@ angular.module('copayApp.controllers').controller('exchangeController',
                                                                     errAlert(err);
                                                                     return;
                                                                 }
-                                                                var jsonObject2 = {
-                                                                    "messageStyle": 2,
-                                                                    "core": {
-                                                                        "orderNumber": result2.data.orderNumber,
-                                                                        "transactionBlock": 123,
-                                                                        "transactionHash": hash.txid ? hash.txid : hash
+                                                                // var jsonObject2 = {
+                                                                //     "messageStyle": 2,
+                                                                //     "core": {
+                                                                //         "orderNumber": result2.data.orderNumber,
+                                                                //         "transactionBlock": 123,
+                                                                //         "transactionHash": hash.txid ? hash.txid : hash
+                                                                //
+                                                                //     }
+                                                                // };
 
-                                                                    }
-                                                                };
-
-                                                                jsonObject2 = JSON.parse(JSON.stringify(jsonObject2));
-                                                                webHelper.post(chooseNetWork, jsonObject2, {"Content-Type": "application/json;"},function (err2, result3) {
+                                                                //jsonObject2 = JSON.parse(JSON.stringify(jsonObject2));
+                                                               // webHelper.post(chooseNetWork, jsonObject2, {"Content-Type": "application/json;"},function (err2, result3) {
                                                                     if (fromType.toUpperCase() == 'INVE') {
                                                                         light.updateMultiHash(hash, result2.data.orderNumber, 2, function (err, result) {
                                                                             indexScope.resetSendForm();
@@ -242,13 +242,16 @@ angular.module('copayApp.controllers').controller('exchangeController',
 
                                                                         });
                                                                     }
-                                                                });
+                                                                //});
                                                             });
                                                         }
                                                     } else {
                                                         if (result2 > 299 || result2.data == undefined){
                                                             errAlert(gettextCatalog.getString('Relay node failure'));
                                                             return
+                                                        }else {
+                                                            errAlert(gettextCatalog.getString(result2.data.errorInformation));
+                                                            return;
                                                         }
                                                         spinnerHide();
                                                         setError(result2.data.errorInformation);
@@ -343,8 +346,8 @@ angular.module('copayApp.controllers').controller('exchangeController',
                     getHash : getHash,
                     walletId : fc.credentials.walletId
                 }
-                fc.sendMultiPayment(opts, function (hash,obj) {
-                    cb(null, hash, obj);
+                fc.sendMultiPayment(opts, function (err,hash,obj) {
+                    cb(err, hash, obj);
                 });
 
             },

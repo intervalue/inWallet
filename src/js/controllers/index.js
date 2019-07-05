@@ -107,11 +107,14 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                 var backResult = JSON.parse(result2.body.data);
                 var data = backResult[0];
                 self.BTCTOETH = data.exchangeRatios['BTC:ETH'].toString();
-                self.ETHTOBTC = new bigNumber(1).dividedBy(data.exchangeRatios['BTC:ETH']).toString();
+               // self.ETHTOBTC = data.exchangeRatios['ETH:BTC'].toString();
+                self.ETHTOBTC = new bigNumber(1).dividedBy(data.exchangeRatios['ETH:BTC']).toString();
                 self.INVETOBTC = data.exchangeRatios['INVE:BTC'].toString();
-                self.BTCTOINVE = new bigNumber(1).dividedBy(data.exchangeRatios['INVE:BTC']).toString();
-                self.ETHTOINVE = new bigNumber(1).dividedBy(data.exchangeRatios['INVE:ETH']).toString();
+               // self.BTCTOINVE = data.exchangeRatios['BTC:INVE'].toString();
+                self.BTCTOINVE = new bigNumber(1).dividedBy(data.exchangeRatios['BTC:INVE']).toString();
+                self.ETHTOINVE = new bigNumber(1).dividedBy(data.exchangeRatios['ETH:INVE']).toString();
                 self.INVETOETH = data.exchangeRatios['INVE:ETH'].toString();
+                //self.ETHTOINVE = data.exchangeRatios['ETH:INVE'].toString();
                 self.INVETOINVE = 1;
                 self.ETHTOETH = 1;
                 self.BTCTOBTC = 1;
@@ -1305,7 +1308,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
          */
         setTimeout(function () {
             let tenexp = /^([a-zA-Z0-9]{10})(.*)([a-zA-Z0-9]{10})$/g;
-            self.exTradeOutId = self.walletType.INVE[0].walletId;
+            self.exTradeOutId = self.walletType.INVE[0].wallet;
             self.exExchangeFromId = self.walletType.INVE[0].walletId;
             self.exExchangeFromStable = self.walletType.INVE[0].stables;
             self.exExchangeFromName = self.walletType.INVE[0].walletName;
@@ -1348,7 +1351,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
             /*self.moveRateExchange = self[self.exTradeOutImg.toUpperCase() + 'TO' + self.exTradeInImg.toUpperCase()];*/
             self.exPlaceholderToinAddr = self.exTradeToInImg;
             self.exPlaceholderTooutAddr = self.exTradeToOutImg;
-        }, 2000)
+        })
 
     }
 
@@ -1742,7 +1745,7 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                      * move
                      * 默认设置兑换转出地址信息
                      */
-                    self.exTradeOutId = transINVE[0].walletId;
+                    self.exTradeOutId = transINVE[0].wallet;
                     self.exExchangeFromId = transINVE[0].walletId;
                     self.exExchangeFromStable = transINVE[0].stables;
                     self.exExchangeFromName = transINVE[0].walletName;

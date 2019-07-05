@@ -838,6 +838,7 @@ angular.module('copayApp.controllers').controller('discoveryController',
             // var fc = profileService.walletClients;
             // let k = Object.keys(fc);
             // let walletId = fc[k[0]].credentials.walletId;
+            url+='?address='+self.address;
 
             function go(url) {
                 dappUrl = url;
@@ -857,36 +858,37 @@ angular.module('copayApp.controllers').controller('discoveryController',
                         }
                         let fc = profileService.focusedClient;
                         let pubkey = utils.getPubkey(fc.credentials.xPrivKey);
-                        let sign = utils.signature(url, fc.credentials.xPrivKey);
-                        url = `${url}?pubkey=${pubkey}&sign=${sign}`;
-                        let obj = {
-                            pubkey: pubkey,
-                            sign: sign,
-                            address: self.address
-                        }
-                        storageService.setDapp(obj, function (err) {
-                            go(url);
-                        });
+                        let sign = utils.signature({fromAddress: self.address, pubkey:pubkey}, fc.credentials.xPrivKey);
+                        url = `${url}&pubkey=${pubkey}&sign=${sign}`;
+                        // let obj = {
+                        //     pubkey: pubkey,
+                        //     sign: sign,
+                        //     address: self.address
+                        // }
+                        // storageService.setDapp(obj, function (err) {
+                        //     go(url);
+                        // });
+                        go(url);
                     });
                 });
             }
-
-            storageService.getDapp(function (err, res) {
-                if (!err) {
-                    if (res.address && res.address == self.address) {
-                        let pubkey = res.pubkey;
-                        let sign = res.sign;
-                        url = `${url}?pubkey=${pubkey}&sign=${sign}`;
-                        go(url)
-                    } else {
-                        setDapp()
-                    }
-
-                } else {
-                    setDapp()
-                }
-
-            });
+            setDapp()
+            // storageService.getDapp(function (err, res) {
+            //     if (!err) {
+            //         if (res.address && res.address == self.address) {
+            //             let pubkey = res.pubkey;
+            //             let sign = res.sign;
+            //             url = `${url}&pubkey=${pubkey}&sign=${sign}`;
+            //             go(url)
+            //         } else {
+            //             setDapp()
+            //         }
+            //
+            //     } else {
+            //         setDapp()
+            //     }
+            //
+            // });
 
 
             //

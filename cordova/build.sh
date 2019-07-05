@@ -139,6 +139,9 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add cordova-plugin-file-transfer
 	checkOK
 
+	cordova plugin add cordova-plugin-screen-orientation
+    checkOK
+
     cordova plugin add cordova-plugin-file-opener2
     checkOK
 

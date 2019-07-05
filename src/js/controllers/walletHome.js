@@ -434,6 +434,7 @@ gettextCatalog
                                                     }
                                                 };
                                                 jsonObject = JSON.parse(JSON.stringify(jsonObject));
+                                                alert("=======")
                                                 webHelper.post(chooseNetWork, jsonObject, {"Content-Type": "application/json;"}, function (err2, result2) {
                                                     if (err2 !== null || result2 == null || result2 == undefined){
                                                         indexScope.showAlert2 = {};
