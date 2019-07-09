@@ -43,8 +43,6 @@
         <config-file parent="/manifest" target="AndroidManifest.xml" xmlns:android="http://schemas.android.com/apk/res/android">
             <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
         </config-file>
-        <pre name="code" class="html"/>
-        <preference name="orientation" value="default" />
         <icon density="ldpi" src="res/icon/android/drawable-ldpi/icon.png" />
         <icon density="mdpi" src="res/icon/android/drawable-mdpi/icon.png" />
         <icon density="hdpi" src="res/icon/android/drawable-hdpi/icon.png" />
