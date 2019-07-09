@@ -1282,11 +1282,11 @@ angular.module('copayApp.controllers').controller('indexController', function ($
         try {
             var data = self.relayObject[pubkey];
             self.BTCTOETH = data.exchangeRatios['BTC:ETH'].toString();
-            self.ETHTOBTC = new bigNumber(1).dividedBy(data.exchangeRatios['BTC:ETH']).toString();
+            self.ETHTOBTC = new bigNumber(1).dividedBy(data.exchangeRatios['ETH:BTC']).toString();
             self.INVETOBTC = data.exchangeRatios['INVE:BTC'].toString();
-            self.BTCTOINVE = new bigNumber(1).dividedBy(data.exchangeRatios['INVE:BTC']).toString();
-            self.ETHTOINVE = new bigNumber(1).dividedBy(data.exchangeRatios['INVE:ETH']).toString();
+            self.BTCTOINVE = new bigNumber(1).dividedBy(data.exchangeRatios['BTC:INVE']).toString();
             self.INVETOETH = data.exchangeRatios['INVE:ETH'].toString();
+            self.ETHTOINVE = new bigNumber(1).dividedBy(data.exchangeRatios['ETH:INVE']).toString();
             self.exchangeRate = data.feeRatio;
             self.chooseNodeList = data.addresses;
             self.url = data.ip + ':' + data.httpPort;
