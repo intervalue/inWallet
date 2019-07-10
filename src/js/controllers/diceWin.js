@@ -13,7 +13,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
         self.address = $scope.index.walletType.INVE[0].address;         // 获取第一个INVE地址
         self.walletId = $scope.index.walletType.INVE[0].wallet;
         //self.contAddress = 'IAMEEADVI76RPUMZDJZTMIDADC2M53ON'           // 测试网合约地址
-        self.contAddress = 'KDCJEUYB2WFOYCFYSIPUB3PGACNILORX'           // 测试网合约地址
+        self.contAddress = '2THMAGMCOORSASMFRXAHSUQNVL3JWPE3'           // 测试网合约地址
 
         self.Magnification = 1.96                                       //  倍率
 

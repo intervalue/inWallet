@@ -724,7 +724,7 @@ angular.module('copayApp.controllers').controller('discoveryController',
         eventBus.on('payMessage', function (data) {
             if (isCordova) console.log(ref);
             if (isCordova && ref) ref.hide();//隐藏：显示使用:ref.show()
-            console.log(data)
+            screen.orientation.lock('portrait');
             self.orderPayData = data
             self.showPayPop()
         });
@@ -816,7 +816,9 @@ angular.module('copayApp.controllers').controller('discoveryController',
                                 $scope.index.payController = false;
                                 if (ref) {
                                     ref.show();
+                                    screen.orientation.lock('landscape');
                                 } else {
+                                    screen.orientation.lock('landscape');
                                     ref = cordova.InAppBrowser.open(dappUrl, '_blank', 'location=yes,hidden=no,hideurlbar=yes,zoom=no,toolbarcolor=#000000,closebuttoncolor=#F0FFFF,navigationbuttoncolor=#F0FFFF');
                                 }
                                 apply();
@@ -830,6 +832,7 @@ angular.module('copayApp.controllers').controller('discoveryController',
         //  取消支付
         self.cancelPay = function () {
             $scope.index.payController = false;
+            screen.orientation.lock('landscape');
             ref.show();
         }
 
@@ -843,7 +846,13 @@ angular.module('copayApp.controllers').controller('discoveryController',
             function go(url) {
                 dappUrl = url;
                 if (isCordova) {
+                    screen.orientation.lock('landscape');
                     ref = cordova.InAppBrowser.open(url, '_blank', 'location=yes,hidden=no,hideurlbar=yes,zoom=no,toolbarcolor=#000000,closebuttoncolor=#F0FFFF,navigationbuttoncolor=#F0FFFF');
+
+                    ref.addEventListener("exit",function (err, res) {
+                        screen.orientation.lock('portrait');
+                    })
+
                 } else {
                     console.error(' no cordova ')
                 }
@@ -916,5 +925,7 @@ angular.module('copayApp.controllers').controller('discoveryController',
         }
 
         _getDappList()
+
+
 
     });
