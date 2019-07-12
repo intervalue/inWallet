@@ -3196,6 +3196,12 @@ msgstr "最大"
 msgid "Your current bet"
 msgstr "您当前的赌注"
 
+msgid "Payment Success"
+msgstr "支付成功"
+
+msgid "Payment Error"
+msgstr "支付失败"
+
 
 
 

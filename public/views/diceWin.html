@@ -74,7 +74,7 @@
                         </div>
                         <div class="top_box">
                             <img src="./img/dice/dice_rem.png" alt="" ng-click="dice.amountCut()">
-                            <input type="text" disabled ng-model="dice.diceData.amount">
+                            <input type="number" ng-model="dice.diceData.amount" ng-change="dice.amountChange()">
                             <img src="./img/dice/dice_add.png" alt="" ng-click="dice.amountAdd()">
                         </div>
                         <div class="top_explain" translate>Your current bet</div>
@@ -119,14 +119,16 @@
                         </ul>
                     </div>
                     <div class="record_box">
-                        <ul class="record_list">
+                        <ul class="record_list" ng-repeat="item in dice.diceGameList">
                             <li class="record_name">
                                 <div>
-                                    JKHDF287UDFJHKQJ...
+                                    {{item.addressFrom}}
                                 </div>
                             </li>
                             <li class="record_value">
-                                <div class="value">100</div>
+                                <div class="value">
+                                    {{item.lotteryAmount}}
+                                </div>
                                 <div class="coinBox">
                                     INVE
                                 </div>
@@ -135,34 +137,36 @@
                                 <div class="coinBox">
                                     INVE
                                 </div>
-                                <div class="value">200</div>
+                                <div class="value">
+                                    {{item.winnAmount}}
+                                </div>
                             </li>
                             <li class="record_img">
                                 <img src="./img/dice/dice_down.png" alt="">
                             </li>
                         </ul>
-                        <ul class="record_list">
-                            <li class="record_name">
-                                <div class="active">
-                                    JKHDF287UDFJHKQJ...
-                                </div>
-                            </li>
-                            <li class="record_value">
-                                <div class="value">100</div>
-                                <div class="coinBox">
-                                    INVE
-                                </div>
-                            </li>
-                            <li class="record_result">
-                                <div class="coinBox">
-                                    INVE
-                                </div>
-                                <div class="value">200</div>
-                            </li>
-                            <li class="record_img">
-                                <img src="./img/dice/dice_down.png" alt="">
-                            </li>
-                        </ul>
+                        <!--  <ul class="record_list">
+                              <li class="record_name">
+                                  <div class="active">
+                                      JKHDF287UDFJHKQJ...
+                                  </div>
+                              </li>
+                              <li class="record_value">
+                                  <div class="value">100</div>
+                                  <div class="coinBox">
+                                      INVE
+                                  </div>
+                              </li>
+                              <li class="record_result">
+                                  <div class="coinBox">
+                                      INVE
+                                  </div>
+                                  <div class="value">200</div>
+                              </li>
+                              <li class="record_img">
+                                  <img src="./img/dice/dice_down.png" alt="">
+                              </li>
+                          </ul>-->
                     </div>
                 </div>
             </div>

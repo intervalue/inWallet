@@ -14,7 +14,8 @@ angular.module('copayApp.controllers').controller('diceWinController',
         self.address = $scope.index.walletType.INVE[0].address;         // 获取第一个INVE地址
         self.walletId = $scope.index.walletType.INVE[0].wallet;
         //self.contAddress = 'IAMEEADVI76RPUMZDJZTMIDADC2M53ON'           // 测试网合约地址
-        self.contAddress = '2THMAGMCOORSASMFRXAHSUQNVL3JWPE3'           // 测试网合约地址
+        // self.contAddress = '2THMAGMCOORSASMFRXAHSUQNVL3JWPE3'           // 测试网合约地址 100中奖
+        self.contAddress = '63RDEMXZIRKXRYOXRT3BPZW4VQDDO32X'           // 测试网合约地址  非100%
 
         self.Magnification = 1.96                                       //  倍率
 
@@ -26,6 +27,9 @@ angular.module('copayApp.controllers').controller('diceWinController',
 
 
         self.amountActiveIndex = -2                                     //  金额选中
+
+        self.diceGameList = []
+
 
         // 金额选中效果
         self.amountActive = function (index, value) {
@@ -49,6 +53,21 @@ angular.module('copayApp.controllers').controller('diceWinController',
         self.amountCut = function () {
             if (self.diceData.amount > MinAmount) {
                 self.diceData.amount--
+            }
+        }
+
+
+        //   输入amountChange
+
+        self.amountChange = function () {
+            if ((typeof (self.diceData.amount) === "number") && (self.diceData.amount !== Infinity) && !isNaN(self.diceData.amount)) {
+                if (self.diceData.amount > MaxAmount) {
+                    self.diceData.amount = MaxAmount
+                } else if (self.diceData.amount < MinAmount) {
+                    self.diceData.amount = MinAmount
+                }
+            } else {
+                self.diceData.amount = MinAmount
             }
         }
 
@@ -105,6 +124,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
                                 if (err) {
                                     return $rootScope.$emit('Local/ShowErrorAlert', err);
                                 } else {
+                                    $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Payment Success'));
                                     self.cancelPay()
                                 }
                             })
@@ -128,16 +148,19 @@ angular.module('copayApp.controllers').controller('diceWinController',
         }
 
         //查询中奖记录
-        function get() {
-            light.getDiceWin(self.contAddress,function (res) {
-            if(res.length == 0){
-                //没有中奖记录
-            }else {
-                //中奖记录
+        function getDiceList() {
+            light.getDiceWin(self.contAddress, function (res) {
                 console.log(res)
-            }
+                self.diceGameList = res
+
+                // if (res.length == 0) {
+                //     //没有中奖记录
+                // } else {
+                //     //中奖记录
+                //     // console.log(res)
+                // }
             })
         }
 
-     get()
+        getDiceList()
     });
