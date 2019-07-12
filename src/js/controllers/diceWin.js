@@ -8,6 +8,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
         let MinAmount = 1       //  可下注最小值
 
         let payment = require('inWalletcore/payment.js')
+        let light = require('inWalletcore/light.js')
         var utils = require('inWalletcore/utils.js');
         self.paymentList = [50, 100, 200]                               // 可选金额列表
         self.address = $scope.index.walletType.INVE[0].address;         // 获取第一个INVE地址
@@ -126,5 +127,17 @@ angular.module('copayApp.controllers').controller('diceWinController',
             });
         }
 
+        //查询中奖记录
+        function get() {
+            light.getDiceWin(self.contAddress,function (res) {
+            if(res.length == 0){
+                //没有中奖记录
+            }else {
+                //中奖记录
+                console.log(res)
+            }
+            })
+        }
 
+     get()
     });
