@@ -4,7 +4,8 @@
 angular.module('copayApp.controllers').controller('diceWinController',
     function ($rootScope, $scope, $timeout, storageService, notification, profileService, bwcService, $log, $stateParams, gettext, gettextCatalog, lodash, go, isCordova) {
         let self = this;
-        let MaxAmount = 10000   //  可下注最大值
+        let MaxAmount = 300000
+        //  可下注最大值
         let MinAmount = 1       //  可下注最小值
 
         let payment = require('inWalletcore/payment.js')
@@ -14,8 +15,8 @@ angular.module('copayApp.controllers').controller('diceWinController',
         self.address = $scope.index.walletType.INVE[0].address;         // 获取第一个INVE地址
         self.walletId = $scope.index.walletType.INVE[0].wallet;
         //self.contAddress = 'IAMEEADVI76RPUMZDJZTMIDADC2M53ON'           // 测试网合约地址
-        // self.contAddress = '2THMAGMCOORSASMFRXAHSUQNVL3JWPE3'           // 测试网合约地址 100中奖
-        self.contAddress = '63RDEMXZIRKXRYOXRT3BPZW4VQDDO32X'           // 测试网合约地址  非100%
+         self.contAddress = 'IAMEEADVI76RPUMZDJZTMIDADC2M53ON'           // 测试网合约地址 100中奖
+        //self.contAddress = '63RDEMXZIRKXRYOXRT3BPZW4VQDDO32X'           // 测试网合约地址  非100%
 
         self.Magnification = 1.96                                       //  倍率
 
