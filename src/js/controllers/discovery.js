@@ -779,33 +779,32 @@ angular.module('copayApp.controllers').controller('discoveryController',
                             }
                             return $rootScope.$emit('Local/ShowErrorAlert', err);
                         }
-                        webHelper.httpPost(device.my_device_hashnetseed_url + '/v1/getlocalfullnodes', null, {pubkey: objJson.pubkey}, function (err, res) {
-                            if (err) {
-                                if (err.match(/not enough spendable/)) {
-                                    err = gettextCatalog.getString("not enough spendable");
-                                    return $rootScope.$emit('Local/ShowErrorAlert', err);
-                                } else {
-                                    return $rootScope.$emit('Local/ShowErrorAlert', err);
-                                }
-
-                            }
-                            if (res.code == 200 && res.data == '') {
-                                return $rootScope.$emit('Local/ShowErrorAlert', 'localfullnode is null');
-                            }
-                            let data = JSON.parse(res);
-
-                            if (data.code != 200 | data.data == '') {
-                                return $rootScope.$emit('Local/ShowErrorAlert', `localfullnodes is null`);
-                            }
-                            let localfullnodes = JSON.parse(data.data);
-                            let urlList = [];
-                            lodash.forEach(localfullnodes, function (res) {
-                                urlList.push(`${res.ip}:${res.httpPort}`)
-                            });
+                        //webHelper.httpPost(device.my_device_hashnetseed_url + '/v1/getlocalfullnodes', null, {pubkey: objJson.pubkey}, function (err, res) {
+                        //     if (err) {
+                        //         if (err.match(/not enough spendable/)) {
+                        //             err = gettextCatalog.getString("not enough spendable");
+                        //             return $rootScope.$emit('Local/ShowErrorAlert', err);
+                        //         } else {
+                        //             return $rootScope.$emit('Local/ShowErrorAlert', err);
+                        //         }
+                        //
+                        //     }
+                        //     if (res.code == 200 && res.data == '') {
+                        //         return $rootScope.$emit('Local/ShowErrorAlert', 'localfullnode is null');
+                        //     }
+                        //     let data = JSON.parse(res);
+                        //
+                        //     if (data.code != 200 | data.data == '') {
+                        //         return $rootScope.$emit('Local/ShowErrorAlert', `localfullnodes is null`);
+                        //     }
+                        //     let localfullnodes = JSON.parse(data.data);
+                        //     let urlList = [];
+                        //     lodash.forEach(localfullnodes, function (res) {
+                        //         urlList.push(`${res.ip}:${res.httpPort}`)
+                        //     });
                             /*console.log(tt)
                             tt = _.difference(tt,['13.211.5.129:35796']);//移除*/
-                            obj.localfullnode_list = urlList;//IP+httpPort
-                            console.log('urlList', urlList)
+                           // obj.localfullnode_list = [require('inWalletcore/conf').URL.INVE_TRANSACTION_URL];//IP+httpPort
                             obj.wallettransid = res2.signature;
                             obj.paybody = {message: res2};
                             // console.log(obj.wallettransid)
@@ -823,7 +822,7 @@ angular.module('copayApp.controllers').controller('discoveryController',
                                 }
                                 apply();
                             });
-                        });
+                       // });
                     });
                 });
             });
