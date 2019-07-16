@@ -3202,6 +3202,9 @@ msgstr "支付成功"
 msgid "Payment Error"
 msgstr "支付失败"
 
+msgid "Contract"
+msgstr "合约"
+
 
 
 
