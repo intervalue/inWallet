@@ -811,6 +811,7 @@ angular.module('copayApp.controllers').controller('discoveryController',
                             // console.log(obj.localfullnode_list)
                             payment.sendTransactionToOtherServer(obj, function (err, res3) {
                                 if (err) return $rootScope.$emit('Local/ShowErrorAlert', err);
+
                                 console.log(res3);
                                 $scope.index.payController = false;
                                 if (ref) {
