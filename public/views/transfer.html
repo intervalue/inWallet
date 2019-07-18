@@ -1,8 +1,9 @@
 <div ng-controller="transferController as tf" class="tranf pfixed topp" ng-init="tf.trannoteShow = true;">
     <nav class="tab-bar" ng-controller="topbarController as topbar">
         <section class="left-small">
-            <a ng-show="!index.chat" ng-click="tf.gowalleInfo(tf.walletType, tf.walletIdRoute, tf.address, tf.walletName, tf.image, tf.amountRoute, tf.mnemonic, tf.mnemonicEncrypted)">
-                <img src="./img/back.png" />
+            <a ng-show="!index.chat"
+               ng-click="tf.gowalleInfo(tf.walletType, tf.walletIdRoute, tf.address, tf.walletName, tf.image, tf.amountRoute, tf.mnemonic, tf.mnemonicEncrypted)">
+                <img src="./img/back.png"/>
             </a>
             <a ng-show="index.chat" ng-click="tf.cancel()">
                 <img src="./img/back.png">
@@ -14,7 +15,8 @@
             </h1>
         </section>
         <section class="right-small rightimg" ng-show="index.isCordova">
-            <qr-scanner ng-show="index.isComplete" on-scan="topbar.onQrCodeScanned(data)" before-scan="topbar.onBeforeScan()"></qr-scanner>
+            <qr-scanner ng-show="index.isComplete" on-scan="topbar.onQrCodeScanned(data)"
+                        before-scan="topbar.onBeforeScan()"></qr-scanner>
         </section>
     </nav>
     <div class="f9fafch"></div>
@@ -24,7 +26,7 @@
                 <div class="item tranwallet">
                     <div class="tranwalletimg" ng-click="tf.showselectwt = true;">
                         <div>
-                            <img class="tranifimg" ng-src="{{tf.inputImg}}" />
+                            <img class="tranifimg" ng-src="{{tf.inputImg}}"/>
                             <div class="tranwalletimgin">{{tf.walletType | uppercase}}</div>
                         </div>
                     </div>
@@ -32,7 +34,8 @@
                         <div class="tranname">
                             <span class="ellipsis">{{tf.nameValue}}</span><label translate>Transfer out</label>
                         </div>
-                        <input type="text" type="number" id="amount" ng-disabled="tf.blockUx || tf.lockAmount || tf.bSendAll"
+                        <input type="text" type="number" id="amount"
+                               ng-disabled="tf.blockUx || tf.lockAmount || tf.bSendAll"
                                name="amount" maxlength="18" ng-model="tf._amount"
                                valid-amount="{{tf.walletType}}" ng-required="!tf.bSendAll && !tf.send_multiple"
                                autocomplete="off" ng-focus="tf.formFocus('amount')" ng-blur="tf.formFocus(false)"
@@ -41,12 +44,13 @@
                     </div>
                 </div>
                 <div class="swopdiv">
-                    <img ng-src="./img/swoparrow.png" />
+                    <img ng-src="./img/swoparrow.png"/>
                 </div>
-                <div class="item tranwallet" >
-                    <div class="tranwalletimg" ng-click="index.openAddressModal('', tf.walletType, tf.walletId, _address, tf.walletName)" >
+                <div class="item tranwallet">
+                    <div class="tranwalletimg"
+                         ng-click="index.openAddressModal('', tf.walletType, tf.walletId, _address, tf.walletName)">
                         <div>
-                            <img class="tranifimg" ng-src="{{tf.inputImg}}" />
+                            <img class="tranifimg" ng-src="{{tf.inputImg}}"/>
                             <div class="tranwalletimgin">{{tf.walletType | uppercase}}</div>
                         </div>
                     </div>
@@ -54,8 +58,11 @@
                         <div class="tranname">
                             <label translate>Transfer in</label>
                         </div>
-                        <input placeholder="{{tf.addrPlacehoder | translate}}" autocomplete="off" type="text" id="transferaddress" name="address" ng-disabled="tf.blockUx || tf.lockAddress || index.arrBalances[index.assetIndex].is_private"
-                               ng-model="tf._address" maxlength="76" ng-required valid-address="{{tf.walletType}}" ng-focus="tf.formFocus('address')" ng-blur="tf.formFocus(false)"/>
+                        <input placeholder="{{tf.addrPlacehoder | translate}}" autocomplete="off" type="text"
+                               id="transferaddress" name="address"
+                               ng-disabled="tf.blockUx || tf.lockAddress || index.arrBalances[index.assetIndex].is_private"
+                               ng-model="tf._address" maxlength="76" ng-required valid-address="{{tf.walletType}}"
+                               ng-focus="tf.formFocus('address')" ng-blur="tf.formFocus(false)"/>
                     </div>
                 </div>
             </div>
@@ -92,13 +99,14 @@
             </div>-->
             <div class="item transendnote" ng-show="tf.walletType =='INVE'">
                 <label translate>Note</label>
-                <input placeholder="({{'optional' | translate}})" autocomplete="off" type="text" id="note" name="note" ng-model="_note" maxlength="66"
-                       ng-required  ng-Keyup="tf.transactionFee()"/>
+                <input placeholder="({{'optional' | translate}})" autocomplete="off" type="text" id="note" name="note"
+                       ng-model="_note" maxlength="66"
+                       ng-required ng-Keyup="tf.transactionFee()"/>
             </div>
         </div>
         <div class="texrate" ng-show="tf.walletType =='INVE'">
             <div class="item">
-                <img src="./img/setamount.png" />
+                <img src="./img/setamount.png"/>
                 <label translate>Handling fee</label>
                 <!--<div class="tranfeein">0.0007{{tf.unit}}&nbsp;&asymp;&nbsp;￥0.034</div>-->
                 <div class="texratein">&asymp;&nbsp;{{tf.tranFee}}&nbsp;INVE</div>
@@ -112,7 +120,7 @@
         </div>-->
         <div class="tranfee" ng-show="tf.walletType == 'BTC'">
             <div class="item">
-                <img src="./img/setamount.png" />
+                <img src="./img/setamount.png"/>
                 <label translate>Miner fee</label>
                 <!--<div class="tranfeein">0.0007{{tf.unit}}&nbsp;&asymp;&nbsp;￥0.034</div>-->
                 <div class="tranfeein">{{tf.percent}}&nbsp;&asymp;&nbsp;sat/byte</div>
@@ -151,32 +159,35 @@
                 <img src="./img/close.png" ng-click="tf.trannoteShow = false;"/>
             </div>
         </div>-->
-        </form>
-<div ng-show="tf.showselectwt" class="popconfirm">
-    <div class="popmask" ng-click="tf.showselectwt = false;"></div>
-    <div class="popcontentwt animated upScaleIn">
-        <div class="sendswitchtab clearfix">
-            <div class="tab-container">
-                <a  translate><img ng-src="./img/{{tf.walletNameInfo | lowercase}}ltimg.png" />{{tf.walletNameInfo}}</a>
-            </div>
-        </div>
-        <ul class="m0">
-            <li ng-repeat="item in tf.walletInfo" ng-click="tf.findPaymentAddress(item.wallet, item.stables, item.walletName, item.address);">
-                <div class="liin">
-                    <div class="ld">
-                        <span class="greendot"></span>
-                        <div class="limg">
-                            <img ng-src="{{item.image}}" />
-                        </div>
-                        <span class="lname">{{item.walletName}}</span>
-                    </div>
-                    <div class="rd">
-                        <span translate>Available amount:</span>&nbsp;<span class="flex1span">{{item.stables}}</span>
-                    </div>
+    </form>
+    <div ng-show="tf.showselectwt" class="popconfirm">
+        <div class="popmask" ng-click="tf.showselectwt = false;"></div>
+        <div class="popcontentwt animated upScaleIn">
+            <div class="sendswitchtab clearfix">
+                <div class="tab-container">
+                    <a translate><img
+                            ng-src="./img/{{tf.walletNameInfo | lowercase}}ltimg.png"/>{{tf.walletNameInfo}}</a>
                 </div>
-            </li>
-        </ul>
+            </div>
+            <ul class="m0">
+                <li ng-repeat="item in tf.walletInfo"
+                    ng-click="tf.findPaymentAddress(item.wallet, item.stables, item.walletName, item.address);">
+                    <div class="liin">
+                        <div class="ld">
+                            <span class="greendot"></span>
+                            <div class="limg">
+                                <img ng-src="{{item.image}}"/>
+                            </div>
+                            <span class="lname">{{item.walletName}}</span>
+                        </div>
+                        <div class="rd">
+                            <span translate>Available amount:</span>&nbsp;<span
+                                class="flex1span">{{item.stables}}</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
 </div>
 

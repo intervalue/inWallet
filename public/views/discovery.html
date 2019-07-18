@@ -482,7 +482,6 @@
                   class="item"
                   ng-click="dc.JumpHref(item.suffix==='1' ? item.appHomepage+dc.address : item.appHomepage)">-->
             <div
-                    ng-if="dc.isCordova"
                     ng-repeat="item in dc.dappList"
                     class="item"
                     ng-click="dc.JumpHref(item.appHomepage)">
@@ -500,6 +499,15 @@
                     <div class="title">diceWin</div>
                     <div class="litinfo" translate>
                         diceWin
+                    </div>
+                </div>
+            </div>
+            <div class="item" ng-click="$root.go('LockPosition')">
+                <img src="./img/LockPosition.png"/>
+                <div class="info">
+                    <div class="title">LockPosition</div>
+                    <div class="litinfo" translate>
+                        LockPosition
                     </div>
                 </div>
             </div>

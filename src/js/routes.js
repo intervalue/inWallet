@@ -494,7 +494,7 @@ angular
             }
         })
         .state('transfer', {
-            url: '/transfer?walletType&walletId&address&name&image&ammount&mnemonic&mnemonicEncrypted',
+            url: '/transfer?walletType&walletId&address&name&image&ammount&mnemonic&mnemonicEncrypted&_address',
             views: {
                 'main': {
                     templateUrl: 'views/transfer.html'
@@ -514,6 +514,14 @@ angular
             views: {
                 'main': {
                     templateUrl: 'views/diceWin.html'
+                }
+            }
+        })
+        .state('LockPosition', {
+            url: '/LockPosition',
+            views: {
+                'main': {
+                    templateUrl: 'views/LockPosition.html'
                 }
             }
         })
