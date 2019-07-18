@@ -840,6 +840,6 @@ angular.module('copayApp.controllers').controller('transferController',
 
 
         self.__goBack = function () {
-            history.back();
+            history.go(-1);
         }
     });
