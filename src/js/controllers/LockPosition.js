@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('LockPositionController',
 
         self.showselectwtmove = false   // 选择地址控制器
 
-        self.lockAddress = '请选择INVE锁仓地址';     //  锁仓地址
+        self.lockAddress = 'Please enter the INVE extract address';     //  锁仓地址
         self.extractAddress = null;    //  提取地址
 
         self.lockDappAddress = 'IAMEEADVI76RPUMZDJZTMIDADC2M53ON'   //  锁仓dapp 地址

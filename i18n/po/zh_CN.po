@@ -3207,6 +3207,65 @@ msgstr "合约"
 
 
 
+msgid "INVE Lock Warehouse"
+msgstr "INVE锁仓增值"
+
+msgid "Deposit the INVE into a smart contract and get interest on a regular basis"
+msgstr "将INVE存入智能合约，定期获取利息"
+
+msgid "'INVE Lock Warehouse' is a financial service provided by the InterValue Foundation to users and implemented by DApp. You can deposit the INVE into the lock DApp with a lock-up period of one year and an annual interest rate of 4%"
+msgstr "'锁仓增值' 是InterValue基金会为用户提供的一项金融服务，并由DApp实现。您可以将INVE存入锁仓DApp，锁定期为一年，年利率为4%"
+
+msgid "After INVE is locked, you can withdraw (total + interest) / 12 INVE per month. The extraction needs to be done manually, and the deferred extraction will not receive additional interest"
+msgstr "INVE锁定后，你可以每月提取 （总额+利息）/12 INVE。提取需要手动完成，延期提取不会获得额外利息"
+
+msgid "Lock address"
+msgstr "锁仓地址"
+
+msgid "Withdraw address"
+msgstr "提取地址"
+
+msgid "Please enter the INVE lock address"
+msgstr "请选择INVE提取地址"
+
+msgid "Please enter the INVE extract address"
+msgstr "请选择INVE锁仓地址"
+
+msgid "Lock-in"
+msgstr "锁仓"
+
+msgid "Withdraw"
+msgstr "提取"
+
+msgid "1. Open inWallet and go to the INVE Transfer page"
+msgstr "1. 打开inWallet，进入INVE转账页面"
+
+msgid "2. Select the INVE wallet address in the INVE transfer address"
+msgstr "2. 在INVE转出地址中选择INVE钱包地址"
+
+msgid "that is the lock address"
+msgstr "即锁仓地址"
+
+msgid "3. Enter the lock DApp address in the INVE transfer address field："
+msgstr "3. 在INVE转入地址栏中输入锁仓DApp地址："
+
+msgid "4. Enter the amount and determine the transfer"
+msgstr "4. 输入金额并确定转账"
+
+msgid "1. Open inWallet and enter INVE Lock Warehouse"
+msgstr "1. 打开inWallet，进入锁仓奖励DApp页面"
+
+msgid "2. Select the lock address (INVE wallet address) in the lock address drop-down input box"
+msgstr "2. 在锁仓地址栏中选择锁仓地址（INVE钱包地址）"
+
+msgid "3. Enter the withdraw address in the Withdraw Address field"
+msgstr "3. 在提取地址栏中输入提取地址（默认为锁仓地址）"
+
+msgid "4. Click the Withdraw button"
+msgstr "4. 点击提取按钮进行提取"
+
+
+
 
 
 
