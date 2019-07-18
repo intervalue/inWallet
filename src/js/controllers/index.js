@@ -1649,9 +1649,12 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                         if (tran.wallet == fc[item].credentials.walletId) {
                             var walletNameIfo = fc[item].credentials.walletName;
                             var imageIfo = fc[item].image;
-                            var mnemonicEncryptedIfo = fc
-                                [item].credentials.mnemonicEncrypted;
+                            var mnemonicEncryptedIfo = fc[item].credentials.mnemonicEncrypted;
                             var mnemonic = fc[item].credentials.mnemonic;
+                            var xPrivKeyIfo = fc[item].credentials.xPrivKey;
+                            var xPrivKeyEncryptedIfo = fc[item].credentials.xPrivKeyEncrypted;
+
+
                             break;
                         }
                     }
@@ -1668,7 +1671,9 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                         walletName: walletNameIfo,
                         image: imageIfo,
                         mnemonicEncrypted: mnemonicEncryptedIfo,
-                        mnemonic: mnemonic
+                        mnemonic: mnemonic,
+                        xPrivKeyIfo: xPrivKeyIfo,
+                        xPrivKeyEncryptedIfo: xPrivKeyEncryptedIfo,
                     });
                 });
                 //self.ammountTatolNmuber = ammount;
@@ -1729,7 +1734,6 @@ angular.module('copayApp.controllers').controller('indexController', function ($
                 self.walletType.INVE = transINVE;
                 self.walletType.SNC = transSNC;
                 //self.exExchangeToImg = self.walletType.ETH.length > 0 ? 'eth' : (self.walletType.BTC.length > 0 ? 'btc' : '');
-                console.log(self.walletType)
                 if (!self.exExchangeToImg) {
                     lodash.forEach(fc, function (uu) {
                         let e = lodash.find(uu, {type: "ETH"});
