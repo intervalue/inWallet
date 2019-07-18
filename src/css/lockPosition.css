@@ -30,6 +30,8 @@
   font-size: 12px;
   text-align: right;
   margin: 0 10px;
+}
+.lockBox .lockFrom .fromList .fromItem .pointer {
   cursor: pointer;
 }
 .lockBox .lockFrom .fromList .fromItem .itemRight img {

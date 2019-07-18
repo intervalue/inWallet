@@ -20,7 +20,8 @@
                     <li class="fromItem">
                         <div class="itemLogo"><img src="./img/lockaddress2.png" alt=""></div>
                         <div class="itemName">锁仓地址</div>
-                        <div class="itemExplain" ng-click="lock.showselectlayermove()">{{lock.lockAddress}}</div>
+                        <div class="itemExplain pointer" ng-click="lock.showselectlayermove()">{{lock.lockAddress}}
+                        </div>
                         <div class="itemRight"><img src="./img/more.png" alt=""></div>
                     </li>
                     <li class="fromItem">
@@ -39,7 +40,7 @@
                 <ul>
                     <li>1.打开InWallet 进入INVE转账页面</li>
                     <li>2.在INVE转出地址中选择INVE钱包地址，即 <span>锁仓地址</span></li>
-                    <li>3.在INVE转入地址栏中输入锁仓Dapp地址：<span>aklsdjfkljsdkfjkl</span></li>
+                    <li>3.在INVE转入地址栏中输入锁仓Dapp地址：<span>{{lock.lockDappAddress}}</span></li>
                     <li>4.输入金额并确定转账</li>
                 </ul>
             </div>

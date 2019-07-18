@@ -1,11 +1,14 @@
 <div ng-controller="transferController as tf" class="tranf pfixed topp" ng-init="tf.trannoteShow = true;">
     <nav class="tab-bar" ng-controller="topbarController as topbar">
         <section class="left-small">
-            <a ng-show="!index.chat"
+            <a ng-show="!index.chat && !tf._isAddress"
                ng-click="tf.gowalleInfo(tf.walletType, tf.walletIdRoute, tf.address, tf.walletName, tf.image, tf.amountRoute, tf.mnemonic, tf.mnemonicEncrypted)">
                 <img src="./img/back.png"/>
             </a>
             <a ng-show="index.chat" ng-click="tf.cancel()">
+                <img src="./img/back.png">
+            </a>
+            <a ng-show="!index.chat && tf._isAddress " ng-click="tf.__goBack()">
                 <img src="./img/back.png">
             </a>
         </section>
@@ -60,7 +63,7 @@
                         </div>
                         <input placeholder="{{tf.addrPlacehoder | translate}}" autocomplete="off" type="text"
                                id="transferaddress" name="address"
-                               ng-disabled="tf.blockUx || tf.lockAddress || index.arrBalances[index.assetIndex].is_private"
+                               ng-disabled="tf.blockUx || tf.lockAddress || index.arrBalances[index.assetIndex].is_private || tf._isAddress"
                                ng-model="tf._address" maxlength="76" ng-required valid-address="{{tf.walletType}}"
                                ng-focus="tf.formFocus('address')" ng-blur="tf.formFocus(false)"/>
                     </div>

@@ -18,12 +18,12 @@ angular.module('copayApp.controllers').controller('LockPositionController',
         }
 
         self.findPaymentAddressmove = function (item) {
-            console.log(item)
+            // console.log(item)
 
             self.extractAddress = deepCopyObj(item).address
             self.lockAddress = deepCopyObj(item).address
 
-            self.showselectwtmove = true
+            self.showselectwtmove = false
 
         }
 

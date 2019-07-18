@@ -63,6 +63,7 @@ angular.module('copayApp.controllers').controller('transferController',
         self.tranFee = profileService.formatAmount(constants.BASE_NRG * indexScope.nrgPrice, 'inve');
 
         /*锁仓功能新增：接受支付地址*/
+        self._isAddress = $stateParams._address ? true : false
         self._address = $stateParams._address
 
 
@@ -835,5 +836,10 @@ angular.module('copayApp.controllers').controller('transferController',
 
         self.onClickWallet = function () {
 
+        }
+
+
+        self.__goBack = function () {
+            history.back();
         }
     });
