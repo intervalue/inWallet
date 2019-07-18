@@ -1,0 +1,103 @@
+.lockBox {
+  .Explain {
+    padding: 24px 16px 19px 16px;
+    background: #FCFCFC;
+
+    p {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #323232;
+    }
+
+    :last-child {
+      margin: 0;
+    }
+  }
+
+  .lockFrom {
+    .fromList {
+      .fromItem {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+        padding: 16px 14px;
+
+        .itemLogo {
+          img {
+            width: 20px;
+          }
+        }
+
+        .itemName {
+          color: #3B3B3B;
+          font-size: 14px;
+          margin: 0 10px;
+        }
+
+        .itemExplain {
+          flex: 1;
+          color: #CECDD7;
+          font-size: 12px;
+          text-align: right;
+          margin: 0 10px;
+          cursor: pointer;
+        }
+
+        .itemRight {
+          img {
+            width: 20px;
+            height: 20px;
+          }
+        }
+
+        button {
+          margin: 0 20px;
+        }
+      }
+
+      :last-child {
+        border: 0;
+      }
+    }
+  }
+
+  .lockExplain {
+    margin: 17px 13px 0 13px;
+
+    .title {
+      color: #2FBB9C;
+      font-size: 16px;
+    }
+
+    ul {
+      li {
+        font-size: 12px;
+        margin: 4px 0;
+
+        span {
+          color: #2FBB9C;
+        }
+      }
+    }
+  }
+
+  .extractExplain {
+    margin: 17px 13px 0 13px;
+
+    .title {
+      color: #2FBB9C;
+      font-size: 16px;
+    }
+
+    ul {
+      li {
+        font-size: 12px;
+        margin: 4px 0;
+
+        span {
+          color: #2FBB9C;
+        }
+      }
+    }
+  }
+}
