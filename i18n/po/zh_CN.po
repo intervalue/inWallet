@@ -3264,6 +3264,9 @@ msgstr "3. 在提取地址栏中输入提取地址（默认为锁仓地址）"
 msgid "4. Click the Withdraw button"
 msgstr "4. 点击提取按钮进行提取"
 
+msgid "Insufficient balance in contract account"
+msgstr "合约账户余额不足"
+
 
 
 

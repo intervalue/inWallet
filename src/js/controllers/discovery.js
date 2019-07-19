@@ -802,28 +802,28 @@ angular.module('copayApp.controllers').controller('discoveryController',
                         //     lodash.forEach(localfullnodes, function (res) {
                         //         urlList.push(`${res.ip}:${res.httpPort}`)
                         //     });
-                            /*console.log(tt)
-                            tt = _.difference(tt,['13.211.5.129:35796']);//移除*/
-                           // obj.localfullnode_list = [require('inWalletcore/conf').URL.INVE_TRANSACTION_URL];//IP+httpPort
-                            obj.wallettransid = res2.signature;
-                            obj.paybody = {message: res2};
-                            // console.log(obj.wallettransid)
-                            // console.log(obj.localfullnode_list)
-                            payment.sendTransactionToOtherServer(obj, function (err, res3) {
-                                if (err) return $rootScope.$emit('Local/ShowErrorAlert', err);
+                        /*console.log(tt)
+                        tt = _.difference(tt,['13.211.5.129:35796']);//移除*/
+                        // obj.localfullnode_list = [require('inWalletcore/conf').URL.INVE_TRANSACTION_URL];//IP+httpPort
+                        obj.wallettransid = res2.signature;
+                        obj.paybody = {message: res2};
+                        // console.log(obj.wallettransid)
+                        // console.log(obj.localfullnode_list)
+                        payment.sendTransactionToOtherServer(obj, function (err, res3) {
+                            if (err) return $rootScope.$emit('Local/ShowErrorAlert', err);
 
-                                console.log(res3);
-                                $scope.index.payController = false;
-                                if (ref) {
-                                    ref.show();
-                                    screen.orientation.lock('landscape');
-                                } else {
-                                    screen.orientation.lock('landscape');
-                                    ref = cordova.InAppBrowser.open(dappUrl, '_blank', 'location=yes,hidden=no,hideurlbar=yes,zoom=no,toolbarcolor=#000000,closebuttoncolor=#F0FFFF,navigationbuttoncolor=#F0FFFF');
-                                }
-                                apply();
-                            });
-                       // });
+                            console.log(res3);
+                            $scope.index.payController = false;
+                            if (ref) {
+                                ref.show();
+                                screen.orientation.lock('landscape');
+                            } else {
+                                screen.orientation.lock('landscape');
+                                ref = cordova.InAppBrowser.open(dappUrl, '_blank', 'location=yes,hidden=no,hideurlbar=yes,zoom=no,toolbarcolor=#000000,closebuttoncolor=#F0FFFF,navigationbuttoncolor=#F0FFFF');
+                            }
+                            apply();
+                        });
+                        // });
                     });
                 });
             });
@@ -841,7 +841,7 @@ angular.module('copayApp.controllers').controller('discoveryController',
             // var fc = profileService.walletClients;
             // let k = Object.keys(fc);
             // let walletId = fc[k[0]].credentials.walletId;
-            url+='?address='+self.address;
+            url += '?address=' + self.address;
 
             function go(url) {
                 dappUrl = url;
@@ -849,7 +849,7 @@ angular.module('copayApp.controllers').controller('discoveryController',
                     screen.orientation.lock('landscape');
                     ref = cordova.InAppBrowser.open(url, '_blank', 'location=yes,hidden=no,hideurlbar=yes,zoom=no,toolbarcolor=#000000,closebuttoncolor=#F0FFFF,navigationbuttoncolor=#F0FFFF');
 
-                    ref.addEventListener("exit",function (err, res) {
+                    ref.addEventListener("exit", function (err, res) {
                         screen.orientation.lock('portrait');
                     })
 
@@ -867,7 +867,10 @@ angular.module('copayApp.controllers').controller('discoveryController',
                         }
                         let fc = profileService.focusedClient;
                         let pubkey = utils.getPubkey(fc.credentials.xPrivKey);
-                        let sign = utils.signature({fromAddress: self.address, pubkey:pubkey}, fc.credentials.xPrivKey);
+                        let sign = utils.signature({
+                            fromAddress: self.address,
+                            pubkey: pubkey
+                        }, fc.credentials.xPrivKey);
                         url = `${url}&pubkey=${pubkey}&sign=${sign}`;
                         // let obj = {
                         //     pubkey: pubkey,
@@ -881,6 +884,7 @@ angular.module('copayApp.controllers').controller('discoveryController',
                     });
                 });
             }
+
             setDapp()
             // storageService.getDapp(function (err, res) {
             //     if (!err) {
@@ -925,7 +929,6 @@ angular.module('copayApp.controllers').controller('discoveryController',
         }
 
         _getDappList()
-
 
 
     });

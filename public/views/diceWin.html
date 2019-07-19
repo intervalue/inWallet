@@ -129,16 +129,27 @@
                                 <div class="value">
                                     {{item.lotteryAmount}}
                                 </div>
-                                <div class="coinBox">
+                                <div class="coinBox" ng-if="item.front==='0'">
+                                    1
+                                </div>
+                                <div class="coinBox" ng-if="item.front==='1'">
                                     INVE
                                 </div>
                             </li>
-                            <li class="record_result">
-                                <div class="coinBox">
+                            <li class="record_result" ng-if="item.front">
+                                <div class="coinBox" ng-if="item.front==='0' && item.winnAmount">
                                     INVE
+                                </div>
+                                <div class="coinBox" ng-if="item.front==='1' && item.winnAmount">
+                                    1
                                 </div>
                                 <div class="value">
                                     {{item.winnAmount}}
+                                </div>
+                            </li>
+                            <li class="record_result" ng-if="item.front===''">
+                                <div class="value" translate>
+                                    Insufficient balance in contract account
                                 </div>
                             </li>
                             <li class="record_img">
