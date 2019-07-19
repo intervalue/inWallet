@@ -15,7 +15,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
         self.address = $scope.index.walletType.INVE[0].address;         // 获取第一个INVE地址
         self.walletId = $scope.index.walletType.INVE[0].wallet;
         //self.contAddress = 'IAMEEADVI76RPUMZDJZTMIDADC2M53ON'           // 测试网合约地址
-         self.contAddress = 'IAMEEADVI76RPUMZDJZTMIDADC2M53ON'           // 测试网合约地址 100中奖
+        self.contAddress = 'IAMEEADVI76RPUMZDJZTMIDADC2M53ON'           // 测试网合约地址 100中奖
         //self.contAddress = '63RDEMXZIRKXRYOXRT3BPZW4VQDDO32X'           // 测试网合约地址  非100%
 
         self.Magnification = 1.96                                       //  倍率
@@ -66,6 +66,8 @@ angular.module('copayApp.controllers').controller('diceWinController',
                     self.diceData.amount = MaxAmount
                 } else if (self.diceData.amount < MinAmount) {
                     self.diceData.amount = MinAmount
+                } else {
+                    self.diceData.amount = parseInt(self.diceData.amount)
                 }
             } else {
                 self.diceData.amount = MinAmount
