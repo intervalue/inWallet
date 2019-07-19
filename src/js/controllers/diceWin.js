@@ -15,22 +15,20 @@ angular.module('copayApp.controllers').controller('diceWinController',
         self.address = $scope.index.walletType.INVE[0].address;         // 获取第一个INVE地址
         self.walletId = $scope.index.walletType.INVE[0].wallet;
         //self.contAddress = 'IAMEEADVI76RPUMZDJZTMIDADC2M53ON'           // 测试网合约地址
-        self.contAddress = '2THMAGMCOORSASMFRXAHSUQNVL3JWPE3'           // 测试网合约地址 100中奖
+        // self.contAddress = '2THMAGMCOORSASMFRXAHSUQNVL3JWPE3'           // 测试网合约地址  100中奖
+        self.contAddress = 'KDCJEUYB2WFOYCFYSIPUB3PGACNILORX'              // 测试网合约地址  非100中奖
         //self.contAddress = '63RDEMXZIRKXRYOXRT3BPZW4VQDDO32X'           // 测试网合约地址  非100%
 
         self.Magnification = 1.96                                       //  倍率
-
 
         self.diceData = {
             type: '0',                                                  // 0正 1反
             amount: MinAmount                                           //  下注金额
         }                                                               // 下注所需数据
 
-
         self.amountActiveIndex = -2                                     //  金额选中
 
         self.diceGameList = []
-
 
         // 金额选中效果
         self.amountActive = function (index, value) {
