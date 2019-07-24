@@ -107,7 +107,7 @@
                 <div class="record_header">
                     <div class="left" translate>Game History</div>
                     <div class="center"></div>
-                    <div class="right" translate>Just look at me</div>
+                    <div class="right" translate ng-click="dice.getDiceList()">Refresh</div>
                 </div>
                 <div class="record_content">
                     <div class="record_title">
@@ -136,7 +136,33 @@
                                     INVE
                                 </div>
                             </li>
-                            <li class="record_result" ng-if="item.front">
+
+                            <li class="record_result" ng-if="item.result==='pending'">
+                                <div class="value" translate>
+                                    Waiting for the result of the last bet
+                                </div>
+                            </li>
+                            <!--<li class="record_result" ng-if="item.result==='good'">-->
+                            <!--</li>-->
+                            <li class="record_result" ng-if="item.front&&item.result==='good'">
+                                <div class="coinBox" ng-if="item.front==='0' && item.winnAmount">
+                                    1
+                                </div>
+                                <div class="coinBox" ng-if="item.front==='1' && item.winnAmount">
+                                    INVE
+                                </div>
+                                <div class="value">
+                                    {{item.winnAmount}}
+                                </div>
+                            </li>
+                            <li class="record_result" ng-if="item.front==='' && item.result==='good'">
+                                <div class="value" translate>
+                                    Insufficient balance in contract account
+                                </div>
+                            </li>
+
+
+                            <!--<li class="record_result" ng-if="item.front">
                                 <div class="coinBox" ng-if="item.front==='0' && item.winnAmount">
                                     1
                                 </div>
@@ -151,7 +177,7 @@
                                 <div class="value" translate>
                                     Insufficient balance in contract account
                                 </div>
-                            </li>
+                            </li>-->
                             <li class="record_img">
                                 <img src="./img/dice/dice_down.png" alt="">
                             </li>

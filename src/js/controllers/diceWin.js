@@ -76,9 +76,9 @@ angular.module('copayApp.controllers').controller('diceWinController',
 
         //  下注
         self.Bets = function () {
-            if ( self.diceGameList[0].result==='pending') {
+            if (self.diceGameList[0].result === 'pending') {
                 $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Waiting for the result of the last bet'));
-            }else {
+            } else {
                 $scope.index.payController = true;
                 apply();
             }
@@ -130,7 +130,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
                                     return $rootScope.$emit('Local/ShowErrorAlert', err);
                                 } else {
                                     $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Payment Success'));
-                                    getDiceList()
+                                    self.getDiceList()
                                     self.cancelPay()
                                 }
                             })
@@ -154,19 +154,12 @@ angular.module('copayApp.controllers').controller('diceWinController',
         }
 
         //查询中奖记录
-        function getDiceList() {
+        self.getDiceList = function () {
             light.getDiceWin(self.contAddress, function (res) {
                 console.log(res)
                 self.diceGameList = res
-
-                // if (res.length == 0) {
-                //     //没有中奖记录
-                // } else {
-                //     //中奖记录
-                //     // console.log(res)
-                // }
             })
         }
 
-        getDiceList()
+        self.getDiceList()
     });

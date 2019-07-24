@@ -3270,7 +3270,8 @@ msgstr "合约账户余额不足"
 msgid "Waiting for the result of the last bet"
 msgstr "等待上一次下注结果"
 
-
+msgid "Refresh"
+msgstr "刷新"
 
 
 
