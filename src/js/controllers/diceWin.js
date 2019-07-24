@@ -76,8 +76,12 @@ angular.module('copayApp.controllers').controller('diceWinController',
 
         //  下注
         self.Bets = function () {
-            $scope.index.payController = true;
-            apply();
+            if ( self.diceGameList[0].result==='pending') {
+                $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Waiting for the result of the last bet'));
+            }else {
+                $scope.index.payController = true;
+                apply();
+            }
         }
 
         //  确认支付
