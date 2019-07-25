@@ -86,6 +86,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
 
         //  确认支付
         self.confirmPay = function () {
+            $scope.index.payController = false;
             profileService.setAndStoreFocusToWallet(self.walletId, function () {
                 profileService.unlockFC(null, function (err) {
                     if (err) {
