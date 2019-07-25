@@ -42,8 +42,6 @@ angular.module('copayApp.controllers').controller('txallController',
                 }
             }
             $rootScope.modalOpened = true;
-            console.warn('btx  console====>')
-            console.log(btx)
             let ModalInstanceCtrl = function ($scope, $modalInstance) {
                 $scope.btx = btx;
                 $scope.cancel = function () {
