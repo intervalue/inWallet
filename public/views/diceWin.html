@@ -1,6 +1,6 @@
 <div ng-controller="diceWinController as dice">
     <!--导入钱包-导入钱包  start-->
-    <div class="cwpage iwpage pfixed topp" ng-init="dice.showtab = 'tabcold'">
+    <div class="cwpage iwpage pfixed topp" id="cwpage" ng-init="dice.showtab = 'tabcold'">
         <!--浏览器默认的返回-->
         <div>
             <div
@@ -32,9 +32,10 @@
                       选择的金额 === {{dice.diceData.amount}}
                   </div>
               </div>
+              </div>
           </div>-->
 
-        <div class="dice_main">
+        <div class="dice_main" id="dice_main">
             <div class="dice_header">
                 <div class="dice_logo">
                     <img src="./img/dice/dice_logo.png" alt="">
@@ -118,7 +119,7 @@
                             <li></li>
                         </ul>
                     </div>
-                    <div class="record_box">
+                    <div class="record_box" id="scrollWrap">
                         <ul class="record_list" ng-repeat="item in dice.diceGameList">
                             <li class="record_name">
                                 <div>
@@ -129,26 +130,30 @@
                                 <div class="value">
                                     {{item.lotteryAmount}}
                                 </div>
-                                <div class="coinBox" ng-if="item.front==='0'">
+                                <div class="coinBox" ng-if="item.front==='0' && item.winnAmount">
                                     1
                                 </div>
-                                <div class="coinBox" ng-if="item.front==='1'">
+                                <div class="coinBox" ng-if="item.front==='1' && item.winnAmount">
                                     INVE
                                 </div>
-                            </li>
 
+                                <div class="coinBox" ng-if="item.front==='0' && !item.winnAmount">
+                                    INVE
+                                </div>
+                                <div class="coinBox" ng-if="item.front==='1' && !item.winnAmount">
+                                    1
+                                </div>
+                            </li>
                             <li class="record_result" ng-if="item.result==='pending'">
                                 <div class="value" translate>
                                     Waiting for the result of the last bet
                                 </div>
                             </li>
-                            <!--<li class="record_result" ng-if="item.result==='good'">-->
-                            <!--</li>-->
                             <li class="record_result" ng-if="item.front&&item.result==='good'">
-                                <div class="coinBox" ng-if="item.front==='0' && item.winnAmount">
+                                <div class="coinBox" ng-if="item.front==='0'">
                                     1
                                 </div>
-                                <div class="coinBox" ng-if="item.front==='1' && item.winnAmount">
+                                <div class="coinBox" ng-if="item.front==='1'">
                                     INVE
                                 </div>
                                 <div class="value">
@@ -180,6 +185,16 @@
                             </li>-->
                             <li class="record_img">
                                 <img src="./img/dice/dice_down.png" alt="">
+                            </li>
+                        </ul>
+                        <ul>
+                            <li style="text-align: center;padding: 20px 0;color: #7545C0;font-size: 12px;"
+                                ng-if="dice.isNoMore">
+                                no more
+                            </li>
+                            <li style="text-align: center;padding: 20px 0;color: #7545C0;font-size: 12px;"
+                                ng-if="dice.isLoading">
+                                Loading...
                             </li>
                         </ul>
                         <!--  <ul class="record_list">

@@ -14,7 +14,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
         self.paymentList = [50, 100, 200]                               // 可选金额列表
         self.address = $scope.index.walletType.INVE[0].address;         // 获取第一个INVE地址
         self.walletId = $scope.index.walletType.INVE[0].wallet;
-        self.contAddress = 'DVC3DU4XDPQT3BVIM56NIKXZO7GHLMIR';          // 测试网合约地址  1/2
+        self.contAddress = 'IISP3HGDBTJBKKJR7XHTENPGPEUXFGAR';          // 测试网合约地址  1/2
 
         self.Magnification = 1.96                                       //  倍率
 
@@ -26,6 +26,11 @@ angular.module('copayApp.controllers').controller('diceWinController',
         self.amountActiveIndex = -2                                     //  金额选中
 
         self.diceGameList = []
+        self.isNoMore = false  // 是否还有更多
+        self.isLoading = false  // 是否展示加载中
+        // 中奖记录分页
+        let page = 1, pageSize = 10
+
 
         // 金额选中效果
         self.amountActive = function (index, value) {
@@ -73,14 +78,14 @@ angular.module('copayApp.controllers').controller('diceWinController',
 
         //  下注
         self.Bets = function () {
-            if(self.diceGameList.length){
+            if (self.diceGameList.length) {
                 if (self.diceGameList[0].result === 'pending') {
                     $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Waiting for the result of the last bet'));
                 } else {
                     $scope.index.payController = true;
                     apply();
                 }
-            }else {
+            } else {
                 $scope.index.payController = true;
                 apply();
             }
@@ -158,21 +163,90 @@ angular.module('copayApp.controllers').controller('diceWinController',
 
         //查询中奖记录
         self.getDiceList = function () {
-            light.getDiceWin(self.contAddress, function (res) {
+            light.getDiceWin(self.contAddress, page, pageSize, function (res) {
+                console.log(res)
                 self.diceGameList = res
+                // apply()
             })
         }
 
         self.getDiceList()
 
+
+        /***
+         *
+         *
+         * //  下拉加载更多功能
+         *
+         * */
+        //获取滚动条当前的位置
+        function getScrollTop() {
+            var scrollTop = 0;
+            if (document.documentElement && document.documentElement.scrollTop) {
+                scrollTop = document.documentElement.scrollTop;
+            } else if (document.getElementById('cwpage')) {
+                scrollTop = document.getElementById('cwpage').scrollTop;
+            }
+            return scrollTop;
+        }
+
+        //获取当前可视范围的高度
+        function getClientHeight() {
+            var clientHeight = 0;
+            if (document.getElementById('cwpage').clientHeight && document.documentElement.clientHeight) {
+                clientHeight = Math.min(document.getElementById('cwpage').clientHeight, document.documentElement.clientHeight);
+            } else {
+                clientHeight = Math.max(document.getElementById('cwpage').clientHeight, document.documentElement.clientHeight);
+            }
+            return clientHeight;
+        }
+
+        //获取文档完整的高度
+        function getScrollHeight() {
+            return Math.max(document.getElementById('cwpage').scrollHeight, document.getElementById('cwpage').scrollHeight);
+        }
+
+        //滚动事件触发
+        document.getElementById('cwpage').onscroll = function () {
+            // console.log('滚动')
+            // console.warn('滚动条当前的位置')
+            // console.log(getScrollTop())
+            // console.warn('可视范围的高度')
+            // console.log(getClientHeight())
+            // console.warn('完整的高度')
+            // console.log(getScrollHeight())
+            if (getScrollTop() + getClientHeight() == getScrollHeight()) {
+                console.log('到底了？')
+
+                if (pageSize > self.diceGameList.length) {
+                    self.isNoMore = true
+                } else {
+                    if (self.isNoMore) {
+
+                    } else {
+                        pageSize += 10
+                        self.isLoading = true
+                        setTimeout(() => {
+                            self.getDiceList()
+                            self.isLoading = false
+                        }, 1000)
+                    }
+                }
+            }
+
+        }
+
+
         /**
          * 新增交易记录时，同步更新交易记录显示
          */
-        var transactionUpdate = $rootScope.$on('Local/transactionUpdate',function () {
+        var transactionUpdate = $rootScope.$on('Local/transactionUpdate', function () {
+            page = 1
+            pageSize = 10
             self.getDiceList()
         });
 
-        $scope.$on('$destroy', function() {
+        $scope.$on('$destroy', function () {
             transactionUpdate();
         });
     });
