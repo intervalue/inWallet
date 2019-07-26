@@ -243,6 +243,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
         var transactionUpdate = $rootScope.$on('Local/transactionUpdate', function () {
             page = 1
             pageSize = 10
+            self.isNoMore = false
             self.getDiceList()
         });
 
