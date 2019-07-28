@@ -220,7 +220,6 @@ angular.module('copayApp.controllers')
             if (!e) return $timeout(function() {
                 self.bindTouchDown(++tries);
             }, 500);
-gettextCatalog
             // on touchdown elements
             $log.debug('Binding touchstart elements...');
             ['hamburger', 'menu-walletHome', 'menu-send', 'menu-receive', 'menu-history'].forEach(function(id) {

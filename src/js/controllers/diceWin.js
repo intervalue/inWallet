@@ -157,16 +157,15 @@ angular.module('copayApp.controllers').controller('diceWinController',
         // 页面渲染
         function apply() {
             setTimeout(function () {
-                $scope.$apply();
+                $rootScope.$apply();
             });
         }
 
         //查询中奖记录
         self.getDiceList = function () {
             light.getDiceWin(self.contAddress, page, pageSize, function (res) {
-                console.log(res)
                 self.diceGameList = res
-                // apply()
+                 apply()
             })
         }
 
@@ -240,7 +239,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
         /**
          * 新增交易记录时，同步更新交易记录显示
          */
-        var transactionUpdate = $rootScope.$on('Local/transactionUpdate', function () {
+        var UpdateDiceWin = $rootScope.$on('Local/transactionUpdate', function () {
             page = 1
             pageSize = 10
             self.isNoMore = false
@@ -248,6 +247,6 @@ angular.module('copayApp.controllers').controller('diceWinController',
         });
 
         $scope.$on('$destroy', function () {
-            transactionUpdate();
+            UpdateDiceWin();
         });
     });
