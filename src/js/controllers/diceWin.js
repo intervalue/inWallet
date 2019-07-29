@@ -65,6 +65,20 @@ angular.module('copayApp.controllers').controller('diceWinController',
                 if (self.diceData.amount > MaxAmount) {
                     self.diceData.amount = MaxAmount
                 } else if (self.diceData.amount < MinAmount) {
+                    // self.diceData.amount = MinAmount
+                } else {
+                    self.diceData.amount = parseInt(self.diceData.amount)
+                }
+            } else {
+                // self.diceData.amount = MinAmount
+            }
+        }
+
+        self.amountBlur = function () {
+            if ((typeof (self.diceData.amount) === "number") && (self.diceData.amount !== Infinity) && !isNaN(self.diceData.amount)) {
+                if (self.diceData.amount > MaxAmount) {
+                    self.diceData.amount = MaxAmount
+                } else if (self.diceData.amount < MinAmount) {
                     self.diceData.amount = MinAmount
                 } else {
                     self.diceData.amount = parseInt(self.diceData.amount)
@@ -138,7 +152,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
                                     return $rootScope.$emit('Local/ShowErrorAlert', err);
                                 } else {
                                     $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Payment Success'));
-                                    self.getDiceList()
+                                    self.startDiceList()
                                     self.cancelPay()
                                 }
                             })
@@ -163,9 +177,15 @@ angular.module('copayApp.controllers').controller('diceWinController',
 
         //查询中奖记录
         self.getDiceList = function () {
+            self.isLoading = true
             light.getDiceWin(self.contAddress, page, pageSize, function (res) {
-                self.diceGameList = res
-                 apply()
+                if (self.diceGameList.length) {
+                    self.diceGameList = self.diceGameList.concat(res)
+                } else {
+                    self.diceGameList = res
+                }
+                self.isLoading = false
+                apply()
             })
         }
 
@@ -215,24 +235,22 @@ angular.module('copayApp.controllers').controller('diceWinController',
             // console.warn('完整的高度')
             // console.log(getScrollHeight())
             if (getScrollTop() + getClientHeight() == getScrollHeight()) {
-                console.log('到底了？')
+                // console.log('到底了？')
 
-                if (pageSize > self.diceGameList.length) {
+                if (page * pageSize > self.diceGameList.length) {
                     self.isNoMore = true
                 } else {
                     if (self.isNoMore) {
-
                     } else {
-                        pageSize += 10
+                        page += 1
+                        // console.info(page + "........." + pageSize)
                         self.isLoading = true
                         setTimeout(() => {
                             self.getDiceList()
-                            self.isLoading = false
-                        }, 1000)
+                        }, 0)
                     }
                 }
             }
-
         }
 
 
@@ -240,11 +258,20 @@ angular.module('copayApp.controllers').controller('diceWinController',
          * 新增交易记录时，同步更新交易记录显示
          */
         var UpdateDiceWin = $rootScope.$on('Local/transactionUpdate', function () {
+            self.startDiceList()
+        });
+
+
+        // 抽离 公共部分 初始化中奖列表
+        self.startDiceList = function () {
             page = 1
             pageSize = 10
             self.isNoMore = false
+            self.isLoading = false
+            self.diceGameList = []
             self.getDiceList()
-        });
+        }
+
 
         $scope.$on('$destroy', function () {
             UpdateDiceWin();

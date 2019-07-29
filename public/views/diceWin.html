@@ -75,7 +75,8 @@
                         </div>
                         <div class="top_box">
                             <img src="./img/dice/dice_rem.png" alt="" ng-click="dice.amountCut()">
-                            <input type="number" ng-model="dice.diceData.amount" ng-change="dice.amountChange()">
+                            <input type="number" ng-model="dice.diceData.amount" ng-change="dice.amountChange()"
+                                   ng-blur="dice.amountBlur()">
                             <img src="./img/dice/dice_add.png" alt="" ng-click="dice.amountAdd()">
                         </div>
                         <div class="top_explain" translate>Your current bet</div>
@@ -108,7 +109,7 @@
                 <div class="record_header">
                     <div class="left" translate>Game History</div>
                     <div class="center"></div>
-                    <div class="right" translate ng-click="dice.getDiceList()">Refresh</div>
+                    <div class="right" translate ng-click="dice.startDiceList()">Refresh</div>
                 </div>
                 <div class="record_content">
                     <div class="record_title">
@@ -120,7 +121,7 @@
                         </ul>
                     </div>
                     <div class="record_box" id="scrollWrap">
-                        <ul class="record_list" ng-repeat="item in dice.diceGameList">
+                        <ul class="record_list" ng-repeat="item in dice.diceGameList track by $index">
                             <li class="record_name">
                                 <div>
                                     {{item.addressFrom}}
@@ -130,30 +131,35 @@
                                 <div class="value">
                                     {{item.lotteryAmount}}
                                 </div>
-                                <div class="coinBox" ng-if="item.front==='0' && item.winnAmount">
+                                <!-- <div class="coinBox" ng-if="item.front==='0' && item.winnAmount">
+                                     1
+                                 </div>
+                                 <div class="coinBox" ng-if="item.front==='1' && item.winnAmount">
+                                     INVE
+                                 </div>
+                                 <div class="coinBox" ng-if="item.front==='0' && !item.winnAmount">
+                                     INVE
+                                 </div>
+                                 <div class="coinBox" ng-if="item.front==='1' && !item.winnAmount">
+                                     1
+                                 </div>-->
+                                <div class="coinBox" ng-if="item.lotteryFront==='0'">
                                     1
                                 </div>
-                                <div class="coinBox" ng-if="item.front==='1' && item.winnAmount">
+                                <div class="coinBox" ng-if="item.lotteryFront==='1'">
                                     INVE
-                                </div>
-
-                                <div class="coinBox" ng-if="item.front==='0' && !item.winnAmount">
-                                    INVE
-                                </div>
-                                <div class="coinBox" ng-if="item.front==='1' && !item.winnAmount">
-                                    1
                                 </div>
                             </li>
                             <li class="record_result" ng-if="item.result==='pending'">
                                 <div class="value" translate>
-                                    Waiting for the result of the last bet
+                                    Waiting for the result of this bet
                                 </div>
                             </li>
-                            <li class="record_result" ng-if="item.front&&item.result==='good'">
-                                <div class="coinBox" ng-if="item.front==='0'">
+                            <li class="record_result" ng-if="item.front && item.result==='good'">
+                                <div class="coinBox" ng-if="item.winnFront==='0'">
                                     1
                                 </div>
-                                <div class="coinBox" ng-if="item.front==='1'">
+                                <div class="coinBox" ng-if="item.winnFront==='1'">
                                     INVE
                                 </div>
                                 <div class="value">
@@ -165,7 +171,6 @@
                                     <!--Insufficient balance in contract account-->
                                 </div>
                             </li>
-
 
                             <!--<li class="record_result" ng-if="item.front">
                                 <div class="coinBox" ng-if="item.front==='0' && item.winnAmount">
@@ -188,13 +193,14 @@
                             </li>
                         </ul>
                         <ul>
-                            <li style="text-align: center;padding: 20px 0;color: #7545C0;font-size: 12px;"
+                            <li class="loading"
                                 ng-if="dice.isNoMore">
                                 no more
                             </li>
-                            <li style="text-align: center;padding: 20px 0;color: #7545C0;font-size: 12px;"
+                            <li class="loading"
                                 ng-if="dice.isLoading">
                                 Loading...
+                                <img src="./img/loading.png" alt="">
                             </li>
                         </ul>
                         <!--  <ul class="record_list">
@@ -684,6 +690,42 @@
                 text-align: center;
                 color: #fff;
                 background-color: #7545C0;
+            }
+        </style>
+
+        <style>
+            .loading{
+                text-align: center;
+                padding: 20px 0;
+                color: #7545C0;
+                font-size: 12px;
+            }
+            .loading img {
+                animation: bouncedelay 1.2s infinite ease-in-out;
+            }
+
+            @-webkit-keyframes bouncedelay {
+                0%,
+                80%,
+                100% {
+                    -webkit-transform: scale(0.2)
+                }
+                40% {
+                    -webkit-transform: scale(1.0)
+                }
+            }
+
+            @keyframes bouncedelay {
+                0%,
+                80%,
+                100% {
+                    transform: scale(0.2);
+                    -webkit-transform: scale(0.2);
+                }
+                40% {
+                    transform: scale(1.0);
+                    -webkit-transform: scale(1.0);
+                }
             }
         </style>
 
