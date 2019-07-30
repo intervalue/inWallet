@@ -286,6 +286,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
 
         $scope.$on('$destroy', function () {
             UpdateDiceWin();
+            clearInterval(loopTimer)
         });
 
         /*******
