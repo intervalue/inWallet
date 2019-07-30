@@ -28,7 +28,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
         let page = 1, pageSize = 10
 
 
-        const LOOPTIME = 30000   // 循环查询时间间隔
+        const LOOPTIME = 60000   // 循环查询时间间隔
         let loopTimer
 
         // 金额选中效果
@@ -185,18 +185,16 @@ angular.module('copayApp.controllers').controller('diceWinController',
                     self.diceGameList = res
                 }
 
-
+                self.isLoading = false
+                apply()
                 //    补丁：
-                if (res.length) {
+                if (self.diceGameList.length) {
                     if (self.diceGameList[0].result === 'good') {
                         clearInterval(loopTimer)
                     } else {
                         loopDiceList()
                     }
                 }
-
-                self.isLoading = false
-                apply()
             })
         }
 
