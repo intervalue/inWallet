@@ -15,22 +15,21 @@ angular.module('copayApp.controllers').controller('diceWinController',
         self.address = $scope.index.walletType.INVE[0].address;         // 获取第一个INVE地址
         self.walletId = $scope.index.walletType.INVE[0].wallet;
         self.contAddress = '7BAFONS5IUA3XH4C62ZHXEZSXBZSMJYX';
-
         self.Magnification = 1.96                                       //  倍率
-
         self.diceData = {
             type: '0',                                                  // 0正 1反
             amount: MinAmount                                           //  下注金额
         }                                                               // 下注所需数据
-
         self.amountActiveIndex = -2                                     //  金额选中
-
         self.diceGameList = []
         self.isNoMore = false  // 是否还有更多
         self.isLoading = false  // 是否展示加载中
         // 中奖记录分页
         let page = 1, pageSize = 10
 
+
+        const LOOPTIME = 30000   // 循环查询时间间隔
+        let loopTimer
 
         // 金额选中效果
         self.amountActive = function (index, value) {
@@ -179,11 +178,23 @@ angular.module('copayApp.controllers').controller('diceWinController',
         self.getDiceList = function () {
             self.isLoading = true
             light.getDiceWin(self.contAddress, page, pageSize, function (res) {
+                console.log(res)
                 if (self.diceGameList.length) {
                     self.diceGameList = self.diceGameList.concat(res)
                 } else {
                     self.diceGameList = res
                 }
+
+
+                //    补丁：
+                if (res.length) {
+                    if (self.diceGameList[0].result === 'good') {
+                        clearInterval(loopTimer)
+                    } else {
+                        loopDiceList()
+                    }
+                }
+
                 self.isLoading = false
                 apply()
             })
@@ -254,14 +265,6 @@ angular.module('copayApp.controllers').controller('diceWinController',
         }
 
 
-        /**
-         * 新增交易记录时，同步更新交易记录显示
-         */
-        var UpdateDiceWin = $rootScope.$on('Local/transactionUpdate', function () {
-            self.startDiceList()
-        });
-
-
         // 抽离 公共部分 初始化中奖列表
         self.startDiceList = function () {
             page = 1
@@ -273,7 +276,31 @@ angular.module('copayApp.controllers').controller('diceWinController',
         }
 
 
+        /**
+         * 新增交易记录时，同步更新交易记录显示
+         */
+        var UpdateDiceWin = $rootScope.$on('Local/transactionUpdate', function () {
+            self.startDiceList()
+        });
+
+
         $scope.$on('$destroy', function () {
             UpdateDiceWin();
         });
+
+        /*******
+         *
+         * 补丁：处理交易记录事件没有触发的问题
+         *
+         * */
+
+        function loopDiceList() {
+            clearInterval(loopTimer)
+            loopTimer = setInterval(() => {
+                console.info('开始轮循了')
+                self.startDiceList()
+            }, LOOPTIME)
+        }
+
+
     });
