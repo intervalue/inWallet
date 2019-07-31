@@ -14,7 +14,8 @@ angular.module('copayApp.controllers').controller('diceWinController',
         self.paymentList = [50, 100, 200]                               // 可选金额列表
         self.address = $scope.index.walletType.INVE[0].address;         // 获取第一个INVE地址
         self.walletId = $scope.index.walletType.INVE[0].wallet;
-        self.contAddress = '7BAFONS5IUA3XH4C62ZHXEZSXBZSMJYX';
+        // self.contAddress = '7BAFONS5IUA3XH4C62ZHXEZSXBZSMJYX';   //  正式网合约地址
+        self.contAddress = 'O5E5JIBOTUC4Z6RZOX7ZMRQ44O4JEVE6';   // 测试网 合约地址
         self.Magnification = 1.96                                       //  倍率
         self.diceData = {
             type: '0',                                                  // 0正 1反
@@ -150,6 +151,8 @@ angular.module('copayApp.controllers').controller('diceWinController',
                                     return $rootScope.$emit('Local/ShowErrorAlert', err);
                                 } else {
                                     $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Payment Success'));
+
+                                    console.info('确认支付后，查询列表')
                                     self.startDiceList()
                                     self.cancelPay()
                                 }
@@ -249,6 +252,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
                     } else {
                         page += 1
                         setTimeout(() => {
+                            console.info('滚动查询列表')
                             self.getDiceList()
                         }, 0)
                     }
@@ -280,6 +284,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
          * 新增交易记录时，同步更新交易记录显示
          */
         var UpdateDiceWin = $rootScope.$on('Local/transactionUpdate', function () {
+            console.info('收到通知消息')
             self.startDiceList()
         });
 
@@ -302,6 +307,4 @@ angular.module('copayApp.controllers').controller('diceWinController',
                 self.startDiceList()
             }, LOOPTIME)
         }
-
-
     });
