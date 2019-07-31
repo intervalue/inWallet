@@ -24,6 +24,10 @@ angular.module('copayApp.controllers').controller('diceWinController',
         self.amountActiveIndex = -2                                     //  金额选中
         self.diceGameList = []
         self.isNoMore = false  // 是否还有更多
+
+        self.diceListLock = true  // 接受消息的锁
+
+
         // 中奖记录分页
         let page = 1, pageSize = 10
 
@@ -193,6 +197,9 @@ angular.module('copayApp.controllers').controller('diceWinController',
                         $scope.index.progressing = false;
                 }, 1000)
                 apply()
+
+                // 关锁
+                self.diceListLock = true
                 //    补丁：
                 if (self.diceGameList.length) {
                     if (self.diceGameList[0].result === 'good') {
@@ -285,7 +292,11 @@ angular.module('copayApp.controllers').controller('diceWinController',
          */
         var UpdateDiceWin = $rootScope.$on('Local/transactionUpdate', function () {
             console.info('收到通知消息')
-            self.startDiceList()
+
+            if (self.diceListLock) {
+                self.diceListLock = false
+                self.startDiceList()
+            }
         });
 
 
