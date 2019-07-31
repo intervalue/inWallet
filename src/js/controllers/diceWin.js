@@ -23,7 +23,6 @@ angular.module('copayApp.controllers').controller('diceWinController',
         self.amountActiveIndex = -2                                     //  金额选中
         self.diceGameList = []
         self.isNoMore = false  // 是否还有更多
-        self.isLoading = false  // 是否展示加载中
         // 中奖记录分页
         let page = 1, pageSize = 10
 
@@ -176,7 +175,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
 
         //查询中奖记录
         self.getDiceList = function () {
-            self.isLoading = true
+
             light.getDiceWin(self.contAddress, page, pageSize, function (res) {
                 console.log(res)
                 if (self.diceGameList.length) {
@@ -185,7 +184,12 @@ angular.module('copayApp.controllers').controller('diceWinController',
                     self.diceGameList = res
                 }
 
-                self.isLoading = false
+                setTimeout(() => {
+                    if (isCordova)
+                        window.plugins.spinnerDialog.hide();
+                    else
+                        $scope.index.progressing = false;
+                }, 1000)
                 apply()
                 //    补丁：
                 if (self.diceGameList.length) {
@@ -252,8 +256,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
                     if (self.isNoMore) {
                     } else {
                         page += 1
-                        // console.info(page + "........." + pageSize)
-                        self.isLoading = true
+
                         setTimeout(() => {
                             self.getDiceList()
                         }, 0)
@@ -268,8 +271,16 @@ angular.module('copayApp.controllers').controller('diceWinController',
             page = 1
             pageSize = 10
             self.isNoMore = false
-            self.isLoading = false
             self.diceGameList = []
+
+            //加载中
+            if (isCordova)
+                window.plugins.spinnerDialog.show(null, gettextCatalog.getString('Loading...'), true);
+            else {
+                $scope.index.progressing = true;
+                $scope.index.progressingmsg = 'Loading...';
+            }
+
             self.getDiceList()
         }
 
