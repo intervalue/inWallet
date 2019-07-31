@@ -175,7 +175,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
 
         //查询中奖记录
         self.getDiceList = function () {
-
+            console.info('page:' + page + ';pageSize:' + pageSize)
             light.getDiceWin(self.contAddress, page, pageSize, function (res) {
                 console.log(res)
                 if (self.diceGameList.length) {
@@ -183,7 +183,6 @@ angular.module('copayApp.controllers').controller('diceWinController',
                 } else {
                     self.diceGameList = res
                 }
-
                 setTimeout(() => {
                     if (isCordova)
                         window.plugins.spinnerDialog.hide();
@@ -240,13 +239,6 @@ angular.module('copayApp.controllers').controller('diceWinController',
 
         //滚动事件触发
         document.getElementById('cwpage').onscroll = function () {
-            // console.log('滚动')
-            // console.warn('滚动条当前的位置')
-            // console.log(getScrollTop())
-            // console.warn('可视范围的高度')
-            // console.log(getClientHeight())
-            // console.warn('完整的高度')
-            // console.log(getScrollHeight())
             if (getScrollTop() + getClientHeight() == getScrollHeight()) {
                 // console.log('到底了？')
 
@@ -256,7 +248,6 @@ angular.module('copayApp.controllers').controller('diceWinController',
                     if (self.isNoMore) {
                     } else {
                         page += 1
-
                         setTimeout(() => {
                             self.getDiceList()
                         }, 0)
