@@ -14,22 +14,25 @@ angular.module('copayApp.controllers').controller('diceWinController',
         self.paymentList = [50, 100, 200]                               // 可选金额列表
         self.address = $scope.index.walletType.INVE[0].address;         // 获取第一个INVE地址
         self.walletId = $scope.index.walletType.INVE[0].wallet;
-        // self.contAddress = '7BAFONS5IUA3XH4C62ZHXEZSXBZSMJYX';   //  正式网合约地址
-        self.contAddress = 'O5E5JIBOTUC4Z6RZOX7ZMRQ44O4JEVE6';   // 测试网 合约地址
+        self.contAddress = '7BAFONS5IUA3XH4C62ZHXEZSXBZSMJYX';   //  正式网合约地址
+        self.contAddress2 = '';   //  正式网合约地址
+        // self.contAddress = 'O5E5JIBOTUC4Z6RZOX7ZMRQ44O4JEVE6';    // 测试网 合约地址
+        // self.contAddress2 = '63RDEMXZIRKXRYOXRT3BPZW4VQDDO32X';   // 测试网 合约地址
         self.Magnification = 1.96                                       //  倍率
         self.diceData = {
             type: '0',                                                  // 0正 1反
             amount: MinAmount                                           //  下注金额
         }                                                               // 下注所需数据
         self.amountActiveIndex = -2                                     //  金额选中
-        self.diceGameList = []
-        self.isNoMore = false  // 是否还有更多
+        self.diceGameList = []   // 展示的列表
+        self.diceAllGameList = [] //所有数据列表
+
 
         self.diceListLock = true  // 接受消息的锁
 
 
         // 中奖记录分页
-        let page = 1, pageSize = 10
+        self.historyShowLimit = 10
 
 
         const LOOPTIME = 60000   // 循环查询时间间隔
@@ -157,7 +160,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
                                     $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Payment Success'));
 
                                     console.info('确认支付后，查询列表')
-                                    self.startDiceList()
+                                    self.showNewDice()
                                     self.cancelPay()
                                 }
                             })
@@ -182,22 +185,10 @@ angular.module('copayApp.controllers').controller('diceWinController',
 
         //查询中奖记录
         self.getDiceList = function () {
-            console.info('page:' + page + ';pageSize:' + pageSize)
-            light.getDiceWin(self.contAddress, page, pageSize, function (res) {
+            light.getDiceWin([self.contAddress], function (res) {
                 console.log(res)
-                if (self.diceGameList.length) {
-                    self.diceGameList = self.diceGameList.concat(res)
-                } else {
-                    self.diceGameList = res
-                }
-                setTimeout(() => {
-                    if (isCordova)
-                        window.plugins.spinnerDialog.hide();
-                    else
-                        $scope.index.progressing = false;
-                }, 1000)
-                apply()
-
+                self.diceAllGameList = res
+                self.updateDiceList()
                 // 关锁
                 self.diceListLock = true
                 //    补丁：
@@ -210,6 +201,33 @@ angular.module('copayApp.controllers').controller('diceWinController',
                 }
             })
         }
+
+
+        /*    /!**
+             * 更新数据
+             *!/
+            self.startDiceList = function () {
+                self.historyShowLimit = 10
+                self.getDiceList()
+            }*/
+
+        //  更新（展示所有）抽奖记录
+        self.updateDiceList = function () {
+            self.diceGameList = self.diceAllGameList.slice(0, self.historyShowLimit);
+            $timeout(function () {
+                $scope.$apply();
+            });
+            self.historyShowLimit = self.diceAllGameList.length
+        }
+
+        /**
+         * 查询10笔交易记录
+         */
+        self.showNewDice = function () {
+            self.historyShowLimit = 10
+            self.getDiceList()
+        }
+
 
         self.getDiceList()
 
@@ -250,42 +268,32 @@ angular.module('copayApp.controllers').controller('diceWinController',
         //滚动事件触发
         document.getElementById('cwpage').onscroll = function () {
             if (getScrollTop() + getClientHeight() == getScrollHeight()) {
-                // console.log('到底了？')
 
-                if (page * pageSize > self.diceGameList.length) {
-                    self.isNoMore = true
-                } else {
-                    if (self.isNoMore) {
-                    } else {
-                        page += 1
-                        setTimeout(() => {
-                            console.info('滚动查询列表')
-                            self.getDiceList()
-                        }, 0)
-                    }
+                if (self.diceGameList.length < self.diceAllGameList.length) {
+                    //  当展示数量比实际数量少时，加载页面
+                    console.log('触底刷新')
+                    self.updateDiceList()
                 }
             }
         }
 
 
-        // 抽离 公共部分 初始化中奖列表
-        self.startDiceList = function () {
-            page = 1
-            pageSize = 10
-            self.isNoMore = false
-            self.diceGameList = []
+        /*    // 抽离 公共部分 初始化中奖列表
+            self.startDiceList = function () {
+                self.isNoMore = false
+                self.diceGameList = []
 
-            //加载中
-            if (isCordova)
-                window.plugins.spinnerDialog.show(null, gettextCatalog.getString('Loading...'), true);
-            else {
-                $scope.index.progressing = true;
-                $scope.index.progressingmsg = 'Loading...';
+                //加载中
+                if (isCordova)
+                    window.plugins.spinnerDialog.show(null, gettextCatalog.getString('Loading...'), true);
+                else {
+                    $scope.index.progressing = true;
+                    $scope.index.progressingmsg = 'Loading...';
+                }
+
+                self.getDiceList()
             }
-
-            self.getDiceList()
-        }
-
+    */
 
         /**
          * 新增交易记录时，同步更新交易记录显示
@@ -295,7 +303,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
 
             if (self.diceListLock) {
                 self.diceListLock = false
-                self.startDiceList()
+                self.showNewDice()
             }
         });
 
