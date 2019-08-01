@@ -14,10 +14,8 @@ angular.module('copayApp.controllers').controller('diceWinController',
         self.paymentList = [50, 100, 200]                               // 可选金额列表
         self.address = $scope.index.walletType.INVE[0].address;         // 获取第一个INVE地址
         self.walletId = $scope.index.walletType.INVE[0].wallet;
-        self.contAddress = '7BAFONS5IUA3XH4C62ZHXEZSXBZSMJYX';   //  正式网合约地址
-        self.contAddress2 = '';   //  正式网合约地址
-        // self.contAddress = 'O5E5JIBOTUC4Z6RZOX7ZMRQ44O4JEVE6';    // 测试网 合约地址
-        // self.contAddress2 = '63RDEMXZIRKXRYOXRT3BPZW4VQDDO32X';   // 测试网 合约地址
+        self.contAddress = ['AWYMUJPP2UZVKZ5IWJDSSTEV2C6X7VEM', '7BAFONS5IUA3XH4C62ZHXEZSXBZSMJYX'];   //  正式网合约地址(第一个为 正在使用中)
+        // self.contAddress = ['O5E5JIBOTUC4Z6RZOX7ZMRQ44O4JEVE6', '63RDEMXZIRKXRYOXRT3BPZW4VQDDO32X'];    // 测试网 合约地址
         self.Magnification = 1.96                                       //  倍率
         self.diceData = {
             type: '0',                                                  // 0正 1反
@@ -126,7 +124,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
 
                     let obj = {
                         fromAddress: self.address,
-                        toAddress: self.contAddress,
+                        toAddress: self.contAddress[0],
                         amount: self.diceData.amount,
                         callData: self.diceData.type,
                         pubkey: pubkey,
@@ -185,7 +183,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
 
         //查询中奖记录
         self.getDiceList = function () {
-            light.getDiceWin([self.contAddress], function (res) {
+            light.getDiceWin(self.contAddress, function (res) {
                 console.log(res)
                 self.diceAllGameList = res
                 self.updateDiceList()
