@@ -321,7 +321,10 @@ angular.module('copayApp.controllers').controller('diceWinController',
             clearInterval(loopTimer)
             loopTimer = setInterval(() => {
                 console.info('开始轮循了')
-                self.startDiceList()
+                // self.startDiceList()
+
+                self.showNewDice()
+
             }, LOOPTIME)
         }
     });
