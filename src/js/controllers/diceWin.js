@@ -120,7 +120,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
                     }
                     let fc = profileService.focusedClient;
                     let pubkey = utils.getPubkey(fc.credentials.xPrivKey);
-                    console.warn('walletClients: ', fc.credentials);
+                    // console.warn('walletClients: ', fc.credentials);
 
                     let obj = {
                         fromAddress: self.address,
@@ -131,12 +131,12 @@ angular.module('copayApp.controllers').controller('diceWinController',
                         xprivKey: fc.credentials.xPrivKey
                     }
 
-                    console.warn('合约交易构造传递前的数据格式')
-                    console.log(obj)
+                    // console.warn('合约交易构造传递前的数据格式')
+                    // console.log(obj)
                     //  构造合约交易
                     payment.contractTransactionData(obj, function (err, res) {
-                        console.error(res)
-                        console.error(err)
+                        // console.error(res)
+                        // console.error(err)
                         if (err) {
                             if (err.match(/not enough spendable/)) {
                                 err = gettextCatalog.getString("not enough spendable");
@@ -149,15 +149,15 @@ angular.module('copayApp.controllers').controller('diceWinController',
 
                             //     发送合约交易
                             payment.sendTransactions(res, function (err, res) {
-                                console.warn('发送交易后返回的数据')
-                                console.log(err)
-                                console.log(res)
+                                // console.warn('发送交易后返回的数据')
+                                // console.log(err)
+                                // console.log(res)
                                 if (err) {
                                     return $rootScope.$emit('Local/ShowErrorAlert', err);
                                 } else {
                                     $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Payment Success'));
 
-                                    console.info('确认支付后，查询列表')
+                                    // console.info('确认支付后，查询列表')
                                     self.showNewDice()
                                     self.cancelPay()
                                 }
@@ -184,7 +184,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
         //查询中奖记录
         self.getDiceList = function () {
             light.getDiceWin(self.contAddress, function (res) {
-                console.log(res)
+                // console.log(res)
                 self.diceAllGameList = res
                 self.updateDiceList()
                 // 关锁
@@ -269,7 +269,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
 
                 if (self.diceGameList.length < self.diceAllGameList.length) {
                     //  当展示数量比实际数量少时，加载页面
-                    console.log('触底刷新')
+                    // console.log('触底刷新')
                     self.updateDiceList()
                 }
             }
@@ -297,7 +297,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
          * 新增交易记录时，同步更新交易记录显示
          */
         var UpdateDiceWin = $rootScope.$on('Local/transactionUpdate', function () {
-            console.info('收到通知消息')
+            // console.info('收到通知消息')
 
             if (self.diceListLock) {
                 self.diceListLock = false
@@ -320,7 +320,7 @@ angular.module('copayApp.controllers').controller('diceWinController',
         function loopDiceList() {
             clearInterval(loopTimer)
             loopTimer = setInterval(() => {
-                console.info('开始轮循了')
+                // console.info('开始轮循了')
                 // self.startDiceList()
                 self.showNewDice()
             }, LOOPTIME)
