@@ -923,7 +923,11 @@ angular.module('copayApp.controllers').controller('discoveryController',
             dapp.getDappList(function (err, res) {
                 console.log('LIST=======', res)
                 // console.log('errr=======', err)
-                self.dappList = res;
+                if (err) {
+                    $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString(err));
+                } else {
+                    self.dappList = res;
+                }
                 apply();
             });
         }
