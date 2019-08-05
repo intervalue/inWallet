@@ -482,7 +482,7 @@
                   class="item"
                   ng-click="dc.JumpHref(item.suffix==='1' ? item.appHomepage+dc.address : item.appHomepage)">-->
             <div
-                    ng-if="dc.isCordova"
+                    ng-if="dc.isCordova && dc.dappList"
                     ng-repeat="item in dc.dappList"
                     class="item"
                     ng-click="dc.JumpHref(item.appHomepage)">
