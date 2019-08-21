@@ -3,7 +3,7 @@
 
 #define MyAppName "inWallet"
 #define MyAppPackageName "inWallet"
-#define MyAppVersion "4.0.5"
+#define MyAppVersion "4.0.6"
 #define MyAppPublisher "inWallet"
 #define MyAppURL "https://www.inve.one"
 #define MyAppExeName "inWallet.exe"
