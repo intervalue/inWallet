@@ -448,262 +448,60 @@ angular.module('copayApp.controllers').controller('LockInController',
          * @returns {*}
          */
         this.submitPayment = lodash.debounce(function (chat, deviceAddress) {
-            console.log(this.rangevalue * 100 / 300);
-            $scope.index.chat = chat;
-            self.deviceAddress = deviceAddress;
-            var form = $scope.sendPaymentForm;
-            let note = form.note.$modelValue;
-            if (note != undefined && note.length > 50) {
-                self.setSendError(gettextCatalog.getString('Character is too long'));
-                return;
-            }
-
-
-            // var fc = profileService.focusedClient;
-            var unitValue = this.unitValue;
-            var bbUnitValue = this.bbUnitValue;
-            if (isCordova && this.isWindowsPhoneApp) {
-                this.hideAddress = false;
-                this.hideAmount = false;
-            }
-
-            var isMultipleSend = !!form.addresses;
-            if (!form)
-                return console.log('form is gone');
-            if (self.bSendAll)
-                form.amount.$setValidity('validAmount', true);
-
-            var resetAddressValidation = function () {
-            };
-            if ($scope.mtab == 2 && !isMultipleSend && !form.address.$modelValue) { // clicked 'share via message' button
-                resetAddressValidation = function () {
-                    if (form && form.address)
-                        form.address.$setValidity('validAddressOrAccount', false);
-                }
-
-            }
-            form.address.$setValidity('validAddressOrAccount', true);
-
-            if (form.$invalid) {
-                this.error = gettext('Unable to send transaction proposal');
-                return;
-            }
-
-            //TODO 添加其他类型地址后，需要修改
-            /**
-             * 通过walletId判断，解锁对应地址进行交易
-             * 目前只有INVE,如果增加BTC、ETH后，可能需要修改判断条件
-             * 待同事处理完后，添加
-             *
-             *  // -- over by pmj 沒解密之前一致 解密之後根據不同的類型发起不同交易
-             */
-
             profileService.setAndStoreFocusToWallet(self.walletId, function () {
-                fc = profileService.focusedClient;
-                if (fc.isPrivKeyEncrypted()) {
-                    profileService.unlockFC(null, function (err) {
-                        if (err)
-                            return self.setSendError(err.message);
-                        delete self.current_payment_key;
-                        return self.submitPayment($scope.index.chat, self.deviceAddress);
-                    });
-                    return;
-                } else {
-                    //加载中
-                    if (isCordova)
-                        window.plugins.spinnerDialog.show(null, gettextCatalog.getString('Loading...'), true);
-                    else {
-                        $scope.index.progressing = true;
-                        $scope.index.progressingmsg = 'Loading...';
+                profileService.unlockFC(null, function (err) {
+                    if (err) {
+                        $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Wrong password'));
+                        return;
                     }
-                    var wallet = require('inWalletcore/wallet.js');
-                    var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
-                    var asset = 'base';
-                    console.log("asset " + asset);
-                    //TODO 此部分需要重新梳理，改写
-                    var address = form.address.$modelValue;
-                    var amount = form.amount.$modelValue;
+                    let fc = profileService.focusedClient;
+                    let pubkey = utils.getPubkey(fc.credentials.xPrivKey);
+                    // console.warn('walletClients: ', fc.credentials);
 
+                    let obj = {
+                        fromAddress: self.address,
+                        toAddress: self.contAddress[0],
+                        amount: self.diceData.amount,
+                        callData: callData + self.diceData.type,
+                        pubkey: pubkey,
+                        xprivKey: fc.credentials.xPrivKey
+                    }
 
-                    var current_payment_key = '' + asset + address + amount;
-
-                    var merkle_proof = '';
-                    if (form.merkle_proof && form.merkle_proof.$modelValue)
-                        merkle_proof = form.merkle_proof.$modelValue.trim();
-
-                    // if (current_payment_key === self.current_payment_key)
-                    //     return $rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
-                    self.current_payment_key = current_payment_key;
-
-                    //indexScope.setOngoingProcess(gettext('sending'), true);
-                    $timeout(function () {
-                        /**
-                         * 判断是否有指纹锁，如果设置后，需要指纹解锁才能继续往下走
-                         */
-                        profileService.requestTouchid(function (err) {
-                            if (err) {
-                                profileService.lockFC();
-                                self.error = err;
-                                $timeout(function () {
-                                    delete self.current_payment_key;
-                                    if (!$rootScope.$$phase) $scope.$apply();
-                                }, 1);
-                                return;
+                    // console.warn('合约交易构造传递前的数据格式')
+                    // console.log(obj)
+                    //  构造合约交易
+                    payment.contractTransactionData(obj, function (err, res) {
+                        // console.error(res)
+                        // console.error(err)
+                        if (err) {
+                            if (err.match(/not enough spendable/)) {
+                                err = gettextCatalog.getString("not enough spendable");
                             }
-
-                            if (transactionObject[self.walletNameInfo]) {
-                                transactionObject[self.walletNameInfo].composeAndSend(address, form.amount.$modelValue);
-                                return;
+                            if (err.match(/unable to get nrgPrice/)) {
+                                err = gettextCatalog.getString("network error,please try again.");
                             }
+                            return $rootScope.$emit('Local/ShowErrorAlert', err);
+                        } else {
 
-                            if (self.binding) {
-                                if (isTextcoin) {
-                                    delete self.current_payment_key;
-                                    //indexScope.setOngoingProcess(gettext('sending'), false);
-                                    return self.setSendError("you can send bound payments to inWallet adresses only");
+                            //     发送合约交易
+                            payment.sendTransactions(res, function (err, res) {
+                                // console.warn('发送交易后返回的数据')
+                                // console.log(err)
+                                // console.log(res)
+                                if (err) {
+                                    return $rootScope.$emit('Local/ShowErrorAlert', err);
+                                } else {
+                                    $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Payment Success'));
+
+                                    // console.info('确认支付后，查询列表')
+                                    self.showNewDice()
+                                    self.cancelPay()
                                 }
-                            } else
-                                composeAndSend(address);
-
-                            // compose and send
-                            var from_address;
-
-                            function composeAndSend(to_address) {
-                                var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
-                                if (fc.credentials.m < fc.credentials.n)
-                                    $scope.index.copayers.forEach(function (copayer) {
-                                        if (copayer.me || copayer.signs)
-                                            arrSigningDeviceAddresses.push(copayer.device_address);
-                                    });
-                                else if (indexScope.shared_address)
-                                    arrSigningDeviceAddresses = indexScope.copayers.map(function (copayer) {
-                                        return copayer.device_address;
-                                    });
-                                breadcrumbs.add('sending payment in ' + asset);
-                                profileService.bKeepUnlocked = true;
-                                var isHot = fc.credentials.xPrivKeyEncrypted ? 0 : 1;//判断冷热钱包,0为普通钱包，1为热钱包
-
-                                require('inWalletcore/wallet').readAddressByWallet(fc.credentials.walletId, function (cb) {
-                                    from_address = cb;
-                                    var opts = {
-                                        shared_address: from_address ? from_address : '',
-                                        merkle_proof: merkle_proof,
-                                        asset: asset,
-                                        do_not_email: true,
-                                        send_all: self.bSendAll,
-                                        arrSigningDeviceAddresses: arrSigningDeviceAddresses,
-                                        //recipient_device_address: recipient_device_address,
-                                        isHot: isHot,
-                                        xPrivKey: fc.credentials.xPrivKey,
-                                        walletId: fc.credentials.walletId,
-                                        deviceAddress: self.deviceAddress ? self.deviceAddress : '',
-                                        sendType: 0,
-                                        to_address: to_address,
-                                        amount: Number(amount),
-                                        note: note ? note : ''
-                                    };
-
-                                    var filePath;
-                                    if (assetInfo != undefined && assetInfo.is_private) {
-                                        opts.getPrivateAssetPayloadSavePath = function (cb) {
-                                            self.getPrivatePayloadSavePath(function (fullPath, cordovaPathObj) {
-                                                filePath = fullPath ? fullPath : (cordovaPathObj ? cordovaPathObj.root + cordovaPathObj.path + '/' + cordovaPathObj.fileName : null);
-                                                cb(fullPath, cordovaPathObj);
-                                            });
-                                        };
-                                    }
-                                    /**
-                                     * 热钱包交易
-                                     * 生成热钱包交易信息，提供给冷钱包进行扫码签名
-                                     */
-                                    if (opts.isHot == 1) {
-                                        var wallet = require('inWalletcore/wallet.js');
-                                        wallet.readAddressByWallet(fc.credentials.walletId, function (objAddr) {
-                                            opts.change_address = objAddr;
-                                            var shadowWallet = require('inWalletcore/shadowWallet');
-                                            shadowWallet.getTradingUnit(opts, function (obj) {
-                                                if (typeof obj == "object") {
-                                                    $rootScope.$emit('Local/unsignedTransactionIfo', obj);
-                                                } else {
-                                                    console.log("error: " + obj);
-                                                    return self.setSendError(gettextCatalog.getString(obj));
-                                                }
-                                            });
-                                            $timeout(function () {
-                                                if (isCordova)
-                                                    window.plugins.spinnerDialog.hide();
-                                                else
-                                                    $scope.index.progressing = false;
-                                                delete self.current_payment_key;
-                                                resetAddressValidation();
-                                                profileService.bKeepUnlocked = false;
-                                                self.resetForm();
-                                            }, 1000);
-
-                                        });
-                                        return;
-                                    }
-
-                                    /**
-                                     * 发送交易后，回调
-                                     * 1.错误信息提示
-                                     * 2.交易成功后，返回交易结构供后续操作调用
-                                     */
-                                    // for( let i =0; i < 1000 ; i++){
-                                    //     opts.amount +=1;
-                                    //     fc.sendMultiPayment(opts,cb);
-                                    //     i++;
-                                    //     console.log(i);
-                                    // }
-                                    fc.sendMultiPayment(opts, function (err, cb) {
-                                        if (isCordova)
-                                            window.plugins.spinnerDialog.hide();
-                                        else
-                                            $scope.index.progressing = false;
-                                        breadcrumbs.add('done payment in ' + asset + ', err=' + err);
-                                        delete self.current_payment_key;
-                                        resetAddressValidation();
-                                        profileService.bKeepUnlocked = false;
-                                        if (err) {
-                                            self.errMessage(err);
-                                            return;
-                                        }
-                                        var binding = self.binding;
-                                        /**
-                                         * 如果从聊天窗口跳转发出的交易，交易完成后需要跳转回聊天窗口
-                                         * 当前只有INVE类型交易
-                                         */
-                                        if ($scope.index.chat) {
-                                            let tranMessage = gettextCatalog.getString(cb.id + '?Transferred: ') + form.amount.$modelValue + ' INVE';
-                                            $rootScope.$emit('Local/paymentDoneAndSendMessage', self.deviceAddress, tranMessage);
-                                            $scope.index.updateTxHistory(3);
-                                            $rootScope.$emit('Local/SetTab', 'correspondentDevices');
-                                        } else {
-                                            $rootScope.$emit('Local/paymentDone');
-                                            //$scope.index.updateTxHistory();
-                                            $state.go('walletinfo', {
-                                                walletType: self.walletType,
-                                                walletId: self.walletId,
-                                                address: self.address,
-                                                name: self.name,
-                                                image: self.image,
-                                                ammount: self.ammount,
-                                                mnemonic: self.mnemonic,
-                                                mnemonicEncrypted: self.mnemonicEncrypted
-                                            });
-
-                                        }
-                                        self.resetForm();
-                                    });
-                                });
-                            }
-
-                        });
-                    }, 100);
-                }
+                            })
+                        }
+                    })
+                });
             });
-
-
         }, 1 * 1000);
 
 
