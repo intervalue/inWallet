@@ -17,7 +17,7 @@
             </div>
             <div class="lockFrom">
                 <ul class="fromList">
-                    <li class="fromItem">
+                   <!-- <li class="fromItem">
                         <div class="itemLogo"><img src="./img/lockaddress2.png" alt=""></div>
                         <div class="itemName" translate>Lock address</div>
                         <div class="itemExplain pointer" ng-click="lock.showselectlayermove()">{{lock.lockAddress |
@@ -31,14 +31,49 @@
                         <input type="text" class="itemExplain"
                                placeholder="{{'Please enter the INVE lock address' | translate}}"
                                ng-model="lock.extractAddress">
-                    </li>
+                    </li>-->
                     <li class="fromItem">
                         <button ng-click="lock.goTransfer()" translate>Lock-in</button>
-                        <button ng-click="lock._extrac()" translate>Withdraw</button>
+                        <button ng-click="lock.goExtract()" translate>Withdraw</button>
                     </li>
                 </ul>
             </div>
+
             <div class="lockExplain">
+                <div class="title">锁仓利率</div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>金额\时长</th>
+                        <th>3个月</th>
+                        <th>6个月</th>
+                        <th>12个月</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>X<100W</td>
+                        <td>1.5%</td>
+                        <td>2.75%</td>
+                        <td>3.25%</td>
+                    </tr>
+                    <tr>
+                        <td>100W<=X<1000W</td>
+                        <td>2.75%</td>
+                        <td>3%</td>
+                        <td>3.5%</td>
+                    </tr>
+                    <tr>
+                        <td>1000W<=X</td>
+                        <td>3.25%</td>
+                        <td>3.5%</td>
+                        <td>4%</td>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+         <!--   <div class="lockExplain">
                 <div class="title" translate>Lock-in</div>
                 <ul>
                     <li translate>1. Open inWallet and go to the INVE Transfer page</li>
@@ -48,9 +83,9 @@
                     </li>
                     <li translate>4. Enter the amount and determine the transfer</li>
                 </ul>
-            </div>
+            </div>-->
 
-            <div class="extractExplain">
+          <!--  <div class="extractExplain">
                 <div class="title" translate>Withdraw</div>
                 <ul>
                     <li translate>1. Open inWallet and enter INVE Lock Warehouse</li>
@@ -58,76 +93,10 @@
                     <li translate>3. Enter the withdraw address in the Withdraw Address field</li>
                     <li translate>4. Click the Withdraw button</li>
                 </ul>
-            </div>
+            </div>-->
         </div>
     </div>
 
-    <div ng-show="lock.showselectwtmove" class="popconfirm walletpop">
-        <div class="popmask" ng-click="lock.showselectwtmove = false;"></div>
-        <div class="popcontentwt animated upScaleIn">
-            <div class="sendswitchtab clearfix">
-                <div class="tab-container" ng-click="index.changesendType('INVE');"
-                     ng-class="{'selected': index.showpopwallet == 'INVE'}">
-                    <a translate><img src="./img/inveltimg.png"/>INVE</a>
-                </div>
-                <!--  <div class="tab-container" ng-click="index.changesendType('BTC');"
-                       ng-class="{'selected': index.showpopwallet == 'BTC'}">
-                      <a translate><img src="./img/btcltimg.png"/>BTC</a>
-                  </div>
-                  <div class="tab-container" ng-click="index.changesendType('ETH');"
-                       ng-class="{'selected': index.showpopwallet == 'ETH'}">
-                      <a translate><img src="./img/ethltimg.png"/>ETH</a>
-                  </div>-->
-            </div>
-            <ul class="m0" ng-show="index.chooseWalletInfo">
-                <li ng-repeat="item in index.chooseWalletInfo"
-                    ng-click="lock.findPaymentAddressmove(item);">
-                    <div class="liin">
-                        <div class="ld">
-                            <span class="greendot"></span>
-                            <div class="limg">
-                                <img ng-src="{{item.image}}"/>
-                            </div>
-                            <span class="lname"
-                                  ng-show="item.walletName.length > 7">{{item.walletName | limitTo:7}}...</span>
-                            <span class="lname" ng-show="item.walletName.length <= 7">{{item.walletName}}</span>
-                        </div>
-                        <div class="rd">
-                            <span translate>Available amount:</span>&nbsp;<span
-                                class="flex1span">{{item.stables}}</span>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-            <div ng-show="index.chooseWalletInfo.length == 0  && index.showpopwallet == 'INVE'" class="popbutton">
-                <button class="awbtn"
-                        ng-click="$root.go('import'); index.type='INVE';index.backdefault = true;index.showselectwtmove = false;"
-                        translate>Import INVE wallet
-                </button>
-                <button ng-click="$root.go('addwallet'); index.type='INVE';index.backdefault = true;index.showselectwtmove = false;"
-                        translate>Create INVE wallet
-                </button>
-            </div>
-            <div ng-show="index.chooseWalletInfo.length == 0 && index.showpopwallet == 'BTC'" class="popbutton">
-                <button class="awbtn"
-                        ng-click="$root.go('importbtc');index.backdefault = true;index.showselectwtmove = false;"
-                        translate>Import BTC wallet
-                </button>
-                <button ng-click="$root.go('addwallet'); index.type='BTC';index.backdefault = true;index.showselectwtmove = false;"
-                        translate>Create BTC wallet
-                </button>
-            </div>
-            <div ng-show="index.chooseWalletInfo.length == 0 && index.showpopwallet == 'ETH'" class="popbutton">
-                <button class="awbtn"
-                        ng-click="$root.go('importeth');index.backdefault = true;index.showselectwtmove = false;"
-                        translate>Import ETH wallet
-                </button>
-                <button ng-click="$root.go('addwallet'); index.type='ETH';index.backdefault = true;index.showselectwtmove = false;"
-                        translate>Create ETH wallet
-                </button>
-            </div>
-        </div>
-    </div>
 
     <!--<link rel="stylesheet" href="./css/lockPosition.css">-->
 </div>

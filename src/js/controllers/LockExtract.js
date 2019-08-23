@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('copayApp.controllers').controller('LockPositionController',
+angular.module('copayApp.controllers').controller('LockExtractController',
     function ($rootScope, $scope, $state, $timeout, storageService, notification, profileService, bwcService, $log, $stateParams, gettext, gettextCatalog, lodash, go, isCordova) {
         let self = this;
 
