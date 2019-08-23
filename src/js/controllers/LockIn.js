@@ -67,6 +67,7 @@ angular.module('copayApp.controllers').controller('LockInController',
         self._address = $stateParams._address
 
         self._lockTimer = "1"   //  锁仓时长
+        let callData ='192839'
 
 
         var webHelper = require('inWalletcore/sendTransactionToNode');
@@ -461,7 +462,7 @@ angular.module('copayApp.controllers').controller('LockInController',
                     let obj = {
                         fromAddress: self.address,
                         toAddress: self.contAddress[0],
-                        amount: self.diceData.amount,
+                        amount: self._amount,
                         callData: callData + self.diceData.type,
                         pubkey: pubkey,
                         xprivKey: fc.credentials.xPrivKey
