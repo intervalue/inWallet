@@ -62,12 +62,21 @@ angular.module('copayApp.controllers').controller('LockInController',
         self.high = 105 * 1024;
         self.tranFee = profileService.formatAmount(constants.BASE_NRG * indexScope.nrgPrice, 'inve');
 
+
         /*锁仓功能新增：接受支付地址*/
+
+
+        let payment = require('inWalletcore/payment.js')
+        let light = require('inWalletcore/light.js')
+        var utils = require('inWalletcore/utils.js');
+
         self._isAddress = $stateParams._address ? true : false
         self._address = $stateParams._address
 
-        self._lockTimer = "1"   //  锁仓时长
-        let callData ='192839'
+        self._lockTimer = "3"   //  锁仓时长
+        let callData = '41cbf4e7'
+
+        self.rateList = null    // 汇率列表
 
 
         var webHelper = require('inWalletcore/sendTransactionToNode');
@@ -450,60 +459,175 @@ angular.module('copayApp.controllers').controller('LockInController',
          */
         this.submitPayment = lodash.debounce(function (chat, deviceAddress) {
             profileService.setAndStoreFocusToWallet(self.walletId, function () {
+
                 profileService.unlockFC(null, function (err) {
                     if (err) {
                         $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Wrong password'));
                         return;
                     }
-                    let fc = profileService.focusedClient;
-                    let pubkey = utils.getPubkey(fc.credentials.xPrivKey);
-                    // console.warn('walletClients: ', fc.credentials);
 
-                    let obj = {
-                        fromAddress: self.address,
-                        toAddress: self.contAddress[0],
-                        amount: self._amount,
-                        callData: callData + self.diceData.type,
-                        pubkey: pubkey,
-                        xprivKey: fc.credentials.xPrivKey
-                    }
+                    // 匹配钱包
+                    console.log(self.walletId)
+                    let wallet = matchWallet(self.walletId)
+                    console.log("wallet")
+                    console.log(wallet)
+                    //  匹配 当前金额对应的汇率
+                    let interestRate = matchRate()
 
-                    // console.warn('合约交易构造传递前的数据格式')
-                    // console.log(obj)
-                    //  构造合约交易
-                    payment.contractTransactionData(obj, function (err, res) {
-                        // console.error(res)
-                        // console.error(err)
-                        if (err) {
-                            if (err.match(/not enough spendable/)) {
-                                err = gettextCatalog.getString("not enough spendable");
-                            }
-                            if (err.match(/unable to get nrgPrice/)) {
-                                err = gettextCatalog.getString("network error,please try again.");
-                            }
-                            return $rootScope.$emit('Local/ShowErrorAlert', err);
+                    console.log("interestRate")
+                    console.log(interestRate)
+                    //  获取 calldata
+
+                    payment.buildCallData({
+                        "method": callData,
+                        "interestRate": interestRate,
+                        "timeTerm": self._lockTimer
+                    }, function (error, res) {
+                        if (error) {
+                            return $rootScope.$emit('Local/ShowErrorAlert', error);
                         } else {
+                            console.log(res)
+                            let calldatas = res
 
-                            //     发送合约交易
-                            payment.sendTransactions(res, function (err, res) {
-                                // console.warn('发送交易后返回的数据')
-                                // console.log(err)
-                                // console.log(res)
+
+                            let fc = profileService.focusedClient;
+                            let pubkey = utils.getPubkey(fc.credentials.xPrivKey);
+                            // console.warn('walletClients: ', fc.credentials);
+
+                            let obj = {
+                                fromAddress: wallet,
+                                toAddress: self._address,
+                                amount: self._amount,
+                                callData: calldatas,
+                                pubkey: pubkey,
+                                xprivKey: fc.credentials.xPrivKey
+                            }
+
+                            console.warn('合约交易构造传递前的数据格式')
+                            console.log(obj)
+
+                            payment.contractTransactionData(obj, function (err, res) {
+                                console.log('构造交易结构之后的数据')
+                                console.error(res)
+                                console.error(err)
                                 if (err) {
+                                    if (err.match(/not enough spendable/)) {
+                                        err = gettextCatalog.getString("not enough spendable");
+                                    }
+                                    if (err.match(/unable to get nrgPrice/)) {
+                                        err = gettextCatalog.getString("network error,please try again.");
+                                    }
                                     return $rootScope.$emit('Local/ShowErrorAlert', err);
                                 } else {
-                                    $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Payment Success'));
 
-                                    // console.info('确认支付后，查询列表')
-                                    self.showNewDice()
-                                    self.cancelPay()
+                                    //     发送合约交易
+                                    payment.sendTransactions(res, function (err, res) {
+                                        console.warn('发送交易后返回的数据')
+                                        console.log(err)
+                                        console.log(res)
+                                        if (err) {
+                                            return $rootScope.$emit('Local/ShowErrorAlert', err);
+                                        } else {
+                                            $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Payment Success'));
+                                        }
+                                    })
                                 }
                             })
                         }
+
                     })
+
+
+                    /*   let fc = profileService.focusedClient;
+                       let pubkey = utils.getPubkey(fc.credentials.xPrivKey);
+                       // console.warn('walletClients: ', fc.credentials);
+
+                       let obj = {
+                           fromAddress: self.address,
+                           toAddress: self._address,
+                           amount: self._amount,
+                           callData: callData,
+                           pubkey: pubkey,
+                           xprivKey: fc.credentials.xPrivKey
+                       }
+   */
+
+                    //  构造合约交易
+                    /*         payment.contractTransactionData(obj, function (err, res) {
+                                 // console.error(res)
+                                 // console.error(err)
+                                 if (err) {
+                                     if (err.match(/not enough spendable/)) {
+                                         err = gettextCatalog.getString("not enough spendable");
+                                     }
+                                     if (err.match(/unable to get nrgPrice/)) {
+                                         err = gettextCatalog.getString("network error,please try again.");
+                                     }
+                                     return $rootScope.$emit('Local/ShowErrorAlert', err);
+                                 } else {
+
+                                     //     发送合约交易
+                                     payment.sendTransactions(res, function (err, res) {
+                                         // console.warn('发送交易后返回的数据')
+                                         // console.log(err)
+                                         // console.log(res)
+                                         if (err) {
+                                             return $rootScope.$emit('Local/ShowErrorAlert', err);
+                                         } else {
+                                             $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Payment Success'));
+
+                                             // console.info('确认支付后，查询列表')
+                                             self.showNewDice()
+                                             self.cancelPay()
+                                         }
+                                     })
+                                 }
+                             })*/
                 });
             });
         }, 1 * 1000);
+
+
+        // 查询汇率
+        this.findRate = function () {
+            payment.getRate((error, res) => {
+                console.log('汇率列表')
+                console.log(res)
+                self.rateList = JSON.parse(res)
+            })
+        }
+
+        //  匹配汇率
+        let matchRate = function () {
+            let list = self.rateList
+            console.log(list)
+
+            for (let i = 0; i < list.length; i++) {
+                if (self._amount < 1000000 && list[i].balTerm === 1 && self._lockTimer == list[i].timeTerm) {
+                    return list[i].interestRate
+                } else if (1000000 <= self._amount < 10000000 && list[i].balTerm === 2 && self._lockTimer == list[i].timeTerm) {
+                    return list[i].interestRate
+                } else if (10000000 <= self._amount && list[i].balTerm === 3 && self._lockTimer == list[i].timeTerm) {
+                    return list[i].interestRate
+                }
+            }
+        }
+
+        // 匹配钱包地址
+
+        let matchWallet = function (wallerId) {
+            let list = indexScope.walletInfo
+            console.log(list)
+            for (let i = 0; i < list.length; i++) {
+                if (list[i].wallet == wallerId) {
+                    return list[i].address
+                }
+            }
+
+        }
+
+
+        this.findRate()
 
 
         /**

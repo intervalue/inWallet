@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('LockExtractController',
         self.lockAddress = 'Please enter the INVE extract address';     //  锁仓地址
         self.extractAddress = null;    //  提取地址
 
-        self.lockDappAddress = 'IAMEEADVI76RPUMZDJZTMIDADC2M53ON'   //  锁仓dapp 地址
+        self.lockDappAddress = 'IXOQMDLFFEEXLVAETCDNMVIS54I5NZ5V'   //  锁仓dapp 地址 (合约地址)
 
         let payment = require('inWalletcore/payment.js')
         let utils = require('inWalletcore/utils.js');
@@ -27,6 +27,7 @@ angular.module('copayApp.controllers').controller('LockExtractController',
             self.showselectwtmove = false
 
         }
+        self.callData = "51cff8d9"
 
 
         //提取
@@ -41,43 +42,53 @@ angular.module('copayApp.controllers').controller('LockExtractController',
                         $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Wrong password'));
                         return;
                     }
-                    let fc = profileService.focusedClient;
-                    let pubkey = utils.getPubkey(fc.credentials.xPrivKey);
-                    //等合约结构
-                    let obj = {
-                        fromAddress: self.address,
-                        toAddress: self.contAddress,
-                        amount: "0",
-                        pubkey: pubkey,
-                        xprivKey: fc.credentials.xPrivKey
-                    }
 
-                    //  构造合约交易
-                    payment.contractTransactionData(obj, function (err, res) {
-                        console.error(res)
-                        console.error(err)
+                    //  构造calldata
+
+                    utils.String2Hex(self.extractAddress, function (error, res) {
                         if (err) {
-                            if (err.match(/not enough spendable/)) {
-                                err = gettextCatalog.getString("not enough spendable");
-                            }
-                            if (err.match(/unable to get nrgPrice/)) {
-                                err = gettextCatalog.getString("network error,please try again.");
-                            }
-                            return $rootScope.$emit('Local/ShowErrorAlert', err);
+                            $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString(error));
+                            return;
                         } else {
+                            let calldatas = res
 
-                            //     发送合约交易
-                            payment.sendTransactions(res, function (err, res) {
+                            let fc = profileService.focusedClient;
+                            let pubkey = utils.getPubkey(fc.credentials.xPrivKey);
+
+                            //等合约结构
+                            let obj = {
+                                fromAddress: self.lockAddress,
+                                toAddress: self.lockDappAddress,
+                                amount: 0,
+                                callData: self.callData + calldatas,
+                                pubkey: pubkey,
+                                xprivKey: fc.credentials.xPrivKey
+                            }
+                            //  构造合约交易
+                            payment.contractTransactionData(obj, function (err, res) {
                                 if (err) {
+                                    if (err.match(/not enough spendable/)) {
+                                        err = gettextCatalog.getString("not enough spendable");
+                                    }
+                                    if (err.match(/unable to get nrgPrice/)) {
+                                        err = gettextCatalog.getString("network error,please try again.");
+                                    }
                                     return $rootScope.$emit('Local/ShowErrorAlert', err);
                                 } else {
-                                    $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Payment Success'));
-                                    self.cancelPay()
+
+                                    //     发送合约交易
+                                    payment.sendTransactions(res, function (err, res) {
+                                        if (err) {
+                                            return $rootScope.$emit('Local/ShowErrorAlert', err);
+                                        } else {
+                                            $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Payment Success'));
+                                            self.cancelPay()
+                                        }
+                                    })
                                 }
                             })
                         }
                     })
-
                 })
             })
         }
