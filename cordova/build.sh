@@ -194,6 +194,10 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add cordova-plugin-device-name
 	checkOK
 
+	cordova plugin com.wordsbaking.cordova.wechat --variable APP_ID=wxb98f8ff24ab2f11f
+    checkOK
+
+
 	if [ $CURRENT_OS == "ANDROID" ]; then
 		cordova plugin add https://github.com/ylwhlhp/PushPlugin.git
 		checkOK
