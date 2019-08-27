@@ -42,6 +42,10 @@ angular.module('copayApp.controllers').controller('discoveryController',
         self.address = '' // 当前地址
         self.address = $scope.index.walletType.INVE[0].address; // 获取第一个INVE地址
         self.orderPayData = ""    //  支付展示的参数
+
+        self.showselectwt = false   //  分享控制器
+        self.shareText = null
+
         var ref;
         var dappUrl;
 
@@ -604,40 +608,6 @@ angular.module('copayApp.controllers').controller('discoveryController',
 
                 };
 
-
-                //  测试 分享
-                $scope.testShare = function () {
-
-                    //好友
-                    Wechat.share({
-                        text: "This is just a plain string",
-                        scene: Wechat.Scene.SESSION   // share to Timeline
-                    }, function () {
-                        alert("Success");
-                    }, function (reason) {
-                        alert("Failed: " + reason);
-                    });
-
-                    //朋友圈
-                    // Wechat.share({
-                    //     text: "This is just a plain string",
-                    //     scene: Wechat.Scene.TIMELINE   // share to Timeline
-                    // }, function () {
-                    //     alert("Success");
-                    // }, function (reason) {
-                    //     alert("Failed: " + reason);
-                    // });
-                    // if (cordova) {
-                    //     WeChat
-                    //         .share('文本', WeChat.Scene.session, function () {
-                    //             console.log('分享成功~');
-                    //         }, function (reason) {
-                    //             console.log(reason);
-                    //         });
-                    // } else {
-                    //     console.log("非手机状态 不能分享")
-                    // }
-                }
             };
 
             var modalInstance = $modal.open({
@@ -970,4 +940,54 @@ angular.module('copayApp.controllers').controller('discoveryController',
         _getDappList()
 
 
+        //  新增：分享
+
+        self._share = function (text) {
+            self.showselectwt = true
+            self.shareText = text
+        }
+
+
+        self._weixinShare = function () {
+            Wechat.isInstalled(function (installed) {
+                if (installed) {
+                    Wechat.share({
+                        text: "This is just a plain string",
+                        scene: Wechat.Scene.SESSION   // share to Timeline
+                    }, function () {
+                        // alert("Success");
+                    }, function (reason) {
+                        gettextCatalog.getString(reason);
+
+                    })
+                } else {
+                    gettextCatalog.getString("没有微信");
+                }
+
+            }, function (reason) {
+                gettextCatalog.getString(reason);
+            });
+        }
+
+
+        self._pengyouquanShare = function () {
+            Wechat.isInstalled(function (installed) {
+                if (installed) {
+                    Wechat.share({
+                        text: "This is just a plain string",
+                        scene: Wechat.Scene.TIMELINE    // share to Timeline
+                    }, function () {
+                        // alert("Success");
+                    }, function (reason) {
+                        gettextCatalog.getString(reason);
+
+                    })
+                } else {
+                    gettextCatalog.getString("没有微信");
+                }
+
+            }, function (reason) {
+                gettextCatalog.getString(reason);
+            });
+        }
     });

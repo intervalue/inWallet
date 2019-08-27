@@ -1,7 +1,8 @@
 <!--
        discovery
        -->
-<div ng-controller="discoveryController as dc" id="news" class="news pfixed topp" style="overflow: hidden;"
+<div ng-controller="discoveryController as dc" id="news" class="news pfixed topp" ng-class="{'zindex':dc.showselectwt}"
+     style="overflow: hidden;"
      ng-init="dc.newsDatals();dc.quickData('up');dc.currencyData('up');dc.dappslider();">
     <div class="tabclicknav tab-bar">
         <div class="tab-container" ng-click="dc.shownewsnav = 'news';"
@@ -109,6 +110,9 @@
                                     <div class="title">{{itemin.title}}</div>
                                     <div class="desc">
                                         {{itemin.content}}
+                                    </div>
+                                    <div ng-if="isCordova" style="text-align: right"
+                                         ng-click="dc._share(itemin.content)">分享
                                     </div>
                                 </div>
                             </div>
@@ -639,6 +643,58 @@
             </div>
         </div>
     </div>
+
+
+    <div ng-show="dc.showselectwt" class="popconfirm" id="shareBox">
+        <div class="popmask" ng-click="dc.showselectwt = false;"></div>
+        <div class="popcontentwt animated upScaleIn">
+            <div class="sendswitchtab clearfix">
+                <div class="tab-container">
+                    <a translate>分享至</a>
+                </div>
+            </div>
+            <ul class="m0">
+                <li ng-click="dc._weixinShare()">
+                    <div>
+                        <img src="./img/share/weixin.png" alt="">
+                        <div>微信好友</div>
+                    </div>
+                </li>
+                <li ng-click="dc._pengyouquanShare()">
+                    <div>
+                        <img src="./img/share/pengyouquan.png" alt="">
+                        <div>朋友圈</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <style>
+        #shareBox .m0 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        #shareBox .m0 li {
+            font-size: 14px;
+
+        }
+
+        #shareBox .popcontentwt ul li:first-child {
+            margin-top: 0;
+        }
+
+        #shareBox .popcontentwt ul li:last-child {
+            margin-bottom: 0;
+        }
+
+        .zindex {
+            z-index: 1000;
+        }
+    </style>
 
     <style>
         .payBox {
