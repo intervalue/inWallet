@@ -3276,6 +3276,21 @@ msgstr "等待本次下注结果"
 msgid "Refresh"
 msgstr "刷新"
 
+msgid "share"
+msgstr "分享"
+
+msgid "No Wechat"
+msgstr "没有微信"
+
+msgid "Wechat"
+msgstr "微信"
+
+msgid "Friendship"
+msgstr "朋友圈"
+
+msgid "Share to"
+msgstr "分享至"
+
 
 
 

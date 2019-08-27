@@ -961,7 +961,7 @@ angular.module('copayApp.controllers').controller('discoveryController',
 
                     })
                 } else {
-                    gettextCatalog.getString("没有微信");
+                    gettextCatalog.getString("No Wechat");
                 }
 
             }, function (reason) {
@@ -983,7 +983,7 @@ angular.module('copayApp.controllers').controller('discoveryController',
 
                     })
                 } else {
-                    gettextCatalog.getString("没有微信");
+                    gettextCatalog.getString("No Wechat");
                 }
 
             }, function (reason) {

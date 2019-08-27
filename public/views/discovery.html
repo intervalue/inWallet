@@ -112,7 +112,7 @@
                                         {{itemin.content}}
                                     </div>
                                     <div ng-if="dc.isCordova" style="text-align: right"
-                                         ng-click="dc._share(itemin.content)">分享
+                                         ng-click="dc._share(itemin.content)" translate>share
                                     </div>
                                 </div>
                             </div>
@@ -650,20 +650,20 @@
         <div class="popcontentwt animated upScaleIn">
             <div class="sendswitchtab clearfix">
                 <div class="tab-container">
-                    <a translate>分享至</a>
+                    <a translate>Share to</a>
                 </div>
             </div>
             <ul class="m0">
                 <li ng-click="dc._weixinShare()">
                     <div>
                         <img src="./img/share/weixin.png" alt="">
-                        <div>微信好友</div>
+                        <div translate>Wechat</div>
                     </div>
                 </li>
                 <li ng-click="dc._pengyouquanShare()">
                     <div>
                         <img src="./img/share/pengyouquan.png" alt="">
-                        <div>朋友圈</div>
+                        <div translate>Friendship</div>
                     </div>
                 </li>
             </ul>
