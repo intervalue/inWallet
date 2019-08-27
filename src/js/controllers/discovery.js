@@ -952,7 +952,7 @@ angular.module('copayApp.controllers').controller('discoveryController',
             Wechat.isInstalled(function (installed) {
                 if (installed) {
                     Wechat.share({
-                        text: "This is just a plain string",
+                        text: self.shareText,
                         scene: Wechat.Scene.SESSION   // share to Timeline
                     }, function () {
                         // alert("Success");
@@ -974,7 +974,7 @@ angular.module('copayApp.controllers').controller('discoveryController',
             Wechat.isInstalled(function (installed) {
                 if (installed) {
                     Wechat.share({
-                        text: "This is just a plain string",
+                        text: self.shareText,
                         scene: Wechat.Scene.TIMELINE    // share to Timeline
                     }, function () {
                         // alert("Success");
