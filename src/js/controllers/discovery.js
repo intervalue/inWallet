@@ -607,16 +607,22 @@ angular.module('copayApp.controllers').controller('discoveryController',
 
                 //  测试 分享
                 $scope.testShare = function () {
-                    if (cordova) {
-                        WeChat
-                            .share('文本', WeChat.Scene.session, function () {
-                                console.log('分享成功~');
-                            }, function (reason) {
-                                console.log(reason);
-                            });
-                    } else {
-                        console.log("非手机状态 不能分享")
-                    }
+
+                    Wechat.isInstalled(function (installed) {
+                        alert("Wechat installed: " + (installed ? "Yes" : "No"));
+                    }, function (reason) {
+                        alert("Failed: " + reason);
+                    });
+                    // if (cordova) {
+                    //     WeChat
+                    //         .share('文本', WeChat.Scene.session, function () {
+                    //             console.log('分享成功~');
+                    //         }, function (reason) {
+                    //             console.log(reason);
+                    //         });
+                    // } else {
+                    //     console.log("非手机状态 不能分享")
+                    // }
                 }
             };
 

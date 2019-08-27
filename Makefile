@@ -28,10 +28,9 @@ ios-debug:
 	open ../inWalletbuilds/project-IOS/platforms/ios/inWallet.xcodeproj
 
 android:
-	test -d "../inWalletbuilds" || mkdir ../inWalletbuilds
-	cordova/build.sh ANDROID --clear
-	cd ../inWalletbuilds/project-ANDROID && cordova build android 2>&1 >/dev/null
-	mv ../inWalletbuilds/project-ANDROID/platforms/android/build/outputs/apk/android-debug.apk ../inWalletbuilds/inWallet.apk
+	cordova/build.sh ANDROID --dbgjs
+	cd ../inWalletbuilds/project-ANDROID && cordova build android --release   2>&1 >/dev/null
+	mv ../inWalletbuilds/project-ANDROID/platforms/android/build/outputs/apk/android-release-unsigned.apk ../inWalletbuilds/inWallet.apk
 
 android-prod:
 	cordova/build.sh ANDROID --clear
