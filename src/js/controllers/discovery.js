@@ -608,11 +608,25 @@ angular.module('copayApp.controllers').controller('discoveryController',
                 //  测试 分享
                 $scope.testShare = function () {
 
-                    Wechat.isInstalled(function (installed) {
-                        alert("Wechat installed: " + (installed ? "Yes" : "No"));
+                    //好友
+                    Wechat.share({
+                        text: "This is just a plain string",
+                        scene: Wechat.Scene.SESSION   // share to Timeline
+                    }, function () {
+                        alert("Success");
                     }, function (reason) {
                         alert("Failed: " + reason);
                     });
+
+                    //朋友圈
+                    // Wechat.share({
+                    //     text: "This is just a plain string",
+                    //     scene: Wechat.Scene.TIMELINE   // share to Timeline
+                    // }, function () {
+                    //     alert("Success");
+                    // }, function (reason) {
+                    //     alert("Failed: " + reason);
+                    // });
                     // if (cordova) {
                     //     WeChat
                     //         .share('文本', WeChat.Scene.session, function () {
