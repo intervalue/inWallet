@@ -528,6 +528,7 @@ angular.module('copayApp.controllers').controller('LockInController',
                                         if (err) {
                                             return $rootScope.$emit('Local/ShowErrorAlert', err);
                                         } else {
+                                            self.__goBack()
                                             $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Payment Success'));
                                         }
                                     })

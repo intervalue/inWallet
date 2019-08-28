@@ -13,25 +13,10 @@
         <div class="lockBox">
             <div class="Explain">
                 <p>{{"'INVE Lock Warehouse' is a financial service provided by the InterValue Foundation to users and implemented by DApp. You can deposit the INVE into the lock DApp with a lock-up period of one year and an annual interest rate of 4%" | translate}}</p>
-                <p translate>{{"After INVE is locked, you can withdraw (total + interest) / 12 INVE per month. The extraction needs to be done manually, and the deferred extraction will not receive additional interest" | translate}}</p>
+                <p>{{"After INVE is locked, you can withdraw (total + interest) / 12 INVE per month. The extraction needs to be done manually, and the deferred extraction will not receive additional interest" |  translate}}</p>
             </div>
             <div class="lockFrom">
                 <ul class="fromList">
-                   <!-- <li class="fromItem">
-                        <div class="itemLogo"><img src="./img/lockaddress2.png" alt=""></div>
-                        <div class="itemName" translate>Lock address</div>
-                        <div class="itemExplain pointer" ng-click="lock.showselectlayermove()">{{lock.lockAddress |
-                            translate}}
-                        </div>
-                        <div class="itemRight"><img src="./img/more.png" alt=""></div>
-                    </li>
-                    <li class="fromItem">
-                        <div class="itemLogo"><img src="./img/lockaddress.png" alt=""></div>
-                        <div class="itemName" translate>Withdraw address</div>
-                        <input type="text" class="itemExplain"
-                               placeholder="{{'Please enter the INVE lock address' | translate}}"
-                               ng-model="lock.extractAddress">
-                    </li>-->
                     <li class="fromItem">
                         <button ng-click="lock.goTransfer()" translate>Lock-in</button>
                         <button ng-click="lock.goExtract()" translate>Withdraw</button>
@@ -39,64 +24,79 @@
                 </ul>
             </div>
 
-            <div class="lockExplain">
-                <div class="title">锁仓利率</div>
+            <div class="lockExplain" ng-if="lock.testList">
+                <div class="title">{{'Lock-in Rate' | translate}}</div>
                 <table>
                     <thead>
                     <tr>
-                        <th>金额\时长</th>
-                        <th>3个月</th>
-                        <th>6个月</th>
-                        <th>12个月</th>
+                        <th>{{ 'Amount' | translate}}\{{ 'Duration' | translate}}</th>
+                        <th>3 {{'month' | translate}}</th>
+                        <th>6 {{ 'month' | translate}}</th>
+                        <th>12 {{'month' | translate}}</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>X<100W</td>
-                        <td>1.5%</td>
-                        <td>2.75%</td>
-                        <td>3.25%</td>
+                        <td>{{lock.testList[0].interestRate / 100 }} %</td>
+                        <td>{{lock.testList[3].interestRate / 100 }} %</td>
+                        <td>{{lock.testList[6].interestRate / 100 }} %</td>
                     </tr>
                     <tr>
                         <td>100W<=X<1000W</td>
-                        <td>2.75%</td>
-                        <td>3%</td>
-                        <td>3.5%</td>
+                        <td>{{lock.testList[1].interestRate / 100 }} %</td>
+                        <td>{{lock.testList[4].interestRate / 100 }} %</td>
+                        <td>{{lock.testList[7].interestRate / 100 }} %</td>
                     </tr>
                     <tr>
                         <td>1000W<=X</td>
-                        <td>3.25%</td>
-                        <td>3.5%</td>
-                        <td>4%</td>
+                        <td>{{lock.testList[2].interestRate / 100 }} %</td>
+                        <td>{{lock.testList[5].interestRate / 100 }} %</td>
+                        <td>{{lock.testList[8].interestRate / 100 }} %</td>
                     </tr>
+
+
+                    <!--  <tr ng-repeat="item in lock.rateObj track by $index">
+                          <td ng-if="item[$index].balTerm===1">X < 100W</td>
+                          <td ng-if="item[$index].balTerm===2">100W <= X <1000W</td>
+                          <td ng-if="item[$index].balTerm===3">1000W <= X</td>
+                          <td ng-repeat="items in item">
+                              {{items.interestRate / 100}} %
+                          </td>
+                      </tr>-->
                     </tbody>
 
                 </table>
-            </div>
-         <!--   <div class="lockExplain">
-                <div class="title" translate>Lock-in</div>
-                <ul>
-                    <li translate>1. Open inWallet and go to the INVE Transfer page</li>
-                    <li> {{'2. Select the INVE wallet address in the INVE transfer address' | translate}}<span
-                            translate>that is the lock address</span></li>
-                    <li> {{'3. Enter the lock DApp address in the INVE transfer address field：' | translate}}<span>{{lock.lockDappAddress}}</span>
-                    </li>
-                    <li translate>4. Enter the amount and determine the transfer</li>
-                </ul>
-            </div>-->
 
-          <!--  <div class="extractExplain">
-                <div class="title" translate>Withdraw</div>
-                <ul>
-                    <li translate>1. Open inWallet and enter INVE Lock Warehouse</li>
-                    <li>{{'2. Select the lock address (INVE wallet address) in the lock address drop-down input box' | translate}}</li>
-                    <li translate>3. Enter the withdraw address in the Withdraw Address field</li>
-                    <li translate>4. Click the Withdraw button</li>
-                </ul>
-            </div>-->
+
+                <style>
+                    table tr td, table tr th {
+                        padding: 15px 10px;
+                    }
+                </style>
+            </div>
+            <!--   <div class="lockExplain">
+                   <div class="title" translate>Lock-in</div>
+                   <ul>
+                       <li translate>1. Open inWallet and go to the INVE Transfer page</li>
+                       <li> {{'2. Select the INVE wallet address in the INVE transfer address' | translate}}<span
+                               translate>that is the lock address</span></li>
+                       <li> {{'3. Enter the lock DApp address in the INVE transfer address field：' | translate}}<span>{{lock.lockDappAddress}}</span>
+                       </li>
+                       <li translate>4. Enter the amount and determine the transfer</li>
+                   </ul>
+               </div>-->
+
+            <!--  <div class="extractExplain">
+                  <div class="title" translate>Withdraw</div>
+                  <ul>
+                      <li translate>1. Open inWallet and enter INVE Lock Warehouse</li>
+                      <li>{{'2. Select the lock address (INVE wallet address) in the lock address drop-down input box' | translate}}</li>
+                      <li translate>3. Enter the withdraw address in the Withdraw Address field</li>
+                      <li translate>4. Click the Withdraw button</li>
+                  </ul>
+              </div>-->
         </div>
     </div>
 
-
-    <!--<link rel="stylesheet" href="./css/lockPosition.css">-->
 </div>

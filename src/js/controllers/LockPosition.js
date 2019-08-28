@@ -10,10 +10,16 @@ angular.module('copayApp.controllers').controller('LockPositionController',
         self.lockAddress = 'Please enter the INVE extract address';     //  锁仓地址
         self.extractAddress = null;    //  提取地址
 
-        self.lockDappAddress = 'IXOQMDLFFEEXLVAETCDNMVIS54I5NZ5V'   //  锁仓dapp 地址
+        self.lockDappAddress = '56JWG745CHLA5ZTBM72YFJCIN6GKXFTP'   //  锁仓dapp 地址
 
         let payment = require('inWalletcore/payment.js')
         let utils = require('inWalletcore/utils.js');
+
+        self.rateObj = null  //  利率列表
+
+        self.testList = null
+
+
         self.showselectlayermove = function () {
             self.showselectwtmove = true
             $scope.index.changesendType('INVE')
@@ -58,5 +64,32 @@ angular.module('copayApp.controllers').controller('LockPositionController',
             }
             return newobj;
         }
+
+
+        // 查询汇率
+        self.findRate = function () {
+            payment.getRate((error, res) => {
+                console.log(res)
+                let list = JSON.parse(res)
+
+                self.testList = list
+               /* let newList = [1, 2, 3]
+                let obj = []
+
+                for (let i = 0; i < newList.length; i++) {
+                    let lists = []
+                    for (let j = 0; j < list.length; j++) {
+                        if (newList[i] === list[j].balTerm) {
+                            lists.push(list[j])
+                        }
+                    }
+                    obj.push(lists)
+                }
+
+                self.rateObj = obj*/
+            })
+        }
+
+        self.findRate()
 
     });

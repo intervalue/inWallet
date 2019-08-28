@@ -3291,6 +3291,19 @@ msgstr "朋友圈"
 msgid "Share to"
 msgstr "分享至"
 
+msgid "Please select Lock address"
+msgstr "请选择锁仓地址"
+
+
+msgid "Duration"
+msgstr "时长"
+
+msgid "Lock-in Rate"
+msgstr "锁仓利率"
+
+msgid "month"
+msgstr "月"
+
 
 
 

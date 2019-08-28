@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('LockExtractController',
         self.lockAddress = 'Please enter the INVE extract address';     //  锁仓地址
         self.extractAddress = null;    //  提取地址
 
-        self.lockDappAddress = 'IXOQMDLFFEEXLVAETCDNMVIS54I5NZ5V'   //  锁仓dapp 地址 (合约地址)
+        self.lockDappAddress = '56JWG745CHLA5ZTBM72YFJCIN6GKXFTP'   //  锁仓dapp 地址 (合约地址)
 
         let payment = require('inWalletcore/payment.js')
         let utils = require('inWalletcore/utils.js');
@@ -32,8 +32,8 @@ angular.module('copayApp.controllers').controller('LockExtractController',
 
         //提取
         self._extrac = function () {
-            if (!self.wallet) {
-                $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('请选择锁仓地址！！！'));
+            if (!self.lockAddress) {
+                $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Please select Lock address'));
                 return;
             }
             profileService.setAndStoreFocusToWallet(self.wallet, function () {
@@ -45,9 +45,13 @@ angular.module('copayApp.controllers').controller('LockExtractController',
 
                     //  构造calldata
 
-                    utils.String2Hex(self.extractAddress, function (error, res) {
+                    utils.stringToHex(self.extractAddress, function (err, res) {
+
+                  /*      console.warn('构造calldata')
+                        console.log(err)
+                        console.log(res)*/
                         if (err) {
-                            $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString(error));
+                            $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString(err));
                             return;
                         } else {
                             let calldatas = res
@@ -64,8 +68,16 @@ angular.module('copayApp.controllers').controller('LockExtractController',
                                 pubkey: pubkey,
                                 xprivKey: fc.credentials.xPrivKey
                             }
+
+                            console.log(obj)
+
                             //  构造合约交易
                             payment.contractTransactionData(obj, function (err, res) {
+
+                                // console.warn('构造交易结构')
+                                // console.log(err)
+                                // console.log(res)
+
                                 if (err) {
                                     if (err.match(/not enough spendable/)) {
                                         err = gettextCatalog.getString("not enough spendable");
@@ -78,17 +90,22 @@ angular.module('copayApp.controllers').controller('LockExtractController',
 
                                     //     发送合约交易
                                     payment.sendTransactions(res, function (err, res) {
+                                        // console.warn('发送交易后返回的数据')
+                                        // console.log(err)
+                                        // console.log(res)
                                         if (err) {
                                             return $rootScope.$emit('Local/ShowErrorAlert', err);
                                         } else {
                                             $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Payment Success'));
-                                            self.cancelPay()
+
                                         }
                                     })
                                 }
                             })
                         }
                     })
+
+
                 })
             })
         }

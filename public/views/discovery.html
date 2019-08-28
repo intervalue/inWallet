@@ -111,8 +111,10 @@
                                     <div class="desc">
                                         {{itemin.content}}
                                     </div>
-                                    <div ng-if="dc.isCordova" style="text-align: right"
-                                         ng-click="dc._share(itemin.content)" translate>share
+                                    <div ng-if="dc.isCordova" style="text-align: right;margin-top: 10px;cursor: pointer"
+                                         ng-click="dc._share(itemin.content)">
+                                        <span translate
+                                              style="border: 1px solid #ddd;padding: 4px 10px;border-radius: 5px">share</span>
                                     </div>
                                 </div>
                             </div>
