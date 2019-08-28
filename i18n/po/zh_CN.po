@@ -3306,6 +3306,9 @@ msgstr "个月"
 
 
 
+msgid "Please wait for the result of the last consensus"
+msgstr "请等待上一笔共识结果"
+
 
 
 
