@@ -957,11 +957,11 @@ angular.module('copayApp.controllers').controller('discoveryController',
                     }, function () {
                         // alert("Success");
                     }, function (reason) {
-                        gettextCatalog.getString(reason);
+                        $rootScope.$emit('Local/ShowErrorAlert',  gettextCatalog.getString(reason));
 
                     })
                 } else {
-                    gettextCatalog.getString("No Wechat");
+                    $rootScope.$emit('Local/ShowErrorAlert',  gettextCatalog.getString("No Wechat"));
                 }
 
             }, function (reason) {
@@ -979,11 +979,11 @@ angular.module('copayApp.controllers').controller('discoveryController',
                     }, function () {
                         // alert("Success");
                     }, function (reason) {
-                        gettextCatalog.getString(reason);
+                        $rootScope.$emit('Local/ShowErrorAlert',  gettextCatalog.getString(reason));
 
                     })
                 } else {
-                    gettextCatalog.getString("No Wechat");
+                    $rootScope.$emit('Local/ShowErrorAlert',  gettextCatalog.getString("No Wechat"));
                 }
 
             }, function (reason) {
