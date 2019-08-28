@@ -11,7 +11,7 @@ angular.module('copayApp.controllers').controller('LockExtractController',
         self.extractAddress = null;    //  提取地址
 
         self.lockDappAddress = '56JWG745CHLA5ZTBM72YFJCIN6GKXFTP'   //  锁仓dapp 地址 (合约地址)
-
+        self.wallet = null;   // 选择的当前钱包id
         let payment = require('inWalletcore/payment.js')
         let utils = require('inWalletcore/utils.js');
         self.showselectlayermove = function () {
@@ -20,6 +20,7 @@ angular.module('copayApp.controllers').controller('LockExtractController',
         }
 
         self.findPaymentAddressmove = function (item) {
+            console.log(item)
             self.wallet = deepCopyObj(item).wallet
             self.extractAddress = deepCopyObj(item).address
             self.lockAddress = deepCopyObj(item).address
@@ -33,11 +34,14 @@ angular.module('copayApp.controllers').controller('LockExtractController',
         //提取
         self._extrac = function () {
 
-            //  先判断当前记录第一笔是否是pending 状态
             console.log($scope.index)
 
-            if ($scope.index.completeHistory[0].result === 'good') {
-                if (self.lockAddress && self.extractAddress) {
+            //  是否有进行选择
+            if (self.lockAddress !== 'Please enter the INVE extract address' && self.extractAddress) {
+
+                //  先判断当前记录第一笔是否是pending 状态
+                console.log($scope.index.walletInfomation[self.wallet])
+                if ($scope.index.walletInfomation[self.wallet][0].result === 'good') {
                     profileService.setAndStoreFocusToWallet(self.wallet, function () {
                         profileService.unlockFC(null, function (err) {
                             if (err) {
@@ -111,10 +115,10 @@ angular.module('copayApp.controllers').controller('LockExtractController',
                         })
                     })
                 } else {
-                    $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Please select Lock address'));
+                    $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Please wait for the result of the last consensus'));
                 }
-            }else {
-                $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Please wait for the result of the last consensus'));
+            } else {
+                $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString('Please select Lock address'));
             }
         }
 
