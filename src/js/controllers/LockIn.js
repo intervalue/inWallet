@@ -465,17 +465,19 @@ angular.module('copayApp.controllers').controller('LockInController',
                     let wallet = matchWallet(self.walletId)
                     //  匹配 当前金额对应的汇率
                     let interestRate = matchRate()
+                    // console.log('汇率--------------------------')
+                    // console.log(interestRate)
                     //  获取 calldata
 
                     payment.buildCallData({
                         "method": callData,
                         "interestRate": interestRate,
-                        "timeTerm":JSON.parse(self._lockTimer)
+                        "timeTerm": JSON.parse(self._lockTimer)
                     }, function (error, res) {
                         if (error) {
                             return $rootScope.$emit('Local/ShowErrorAlert', error);
                         } else {
-                            console.log(res)
+                            // console.log(res)
                             let calldatas = res
 
 
@@ -591,13 +593,17 @@ angular.module('copayApp.controllers').controller('LockInController',
         let matchRate = function () {
             let list = self.rateList
             console.log(list)
+            console.log(self._amount)
 
             for (let i = 0; i < list.length; i++) {
                 if (self._amount < 1000000 && list[i].balTerm === 1 && self._lockTimer == list[i].timeTerm) {
+                    // console.log('小于100W')
                     return list[i].interestRate
-                } else if (1000000 <= self._amount < 10000000 && list[i].balTerm === 2 && self._lockTimer == list[i].timeTerm) {
+                } else if (1000000 <= self._amount && self._amount < 10000000 && list[i].balTerm === 2 && self._lockTimer == list[i].timeTerm) {
+                    // console.log('100W---1000W')
                     return list[i].interestRate
                 } else if (10000000 <= self._amount && list[i].balTerm === 3 && self._lockTimer == list[i].timeTerm) {
+                    // console.log('大于1000W')
                     return list[i].interestRate
                 }
             }
