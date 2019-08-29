@@ -124,14 +124,15 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=inWallet
 	checkOK
 
-    cordova plugin add https://github.com/xu-li/cordova-plugin-wechat --variable wechatappid=wxb98f8ff24ab2f11f
-    checkOK
+#    cordova plugin add cordova-plugin-wechat --variable wechatappid=wxb98f8ff24ab2f11f
+     cordova plugin add cordova-plugin-wechat@2.1.0  --variable wechatappid=wxb98f8ff24ab2f11f
+     checkOK
 
 #    cordova plugin add cordova-plugin-sharesdk --variable SHARESDK_ANDROID_APP_KEY=xxxx --variable SHARESDK_IOS_APP_KEY=xxxx --variable WECHAT_APP_ID=wxb98f8ff24ab2f11f --variable WECHAT_APP_SECRET=xxxx --variable WEIBO_APP_ID=xxxx --variable WEIBO_APP_SECRET=xxxx --variable WEIBO_REDIRECT_URL=http://xxxx --variable QQ_IOS_APP_ID=xxxx --variable QQ_IOS_APP_HEX_ID=xxxx --variable QQ_IOS_APP_KEY=xxxx --variable QQ_ANDROID_APP_ID=xxxx --variable QQ_ANDROID_APP_KEY=xxxx
 #    checkOK
 
 #    cordova plugin add cordova-plugin-themeablebrowser
- #   checkOK
+#   checkOK
 
 	cordova plugin add cordova-plugin-inappbrowser
 	checkOK
