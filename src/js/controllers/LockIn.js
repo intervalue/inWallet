@@ -162,12 +162,7 @@ angular.module('copayApp.controllers').controller('LockInController',
         /**
          * 触发监听事件后，销毁事件，防止重复触发
          */
-        // $scope.$on('$destroy', function() {
-        //     console.log("walletHome $destroy");
-        //     transferQR();
-        //     openTranInfoListener();
-        //     disablePaymentRequestListener();
-        // });
+
         /**
          * 聊天窗口，点击地址发送交易时跳转
          * @type {*|(function())|angular.noop}
@@ -467,21 +462,15 @@ angular.module('copayApp.controllers').controller('LockInController',
                     }
 
                     // 匹配钱包
-                    console.log(self.walletId)
                     let wallet = matchWallet(self.walletId)
-                    console.log("wallet")
-                    console.log(wallet)
                     //  匹配 当前金额对应的汇率
                     let interestRate = matchRate()
-
-                    console.log("interestRate")
-                    console.log(interestRate)
                     //  获取 calldata
 
                     payment.buildCallData({
                         "method": callData,
                         "interestRate": interestRate,
-                        "timeTerm": self._lockTimer
+                        "timeTerm":JSON.parse(self._lockTimer)
                     }, function (error, res) {
                         if (error) {
                             return $rootScope.$emit('Local/ShowErrorAlert', error);
