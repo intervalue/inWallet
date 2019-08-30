@@ -102,35 +102,6 @@
             </div>
         </div>
         <div class="traninfo">
-            <!--<div class="traninfoin">
-                <div class="item tranwallet">
-                    <img class="tranifimg" ng-src="{{tf.inputImg}}" />
-                    <label translate>
-                        <div translate>Out</div>
-                        <div translate>wallet</div>
-                    </label>
-                    <div class="tranwalletin ellipsis">
-                        <input type="text" type="number" id="amount" ng-disabled="tf.blockUx || tf.lockAmount || tf.bSendAll"
-                               name="amount" maxlength="18" ng-model="tf._amount"
-                               valid-amount="{{tf.walletType}}" ng-required="!tf.bSendAll && !tf.send_multiple"
-                               autocomplete="off" ng-focus="tf.formFocus('amount')" ng-blur="tf.formFocus(false)"
-                               placeholder="{{'Available Balance'| translate }}{{tf.amount}}"
-                               ng-Keyup="tf.transactionFee()"/>
-                        <div class="ellipsis">{{tf.nameValue}}</div>
-                    </div>
-                    <span class="transwicth" translate ng-click="tf.showselectwt = true;" >Switch</span>
-                </div>
-                <div class="item tranaddr">
-                    <img class="tranifimg" ng-src="{{tf.inputImg}}" />
-                    <label translate>
-                        <div translate>Receiving</div>
-                        <div translate>address</div>
-                    </label>
-                    <input placeholder="{{tf.addrPlacehoder | translate}}" type="text" id="transferaddress" name="address" ng-class="{'p34r':!tf.chat}" ng-disabled="tf.blockUx || tf.lockAddress || index.arrBalances[index.assetIndex].is_private"
-                           ng-model="tf._address" maxlength="76" ng-required valid-address="{{tf.walletType}}" ng-focus="tf.formFocus('address')" ng-blur="tf.formFocus(false)"/>
-                    &lt;!&ndash;<img class="tranisimg" src="./img/address.png" ng-click="index.goDestination('', '', tf.walletType, tf.walletId, tf.address, tf.walletName)" />&ndash;&gt;
-                    <div class="tranisimg" ng-click="index.openAddressModal('', tf.walletType, tf.walletId, _address, tf.walletName)" /></div>
-            </div>-->
             <div class="item transendnote" ng-show="tf.walletType =='INVE'">
                 <label translate>Note</label>
                 <input placeholder="({{'optional' | translate}})" autocomplete="off" type="text" id="note" name="note"
