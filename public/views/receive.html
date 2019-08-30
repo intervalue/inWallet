@@ -28,7 +28,8 @@
                     <!--</div>-->
                     <div class="center" ng-click="rc.copyAddress(rc.address)" ng-show="rc.address">
                         <qrcode size="185"
-                                data="{{rc.protocol}}-{{rc.walletType}}:{{rc.address}}{{ (amountInSmallestUnits + asset_param) === undefined ? '':'?amount=' + amountInSmallestUnits + asset_param}}"></qrcode>
+                                data="{{rc.address}}{{ (amountInSmallestUnits + asset_param) === undefined ? '':'?amount=' + amountInSmallestUnits + asset_param}}"></qrcode>
+                        <!--data="{{rc.protocol}}-{{rc.walletType}}:{{rc.address}}{{ (amountInSmallestUnits + asset_param) === undefined ? '':'?amount=' + amountInSmallestUnits + asset_param}}"></qrcode>-->
                     </div>
                 </div>
 

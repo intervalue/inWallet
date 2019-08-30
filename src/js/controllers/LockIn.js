@@ -110,9 +110,7 @@ angular.module('copayApp.controllers').controller('LockInController',
          */
         let walletInfo = [];
         for (let item in indexScope.walletInfo) {
-            if (indexScope.walletInfo[item].wallet.indexOf(self.walletNameInfo) != -1) {
-                walletInfo.push(indexScope.walletInfo[item]);
-            } else if (self.walletNameInfo == 'INVE') {
+            if ( indexScope.walletInfo[item].wallet.indexOf('INVE') != -1 ) {
                 walletInfo.push(indexScope.walletInfo[item]);
             }
         }
