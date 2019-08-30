@@ -207,37 +207,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
         //if (uri.indexOf("inWallet:") == -1 ) return handleFile(uri);
         console.log("handleUri "+uri);
         //付款扫码验证
-        if(uri.indexOf("inWallet-") != -1){
-            require('inWalletcore/uri.js').parseUri(uri, {
-                ifError: function(err){
-                    console.log(err);
-                    notification.error(err);
-                    //notification.success(gettextCatalog.getString('Success'), err);
-                },
-                ifOk: function(objRequest){
-                    console.log("request: "+JSON.stringify(objRequest));
-                    if (objRequest.type === 'address'){
-                        // root.send(function(){
-                        //     $rootScope.$emit('paymentRequest', objRequest.address, objRequest.amount, objRequest.asset);
-                        //$state.go('transfer',{ walletType:objRequest.walletType, walletId:'', address:'',walletName :'', addressTo:objRequest.address, amount:objRequest.amount });
-                        // });
-                        $rootScope.$emit('Local/transferQR',objRequest.address,objRequest.amount, objRequest.walletType);
-                    }
-                    else if (objRequest.type === 'pairing'){
-                        $rootScope.$emit('Local/CorrespondentInvitation', objRequest.pubkey, objRequest.hub, objRequest.pairing_secret);
-                    }
-                    else if (objRequest.type === 'auth'){
-                        authService.objRequest = objRequest;
-                        root.path('authConfirmation');
-                    }
-                    else if (objRequest.type === 'textcoin') {
-                        $rootScope.$emit('claimTextcoin', objRequest.mnemonic);
-                    }
-                    else
-                        notification.error('unknown url type: '+objRequest.type);
-                }
-            });
-        }else if(uri.indexOf("shadow") != -1){
+        if(uri.indexOf("shadow") != -1){
             require('inWalletcore/shadowUri.js').shadowParseUri(uri,{
                 ifError: function(err){
                     console.log(err);
@@ -338,10 +308,42 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
                     }
                 }
             });
-        }else return handleFile(uri);
+        }
+        //else return handleFile(uri);
+        else {
+            require('inWalletcore/uri.js').parseUri(uri, {
+                ifError: function(err){
+                    console.log(err);
+                    notification.error(err);
+                    //notification.success(gettextCatalog.getString('Success'), err);
+                },
+                ifOk: function(objRequest){
+                    console.log("request: "+JSON.stringify(objRequest));
+                    if (objRequest.type === 'address'){
+                        // root.send(function(){
+                        //     $rootScope.$emit('paymentRequest', objRequest.address, objRequest.amount, objRequest.asset);
+                        //$state.go('transfer',{ walletType:objRequest.walletType, walletId:'', address:'',walletName :'', addressTo:objRequest.address, amount:objRequest.amount });
+                        // });
+                        $rootScope.$emit('Local/transferQR',objRequest.address,objRequest.amount, objRequest.walletType);
+                    }
+                    else if (objRequest.type === 'pairing'){
+                        $rootScope.$emit('Local/CorrespondentInvitation', objRequest.pubkey, objRequest.hub, objRequest.pairing_secret);
+                    }
+                    else if (objRequest.type === 'auth'){
+                        authService.objRequest = objRequest;
+                        root.path('authConfirmation');
+                    }
+                    else if (objRequest.type === 'textcoin') {
+                        $rootScope.$emit('claimTextcoin', objRequest.mnemonic);
+                    }
+                    else
+                        notification.error('unknown url type: '+objRequest.type);
+                }
+            });
+        }
 
 
-    }
+            }
     //扫码付款结束
 
     var last_handle_file_ts = 0;
