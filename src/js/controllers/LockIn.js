@@ -7,7 +7,8 @@ angular.module('copayApp.controllers').controller('LockInController',
         let w = fc.credentials[0];
         self.walletId = $stateParams.walletId ? $stateParams.walletId : w.walletId;
         self.walletIdRoute = $stateParams.walletId ? $stateParams.walletId : w.walletId;
-        self.walletType = $stateParams.walletType ? $stateParams.walletType : w.type;
+        // self.walletType = $stateParams.walletType ? $stateParams.walletType : w.type;
+        self.walletType = 'INVE';
         self.address = $stateParams.address;
         self.walletName = $stateParams.name ? $stateParams.name : w.walletName;
         self.amount = $stateParams.ammount;
@@ -78,6 +79,10 @@ angular.module('copayApp.controllers').controller('LockInController',
 
         self.rateList = null    // 汇率列表
 
+        console.info('当前的钱包类型：=============')
+        console.log(self.inputImg)
+        console.log(self.walletType)
+
 
         var webHelper = require('inWalletcore/sendTransactionToNode');
         webHelper.get('https://api.blockcypher.com/v1/btc/main', {}, function (err2, result2) {
@@ -110,7 +115,7 @@ angular.module('copayApp.controllers').controller('LockInController',
          */
         let walletInfo = [];
         for (let item in indexScope.walletInfo) {
-            if ( indexScope.walletInfo[item].wallet.indexOf('INVE') != -1 ) {
+            if (indexScope.walletInfo[item].wallet.indexOf('INVE') != -1) {
                 walletInfo.push(indexScope.walletInfo[item]);
             }
         }
@@ -120,13 +125,22 @@ angular.module('copayApp.controllers').controller('LockInController',
          * 判断当前钱包，设置钱包转账图片
          * @param
          */
-        for (let item in configWallets) {
-            if (item == self.walletType) {
-                self.inputImg = configWallets[item][0];
-                self.unit = configWallets[item][2];
-                self.addrPlacehoder = gettextCatalog.getString('Type') + ' ' + configWallets[item][2] + ' ' + gettextCatalog.getString('address');
-            }
-        }
+        // for (let item in configWallets) {
+        //     if (item == self.walletType) {
+        //         self.inputImg = configWallets[item][0];
+        //         self.unit = configWallets[item][2];
+        //         self.addrPlacehoder = gettextCatalog.getString('Type') + ' ' + configWallets[item][2] + ' ' + gettextCatalog.getString('address');
+        //     }
+        // }
+
+        self.inputImg = "./img/inveltimg.png"
+
+
+        console.info('当前的钱包类型22222：=============')
+        console.log(self.inputImg)
+        console.log(self.walletType)
+
+
         /**
          * 选择钱包
          * @paramExchange rate

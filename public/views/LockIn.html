@@ -68,20 +68,20 @@
                     </div>
                 </div>
                 <div class="item tranwallet">
-                    <div class="tranwalletimg">
-                        <div>
-                            <img class="tranifimg" ng-src="{{tf.inputImg}}"/>
-                            <div class="tranwalletimgin">锁仓时长</div>
-                        </div>
-                    </div>
+                    <!--<div class="tranwalletimg">-->
+                        <!--<div>-->
+                            <!--<img class="tranifimg" ng-src="{{tf.inputImg}}"/>-->
+                            <!--<div class="tranwalletimgin" translate>Duration</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <div class="tranwalletin ellipsis">
                         <div class="tranname">
-                            <label translate>锁仓时长</label>
+                            <label translate>Duration</label>
                         </div>
                         <select ng-model="tf._lockTimer">
-                            <option value="3">3个月</option>
-                            <option value="6">6个月</option>
-                            <option value="12">12个月</option>
+                            <option value="3">3 {{'month' | translate}}</option>
+                            <option value="6">6 {{'month' | translate}}</option>
+                            <option value="12">12 {{'month' | translate}}</option>
                         </select>
 
 
