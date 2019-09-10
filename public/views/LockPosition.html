@@ -95,8 +95,12 @@
                         <td ng-if="item.result==='good'" translate>Confirmed</td>
                     </tr>
                     </tbody>
-                    <tbody ng-if="!lock.transactionList">
-                    <div translate>No more content</div>
+                    <tbody ng-if="lock.transactionList.length==0">
+                        <tr>
+                            <td>
+                                <div translate>No more content</div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <style>
