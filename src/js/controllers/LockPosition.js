@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('LockPositionController',
         self.lockAddress = 'Please enter the INVE extract address';     //  锁仓地址
         self.extractAddress = null;    //  提取地址
 
-        self.lockDappAddress = 'B4GTLVSZXA2JGRGXJ5ZUDRCVXZHNP2WS'   //  锁仓dapp 地址
+        self.lockDappAddress = 'VPASRZVEHGPLDWZY56JBVJYM35MLBTCI'   //  锁仓dapp 地址
 
         let payment = require('inWalletcore/payment.js')
         let utils = require('inWalletcore/utils.js');
