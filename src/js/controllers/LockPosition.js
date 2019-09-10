@@ -14,10 +14,14 @@ angular.module('copayApp.controllers').controller('LockPositionController',
 
         let payment = require('inWalletcore/payment.js')
         let utils = require('inWalletcore/utils.js');
+        let light = require('inWalletcore/light.js')
 
         self.rateObj = null  //  利率列表
 
         self.testList = null
+
+
+        self.transactionList = []
 
 
         self.showselectlayermove = function () {
@@ -69,27 +73,43 @@ angular.module('copayApp.controllers').controller('LockPositionController',
         // 查询汇率
         self.findRate = function () {
             payment.getRate((error, res) => {
-                console.log(res)
+                // console.log(res)
                 let list = JSON.parse(res)
 
                 self.testList = list
-               /* let newList = [1, 2, 3]
-                let obj = []
+                /* let newList = [1, 2, 3]
+                 let obj = []
 
-                for (let i = 0; i < newList.length; i++) {
-                    let lists = []
-                    for (let j = 0; j < list.length; j++) {
-                        if (newList[i] === list[j].balTerm) {
-                            lists.push(list[j])
-                        }
-                    }
-                    obj.push(lists)
-                }
+                 for (let i = 0; i < newList.length; i++) {
+                     let lists = []
+                     for (let j = 0; j < list.length; j++) {
+                         if (newList[i] === list[j].balTerm) {
+                             lists.push(list[j])
+                         }
+                     }
+                     obj.push(lists)
+                 }
 
-                self.rateObj = obj*/
+                 self.rateObj = obj*/
             })
         }
 
         self.findRate()
+
+
+        // 查询交易记录
+        self.findLockList = function () {
+            light.getAddressHistory(self.lockDappAddress, function (err, res) {
+                if (err) {
+                    $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString(err));
+                } else {
+                    console.log(res)
+                    self.transactionList = res
+                }
+            })
+        }
+
+        self.findLockList()
+
 
     });

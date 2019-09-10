@@ -3311,6 +3311,17 @@ msgstr "请等待上一笔共识结果"
 
 
 
+msgid "Type Transaction"
+msgstr "交易类型"
+
+msgid "Transaction Amount"
+msgstr "交易金额"
+
+msgid "Transaction Status"
+msgstr "交易状态"
+
+
+
 
 
 
