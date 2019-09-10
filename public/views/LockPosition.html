@@ -86,7 +86,7 @@
                         <th translate>Transaction Status</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody ng-if="lock.transactionList.length">
                     <tr ng-repeat="item in lock.transactionList track by $index">
                         <td ng-if="item.addressFrom === lock.lockDappAddress" translate>Withdraw</td>
                         <td ng-if="item.addressTo === lock.lockDappAddress" translate>Lock-in</td>
@@ -94,6 +94,9 @@
                         <td ng-if="item.result==='pending'" translate>Confirming</td>
                         <td ng-if="item.result==='good'" translate>Confirmed</td>
                     </tr>
+                    </tbody>
+                    <tbody ng-if="!lock.transactionList">
+                    <div translate>No more content</div>
                     </tbody>
                 </table>
                 <style>
