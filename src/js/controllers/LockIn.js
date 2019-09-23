@@ -20,6 +20,7 @@ angular.module('copayApp.controllers').controller('LockInController',
         let configWallets = configService.defaultImages;
         self.infinite_isCmp = false;
         self.showselectwt = false;
+        self.showselectCol = false; // 时间选择控制器
         var conf = require('inWalletcore/conf.js');
         this.protocol = conf.program;
         $rootScope.hideMenuBar = false;
@@ -135,11 +136,17 @@ angular.module('copayApp.controllers').controller('LockInController',
 
         self.inputImg = "./img/inveltimg.png"
 
-
-        console.info('当前的钱包类型22222：=============')
-        console.log(self.inputImg)
-        console.log(self.walletType)
-
+        /**
+         * 选择锁仓时间
+         * @paramExchange rate
+         */
+        self.ChangeTimers = function (val) {
+            self.showselectCol = false;
+            self._lockTimer = val
+            $timeout(function () {
+                $scope.$apply();
+            })
+        }
 
         /**
          * 选择钱包
