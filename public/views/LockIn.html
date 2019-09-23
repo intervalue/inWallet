@@ -68,34 +68,37 @@
                     </div>
                 </div>
                 <div class="item tranwallet">
-                    <!--<div class="tranwalletimg">-->
-                        <!--<div>-->
+                    <div class="tranwalletimg">
+                        <div>
                             <!--<img class="tranifimg" ng-src="{{tf.inputImg}}"/>-->
-                            <!--<div class="tranwalletimgin" translate>Duration</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                            <div class="tranwalletimgin" translate ng-click="tf.showselectCol=true">Duration</div>
+                        </div>
+                    </div>
                     <div class="tranwalletin ellipsis">
                         <div class="tranname">
                             <label translate>Duration</label>
                         </div>
-                        <select ng-model="tf._lockTimer">
-                            <option value="3">3 {{'month' | translate}}</option>
-                            <option value="6">6 {{'month' | translate}}</option>
-                            <option value="12">12 {{'month' | translate}}</option>
-                        </select>
+                        <input ng-model="tf._lockTimer" disabled/>
+                        <!-- <select ng-model="tf._lockTimer">
+                             <option value="3">3 {{'month' | translate}}</option>
+                             <option value="6">6 {{'month' | translate}}</option>
+                             <option value="12">12 {{'month' | translate}}</option>
+                         </select>
 
+                            <style>
+                             select{
+                                 height: 30px;
+                                 line-height: 30px;
+                                 border: 0;
+                             }
+                             select option{
+                                 height: 36px;
+                                 line-height: 36px;
+                             }
+                         </style>
 
-                        <style>
-                            select{
-                                height: 30px;
-                                line-height: 30px;
-                                border: 0;
-                            }
-                            select option{
-                                height: 36px;
-                                line-height: 36px;
-                            }
-                        </style>
+                         -->
+
 
                     </div>
                 </div>
@@ -192,6 +195,45 @@
                     </div>
                 </li>
             </ul>
+        </div>
+    </div>
+    <div ng-show="tf.showselectCol" class="popconfirm">
+        <div class="popmask" ng-click="tf.showselectCol = false;"></div>
+        <div class="popcontentwt animated upScaleIn">
+
+            <ul class="timerList">
+                <!-- <li ng-repeat="item in tf.walletInfo"
+                     ng-click="tf.findPaymentAddress(item.wallet, item.stables, item.walletName, item.address);">
+                     <div class="liin">
+                         <div class="ld">
+                             <span class="greendot"></span>
+                             <div class="limg">
+                                 <img ng-src="{{item.image}}"/>
+                             </div>
+                             <span class="lname">{{item.walletName}}</span>
+                         </div>
+                         <div class="rd">
+                             <span translate>Available amount:</span>&nbsp;<span
+                                 class="flex1span">{{item.stables}}</span>
+                         </div>
+                     </div>
+                 </li>-->
+
+                <li ng-click="tf.ChangeTimers(3)">
+                    3 {{'month' | translate}}
+                </li>
+                <li ng-click="tf.ChangeTimers(6)">
+                    6 {{'month' | translate}}
+                </li>
+                <li ng-click="tf.ChangeTimers(12)">
+                    12 {{'month' | translate}}
+                </li>
+            </ul>
+            <style>
+                .timerList li {
+                    margin: 20px 0;
+                }
+            </style>
         </div>
     </div>
 </div>
