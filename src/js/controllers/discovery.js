@@ -40,7 +40,7 @@ angular.module('copayApp.controllers').controller('discoveryController',
         // dapp列表
         self.dappList = []
         self.address = '' // 当前地址
-        self.address = $scope.index.walletType.INVE[0].address; // 获取第一个INVE地址
+        self.address = $scope.index.walletType ? $scope.index.walletType.INVE[0].address : ''; // 获取第一个INVE地址
         self.orderPayData = ""    //  支付展示的参数
 
         self.showselectwt = false   //  分享控制器
@@ -49,7 +49,8 @@ angular.module('copayApp.controllers').controller('discoveryController',
         var ref;
         var dappUrl;
 
-        let walletId = $scope.index.walletType.INVE[0].wallet;
+        // let walletId = $scope.index.walletType.INVE[0].wallet;
+        let walletId = $scope.index.walletType ? $scope.index.walletType.INVE[0].wallet : '';
 
 
         // self.getAddress = function () {
@@ -957,11 +958,11 @@ angular.module('copayApp.controllers').controller('discoveryController',
                     }, function () {
                         // alert("Success");
                     }, function (reason) {
-                        $rootScope.$emit('Local/ShowErrorAlert',  gettextCatalog.getString(reason));
+                        $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString(reason));
 
                     })
                 } else {
-                    $rootScope.$emit('Local/ShowErrorAlert',  gettextCatalog.getString("No Wechat"));
+                    $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString("No Wechat"));
                 }
 
             }, function (reason) {
@@ -979,11 +980,11 @@ angular.module('copayApp.controllers').controller('discoveryController',
                     }, function () {
                         // alert("Success");
                     }, function (reason) {
-                        $rootScope.$emit('Local/ShowErrorAlert',  gettextCatalog.getString(reason));
+                        $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString(reason));
 
                     })
                 } else {
-                    $rootScope.$emit('Local/ShowErrorAlert',  gettextCatalog.getString("No Wechat"));
+                    $rootScope.$emit('Local/ShowErrorAlert', gettextCatalog.getString("No Wechat"));
                 }
 
             }, function (reason) {
