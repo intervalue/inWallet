@@ -1160,7 +1160,7 @@ touch-action: manipulation; /* IE11+ */
 .dappswiper .swiper-container-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet{margin:0 4px 0 0;opacity:1;}
 .dappswiper .swiper-pagination-bullet-active{width:11px;height:3px;background:#FFFFFF;}
 .swiper-slide{max-height:200px;width:100%;text-align:center;padding:0;cursor:pointer;}
-.swiper-slide img{max-height:200px;}
+.swiper-slide img{max-height:200px;width:100%;}
 .dappslider1{background:#25ACE2;}
 
 /*dapp列表公共*/
